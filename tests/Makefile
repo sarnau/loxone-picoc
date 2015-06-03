@@ -61,8 +61,8 @@ TESTS=	00_assignment.test \
 	64_double_prefix_op.test \
 	66_printf_undefined.test \
 	67_macro_crash.test \
-	68_return.test 
-	69_shebang_script.test\
+	68_return.test \
+	69_shebang_script.test \
 
 
 include csmith/Makefile
@@ -73,6 +73,7 @@ include csmith/Makefile
 	then \
 		../picoc $*.c - arg1 arg2 arg3 arg4 2>&1 >$*.output; \
 	elif [ "x`echo $* | grep script`" != "x" ]; \
+	then \
 		../picoc -s $*.c 2>&1 >$*.output; \
 	else \
 		../picoc $*.c 2>&1 >$*.output; \
