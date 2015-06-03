@@ -6,6 +6,7 @@
 #include "../interpreter.h"
 
 #ifndef BUILTIN_MINI_STDLIB
+#ifndef _WIN32 /* TODO */
 
 static int ZeroValue = 0;
 
@@ -501,5 +502,5 @@ void UnistdSetupFunc(Picoc *pc)
     VariableDefinePlatformVar(pc, NULL, "optopt", &pc->IntType, (union AnyValue *)&optopt, TRUE);
 }
 
+#endif /* !_WIN32 */
 #endif /* !BUILTIN_MINI_STDLIB */
-
