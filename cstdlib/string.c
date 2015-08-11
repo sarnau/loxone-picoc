@@ -41,20 +41,6 @@ void StringStrncat(struct ParseState *Parser, struct Value *ReturnValue, struct 
     ReturnValue->Val->Pointer = strncat((char *) Param[0]->Val->Pointer, (char *) Param[1]->Val->Pointer, Param[2]->Val->Integer);
 }
 
-#ifndef WIN32
-void StringIndex(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
-{
-	UNUSED(Parser); UNUSED(NumArgs); 
-    ReturnValue->Val->Pointer = index((char *) Param[0]->Val->Pointer, Param[1]->Val->Integer);
-}
-
-void StringRindex(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
-{
-	UNUSED(Parser); UNUSED(NumArgs); 
-    ReturnValue->Val->Pointer = rindex((char *) Param[0]->Val->Pointer, Param[1]->Val->Integer);
-}
-#endif
-
 void StringStrlen(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs); 
@@ -151,13 +137,13 @@ void StringStrxfrm(struct ParseState *Parser, struct Value *ReturnValue, struct 
     ReturnValue->Val->Integer = strxfrm((char *) Param[0]->Val->Pointer, (char *) Param[1]->Val->Pointer, Param[2]->Val->Integer);
 }
 
-#ifndef WIN32
 void StringStrdup(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs); 
-    ReturnValue->Val->Pointer = strdup((char *) Param[0]->Val->Pointer);
+    ReturnValue->Val->Pointer = _strdup((char *) Param[0]->Val->Pointer);
 }
 
+#ifndef WIN32
 void StringStrtok_r(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs); 
@@ -168,10 +154,8 @@ void StringStrtok_r(struct ParseState *Parser, struct Value *ReturnValue, struct
 /* all string.h functions */
 struct LibraryFunction StringFunctions[] =
 {
-#ifndef WIN32
-	{ StringIndex,         "char *index(char *,int);" },
-    { StringRindex,        "char *rindex(char *,int);" },
-#endif
+	{ StringStrchr,         "char *index(char *,int);" },
+    { StringStrrchr,        "char *rindex(char *,int);" },
     { StringMemcpy,        "void *memcpy(void *,void *,int);" },
     { StringMemmove,       "void *memmove(void *,void *,int);" },
     { StringMemchr,        "void *memchr(char *,int,int);" },
@@ -194,8 +178,8 @@ struct LibraryFunction StringFunctions[] =
     { StringStrstr,        "char *strstr(char *,char *);" },
     { StringStrtok,        "char *strtok(char *,char *);" },
     { StringStrxfrm,       "int strxfrm(char *,char *,int);" },
-#ifndef WIN32
 	{ StringStrdup,        "char *strdup(char *);" },
+#ifndef WIN32
     { StringStrtok_r,      "char *strtok_r(char *,char *,char **);" },
 #endif
     { NULL,             NULL }
