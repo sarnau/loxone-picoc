@@ -561,7 +561,7 @@ void VariableStackFrameAdd(struct ParseState *Parser, const char *FuncName, int 
 void VariableStackFramePop(struct ParseState *Parser);
 struct Value *VariableStringLiteralGet(Picoc *pc, char *Ident);
 void VariableStringLiteralDefine(Picoc *pc, char *Ident, struct Value *Val);
-void *VariableDereferencePointer(struct ParseState *Parser, struct Value *PointerValue, struct Value **DerefVal, int *DerefOffset, struct ValueType **DerefType, int *DerefIsLValue);
+void *VariableDereferencePointer(struct Value *PointerValue, struct Value **DerefVal, int *DerefOffset, struct ValueType **DerefType, int *DerefIsLValue);
 int VariableScopeBegin(struct ParseState * Parser, int* PrevScopeID);
 void VariableScopeEnd(struct ParseState * Parser, int ScopeID, int PrevScopeID);
 
@@ -610,8 +610,8 @@ void IncludeFile(Picoc *pc, char *Filename);
  * void PicocIncludeAllSystemHeaders(); */
  
 /* debug.c */
-void DebugInit();
-void DebugCleanup();
+void DebugInit(Picoc *pc);
+void DebugCleanup(Picoc *pc);
 void DebugCheckStatement(struct ParseState *Parser);
 
 
@@ -651,5 +651,7 @@ void StdboolSetupFunc(Picoc *pc);
 extern const char UnistdDefs[];
 extern struct LibraryFunction UnistdFunctions[];
 void UnistdSetupFunc(Picoc *pc);
+
+#define UNUSED(x) (x)
 
 #endif /* INTERPRETER_H */

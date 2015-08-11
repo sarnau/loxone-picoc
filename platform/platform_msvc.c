@@ -1,15 +1,18 @@
 #include "../picoc.h"
 #include "../interpreter.h"
+#include <sys/stat.h>
 
 /* mark where to end the program for platforms which require this */
 jmp_buf PicocExitBuf;
 
 void PlatformInit(Picoc *pc)
 {
+	UNUSED(pc);
 }
 
 void PlatformCleanup(Picoc *pc)
 {
+	UNUSED(pc);
 }
 
 /* get a line of interactive input */
@@ -32,6 +35,7 @@ int PlatformGetCharacter()
 /* write a character to the console */
 void PlatformPutc(unsigned char OutCh, union OutputStreamInfo *Stream)
 {
+	UNUSED(Stream);
     putchar(OutCh);
 }
 
@@ -47,7 +51,7 @@ char *PlatformReadFile(Picoc *pc, const char *FileName)
     if (stat(FileName, &FileInfo))
         ProgramFailNoParser(pc, "can't read file %s\n", FileName);
     
-    ReadText = malloc(FileInfo.st_size + 1);
+    ReadText = (char *) malloc((size_t) FileInfo.st_size + 1);
     if (ReadText == NULL)
         ProgramFailNoParser(pc, "out of memory\n");
         
@@ -55,7 +59,7 @@ char *PlatformReadFile(Picoc *pc, const char *FileName)
     if (InFile == NULL)
         ProgramFailNoParser(pc, "can't read file %s\n", FileName);
     
-    BytesRead = fread(ReadText, 1, FileInfo.st_size, InFile);
+    BytesRead = (int) fread(ReadText, 1, (size_t) FileInfo.st_size, InFile);
     if (BytesRead == 0)
         ProgramFailNoParser(pc, "can't read file %s\n", FileName);
 

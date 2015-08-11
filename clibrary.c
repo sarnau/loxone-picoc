@@ -37,6 +37,7 @@ void LibraryAdd(Picoc *pc, struct Table *GlobalTable, const char *LibraryName, s
     struct Value *NewValue;
     void *Tokens;
     char *IntrinsicName = TableStrRegister(pc, "c library");
+	UNUSED(GlobalTable); UNUSED(LibraryName);
     
     /* read all the library definitions */
     for (Count = 0; FuncList[Count].Prototype != NULL; Count++)
@@ -45,7 +46,7 @@ void LibraryAdd(Picoc *pc, struct Table *GlobalTable, const char *LibraryName, s
         LexInitParser(&Parser, pc, FuncList[Count].Prototype, Tokens, IntrinsicName, TRUE, FALSE);
         TypeParse(&Parser, &ReturnType, &Identifier, NULL);
         NewValue = ParseFunctionDefinition(&Parser, ReturnType, Identifier);
-        NewValue->Val->FuncDef.Intrinsic = FuncList[Count].Func;
+        NewValue->Val->FuncDef.Intrinsic = (void (*)()) FuncList[Count].Func;
         HeapFreeMem(pc, Tokens);
     }
 }

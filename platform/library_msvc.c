@@ -1,17 +1,21 @@
+#include "../picoc.h"
 #include "../interpreter.h"
 
 void MsvcSetupFunc(Picoc *pc)
-{    
+{
+	UNUSED(pc);
 }
 
 void CTest (struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs) 
 {
+	UNUSED(Parser); UNUSED(ReturnValue); UNUSED(NumArgs);
     printf("test(%d)\n", Param[0]->Val->Integer);
     Param[0]->Val->Integer = 1234;
 }
 
 void CLineNo (struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs) 
 {
+	UNUSED(Param); UNUSED(NumArgs);
     ReturnValue->Val->Integer = Parser->Line;
 }
 

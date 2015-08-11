@@ -135,6 +135,7 @@ int HeapPopStackFrame(Picoc *pc)
 void *HeapAllocMem(Picoc *pc, int Size)
 {
 #ifdef USE_MALLOC_HEAP
+	UNUSED(pc);
     return calloc(Size, 1);
 #else
     struct AllocNode *NewMem = NULL;
@@ -226,6 +227,7 @@ void *HeapAllocMem(Picoc *pc, int Size)
 void HeapFreeMem(Picoc *pc, void *Mem)
 {
 #ifdef USE_MALLOC_HEAP
+	UNUSED(pc);
     free(Mem);
 #else
     struct AllocNode *MemNode = (struct AllocNode *)((char *)Mem - MEM_ALIGN(sizeof(MemNode->Size)));

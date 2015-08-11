@@ -88,12 +88,12 @@ void *VariableAlloc(Picoc *pc, struct ParseState *Parser, int Size, int OnHeap)
 /* allocate a value either on the heap or the stack using space dependent on what type we want */
 struct Value *VariableAllocValueAndData(Picoc *pc, struct ParseState *Parser, int DataSize, int IsLValue, struct Value *LValueFrom, int OnHeap)
 {
-    struct Value *NewValue = VariableAlloc(pc, Parser, MEM_ALIGN(sizeof(struct Value)) + DataSize, OnHeap);
+    struct Value *NewValue = (struct Value *) VariableAlloc(pc, Parser, MEM_ALIGN(sizeof(struct Value)) + DataSize, OnHeap);
     NewValue->Val = (union AnyValue *)((char *)NewValue + MEM_ALIGN(sizeof(struct Value)));
-    NewValue->ValOnHeap = OnHeap;
+    NewValue->ValOnHeap = (char) OnHeap;
     NewValue->AnyValOnHeap = FALSE;
-    NewValue->ValOnStack = !OnHeap;
-    NewValue->IsLValue = IsLValue;
+    NewValue->ValOnStack = (char) !OnHeap;
+    NewValue->IsLValue = (char) IsLValue;
     NewValue->LValueFrom = LValueFrom;
     if (Parser) 
         NewValue->ScopeID = Parser->ScopeID;
@@ -134,13 +134,13 @@ struct Value *VariableAllocValueAndCopy(Picoc *pc, struct ParseState *Parser, st
 /* allocate a value either on the heap or the stack from an existing AnyValue and type */
 struct Value *VariableAllocValueFromExistingData(struct ParseState *Parser, struct ValueType *Typ, union AnyValue *FromValue, int IsLValue, struct Value *LValueFrom)
 {
-    struct Value *NewValue = VariableAlloc(Parser->pc, Parser, sizeof(struct Value), FALSE);
+    struct Value *NewValue = (struct Value *) VariableAlloc(Parser->pc, Parser, sizeof(struct Value), FALSE);
     NewValue->Typ = Typ;
     NewValue->Val = FromValue;
     NewValue->ValOnHeap = FALSE;
     NewValue->AnyValOnHeap = FALSE;
     NewValue->ValOnStack = FALSE;
-    NewValue->IsLValue = IsLValue;
+    NewValue->IsLValue = (char) IsLValue;
     NewValue->LValueFrom = LValueFrom;
     
     return NewValue;
@@ -158,7 +158,7 @@ void VariableRealloc(struct ParseState *Parser, struct Value *FromValue, int New
     if (FromValue->AnyValOnHeap)
         HeapFreeMem(Parser->pc, FromValue->Val);
         
-    FromValue->Val = VariableAlloc(Parser->pc, Parser, NewSize, TRUE);
+    FromValue->Val = (union AnyValue *) VariableAlloc(Parser->pc, Parser, NewSize, TRUE);
     FromValue->AnyValOnHeap = TRUE;
 }
 
@@ -271,7 +271,7 @@ struct Value *VariableDefine(Picoc *pc, struct ParseState *Parser, char *Ident, 
     else
         AssignValue = VariableAllocValueFromType(pc, Parser, Typ, MakeWritable, NULL, pc->TopStackFrame == NULL);
     
-    AssignValue->IsLValue = MakeWritable;
+    AssignValue->IsLValue = (char) MakeWritable;
     AssignValue->ScopeID = ScopeID;
     AssignValue->OutOfScope = FALSE;
 
@@ -414,13 +414,13 @@ void VariableStackFrameAdd(struct ParseState *Parser, const char *FuncName, int 
     struct StackFrame *NewFrame;
     
     HeapPushStackFrame(Parser->pc);
-    NewFrame = HeapAllocStack(Parser->pc, sizeof(struct StackFrame) + sizeof(struct Value *) * NumParams);
+    NewFrame = (struct StackFrame *) HeapAllocStack(Parser->pc, sizeof(struct StackFrame) + sizeof(struct Value *) * NumParams);
     if (NewFrame == NULL)
         ProgramFail(Parser, "out of memory");
         
     ParserCopy(&NewFrame->ReturnParser, Parser);
     NewFrame->FuncName = FuncName;
-    NewFrame->Parameter = (NumParams > 0) ? ((void *)((char *)NewFrame + sizeof(struct StackFrame))) : NULL;
+    NewFrame->Parameter = (struct Value **) ((NumParams > 0) ? ((void *)((char *)NewFrame + sizeof(struct StackFrame))) : NULL);
     TableInitTable(&NewFrame->LocalTable, &NewFrame->LocalHashTable[0], LOCAL_TABLE_SIZE, FALSE);
     NewFrame->PreviousStackFrame = Parser->pc->TopStackFrame;
     Parser->pc->TopStackFrame = NewFrame;
@@ -455,7 +455,7 @@ void VariableStringLiteralDefine(Picoc *pc, char *Ident, struct Value *Val)
 }
 
 /* check a pointer for validity and dereference it for use */
-void *VariableDereferencePointer(struct ParseState *Parser, struct Value *PointerValue, struct Value **DerefVal, int *DerefOffset, struct ValueType **DerefType, int *DerefIsLValue)
+void *VariableDereferencePointer(struct Value *PointerValue, struct Value **DerefVal, int *DerefOffset, struct ValueType **DerefType, int *DerefIsLValue)
 {
     if (DerefVal != NULL)
         *DerefVal = NULL;
