@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <direct.h>
 
 static int TestDirectory(char *dir, char *picoc);
 static int TestFile(char *fileName, char *picoc);
@@ -94,6 +95,7 @@ int TestDirectory(char *dir, char *picoc)
 
 int TestFile(char *fileName, char *picoc)
 {
+	char dir[MAX_PATH];
 	char commandLine[MAX_PATH * 3 + 50];
 	char outputFileName[MAX_PATH + 2];
 	STARTUPINFO startupInfo = {sizeof(startupInfo)};
@@ -102,6 +104,11 @@ int TestFile(char *fileName, char *picoc)
 	int errorCount = 0;
 
 	printf("Testing %s\r\n", fileName);
+
+	// Change to the directory the test file is in
+	strcpy(dir, fileName);
+	*strrchr(dir, '\\') = '\0';
+	_chdir(dir);
 
 	// Set up the output streams for PicoC
 	strcpy(outputFileName, fileName);
@@ -131,7 +138,10 @@ int TestFile(char *fileName, char *picoc)
 		}
 		else
 		{
+			char *output = LoadFile(outputFileName);
 			printf("PicoC exited with code %d\r\n", exitCode);
+			puts(output);
+			free(output);
 			errorCount = 1;
 		}
 	}
