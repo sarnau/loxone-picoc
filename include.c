@@ -85,7 +85,7 @@ void IncludeFile(Picoc *pc, char *FileName)
                 
                 /* parse the setup C source code - may define types etc. */
                 if (LInclude->SetupCSource != NULL)
-                    PicocParse(pc, FileName, LInclude->SetupCSource, strlen(LInclude->SetupCSource), TRUE, TRUE, FALSE, FALSE);
+                    PicocParse(pc, FileName, LInclude->SetupCSource, (int) strlen(LInclude->SetupCSource), TRUE, TRUE, FALSE, FALSE);
                 
                 /* set up the library functions */
                 if (LInclude->FuncList != NULL)

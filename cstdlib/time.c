@@ -67,7 +67,7 @@ void StdTime(struct ParseState *Parser, struct Value *ReturnValue, struct Value 
 void StdStrftime(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs); 
-    ReturnValue->Val->Integer = strftime((char *) Param[0]->Val->Pointer, Param[1]->Val->Integer, (char *) Param[2]->Val->Pointer, (struct tm *) Param[3]->Val->Pointer);
+    ReturnValue->Val->Integer = (int) strftime((char *) Param[0]->Val->Pointer, Param[1]->Val->Integer, (char *) Param[2]->Val->Pointer, (struct tm *) Param[3]->Val->Pointer);
 }
 
 #ifndef WIN32

@@ -246,7 +246,7 @@ enum LexToken LexGetWord(Picoc *pc, struct LexState *Lexer, struct Value *Value)
     } while (Lexer->Pos != Lexer->End && isCident((int)*Lexer->Pos));
     
     Value->Typ = NULL;
-    Value->Val->Identifier = TableStrRegister2(pc, StartPos, Lexer->Pos - StartPos);
+    Value->Val->Identifier = TableStrRegister2(pc, StartPos, (int) (Lexer->Pos - StartPos));
     
     Token = LexCheckReservedWord(pc, Value->Val->Identifier);
     switch (Token)
@@ -359,7 +359,7 @@ enum LexToken LexGetStringConstant(Picoc *pc, struct LexState *Lexer, struct Val
     }
     EndPos = Lexer->Pos;
     
-    EscBuf = (char *) HeapAllocStack(pc, EndPos - StartPos);
+    EscBuf = (char *) HeapAllocStack(pc, (int) (EndPos - StartPos));
     if (EscBuf == NULL)
         LexFail(pc, Lexer, "out of memory");
     
@@ -367,8 +367,8 @@ enum LexToken LexGetStringConstant(Picoc *pc, struct LexState *Lexer, struct Val
         *EscBufPos++ = LexUnEscapeCharacter(&Lexer->Pos, EndPos);
     
     /* try to find an existing copy of this string literal */
-    RegString = TableStrRegister2(pc, EscBuf, EscBufPos - EscBuf);
-    HeapPopStack(pc, EscBuf, EndPos - StartPos);
+    RegString = TableStrRegister2(pc, EscBuf, (int) (EscBufPos - EscBuf));
+    HeapPopStack(pc, EscBuf, (int) (EndPos - StartPos));
     ArrayValue = VariableStringLiteralGet(pc, RegString);
     if (ArrayValue == NULL)
     {
@@ -534,7 +534,7 @@ void *LexTokenise(Picoc *pc, struct LexState *Lexer, int *TokenLen)
     struct Value *GotValue;
     int MemUsed = 0;
     int ValueSize;
-    int ReserveSpace = (Lexer->End - Lexer->Pos) * 4 + 16; 
+    int ReserveSpace = (int) (Lexer->End - Lexer->Pos) * 4 + 16; 
     void *TokenSpace = HeapAllocStack(pc, ReserveSpace);
     char *TokenPos = (char *)TokenSpace;
     int LastCharacterPos = 0;
@@ -673,7 +673,7 @@ enum LexToken LexGetRawToken(struct ParseState *Parser, struct Value **Value, in
                     return TokenEOF;
 
                 /* put the new line at the end of the linked list of interactive lines */        
-                LineTokens = LexAnalyse(pc, pc->StrEmpty, &LineBuffer[0], strlen(LineBuffer), &LineBytes);
+                LineTokens = LexAnalyse(pc, pc->StrEmpty, &LineBuffer[0], (int) strlen(LineBuffer), &LineBytes);
                 LineNode = (struct TokenLine *) VariableAlloc(pc, Parser, sizeof(struct TokenLine), TRUE);
                 LineNode->Tokens = (unsigned char *) LineTokens;
                 LineNode->NumBytes = LineBytes;
@@ -948,7 +948,7 @@ void *LexCopyTokens(struct ParseState *StartParser, struct ParseState *EndParser
     if (pc->InteractiveHead == NULL)
     { 
         /* non-interactive mode - copy the tokens */
-        MemSize = EndParser->Pos - StartParser->Pos;
+        MemSize = (int) (EndParser->Pos - StartParser->Pos);
         NewTokens = (unsigned char *) VariableAlloc(pc, StartParser, MemSize + TOKEN_DATA_OFFSET, TRUE);
         memcpy(NewTokens, (void *)StartParser->Pos, MemSize);
     }
@@ -961,23 +961,23 @@ void *LexCopyTokens(struct ParseState *StartParser, struct ParseState *EndParser
         if (EndParser->Pos >= StartParser->Pos && EndParser->Pos < &pc->InteractiveCurrentLine->Tokens[pc->InteractiveCurrentLine->NumBytes])
         { 
             /* all on a single line */
-            MemSize = EndParser->Pos - StartParser->Pos;
+            MemSize = (int) (EndParser->Pos - StartParser->Pos);
             NewTokens = (unsigned char *) VariableAlloc(pc, StartParser, MemSize + TOKEN_DATA_OFFSET, TRUE);
             memcpy(NewTokens, (void *)StartParser->Pos, MemSize);
         }
         else
         { 
             /* it's spread across multiple lines */
-            MemSize = &pc->InteractiveCurrentLine->Tokens[pc->InteractiveCurrentLine->NumBytes-TOKEN_DATA_OFFSET] - Pos;
+            MemSize = (int) (&pc->InteractiveCurrentLine->Tokens[pc->InteractiveCurrentLine->NumBytes-TOKEN_DATA_OFFSET] - Pos);
 
             for (ILine = pc->InteractiveCurrentLine->Next; ILine != NULL && (EndParser->Pos < &ILine->Tokens[0] || EndParser->Pos >= &ILine->Tokens[ILine->NumBytes]); ILine = ILine->Next)
                 MemSize += ILine->NumBytes - TOKEN_DATA_OFFSET;
             
             assert(ILine != NULL);
-            MemSize += EndParser->Pos - &ILine->Tokens[0];
+            MemSize += (int) (EndParser->Pos - &ILine->Tokens[0]);
             NewTokens = (unsigned char *) VariableAlloc(pc, StartParser, MemSize + TOKEN_DATA_OFFSET, TRUE);
             
-            CopySize = &pc->InteractiveCurrentLine->Tokens[pc->InteractiveCurrentLine->NumBytes-TOKEN_DATA_OFFSET] - Pos;
+            CopySize = (int) (&pc->InteractiveCurrentLine->Tokens[pc->InteractiveCurrentLine->NumBytes-TOKEN_DATA_OFFSET] - Pos);
             memcpy(NewTokens, Pos, CopySize);
             NewTokenPos = NewTokens + CopySize;
             for (ILine = pc->InteractiveCurrentLine->Next; ILine != NULL && (EndParser->Pos < &ILine->Tokens[0] || EndParser->Pos >= &ILine->Tokens[ILine->NumBytes]); ILine = ILine->Next)

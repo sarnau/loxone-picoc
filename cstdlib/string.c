@@ -44,7 +44,7 @@ void StringStrncat(struct ParseState *Parser, struct Value *ReturnValue, struct 
 void StringStrlen(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs); 
-    ReturnValue->Val->Integer = strlen((char *) Param[0]->Val->Pointer);
+    ReturnValue->Val->Integer = (int) strlen((char *) Param[0]->Val->Pointer);
 }
 
 void StringMemset(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
@@ -104,13 +104,13 @@ void StringStrerror(struct ParseState *Parser, struct Value *ReturnValue, struct
 void StringStrspn(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs); 
-    ReturnValue->Val->Integer = strspn((char *) Param[0]->Val->Pointer, (char *) Param[1]->Val->Pointer);
+    ReturnValue->Val->Integer = (int) strspn((char *) Param[0]->Val->Pointer, (char *) Param[1]->Val->Pointer);
 }
 
 void StringStrcspn(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs); 
-    ReturnValue->Val->Integer = strcspn((char *) Param[0]->Val->Pointer, (char *) Param[1]->Val->Pointer);
+    ReturnValue->Val->Integer = (int) strcspn((char *) Param[0]->Val->Pointer, (char *) Param[1]->Val->Pointer);
 }
 
 void StringStrpbrk(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
@@ -134,7 +134,7 @@ void StringStrtok(struct ParseState *Parser, struct Value *ReturnValue, struct V
 void StringStrxfrm(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs); 
-    ReturnValue->Val->Integer = strxfrm((char *) Param[0]->Val->Pointer, (char *) Param[1]->Val->Pointer, Param[2]->Val->Integer);
+    ReturnValue->Val->Integer = (int) strxfrm((char *) Param[0]->Val->Pointer, (char *) Param[1]->Val->Pointer, Param[2]->Val->Integer);
 }
 
 void StringStrdup(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)

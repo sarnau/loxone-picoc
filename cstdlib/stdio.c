@@ -376,13 +376,13 @@ void StdioFclose(struct ParseState *Parser, struct Value *ReturnValue, struct Va
 void StdioFread(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs) 
 {
 	UNUSED(Parser); UNUSED(NumArgs);
-    ReturnValue->Val->Integer = fread(Param[0]->Val->Pointer, Param[1]->Val->Integer, Param[2]->Val->Integer, (FILE *) Param[3]->Val->Pointer);
+    ReturnValue->Val->Integer = (int) fread(Param[0]->Val->Pointer, Param[1]->Val->Integer, Param[2]->Val->Integer, (FILE *) Param[3]->Val->Pointer);
 }
 
 void StdioFwrite(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs) 
 {
 	UNUSED(Parser); UNUSED(NumArgs);
-    ReturnValue->Val->Integer = fwrite(Param[0]->Val->Pointer, Param[1]->Val->Integer, Param[2]->Val->Integer, (FILE *) Param[3]->Val->Pointer);
+    ReturnValue->Val->Integer = (int) fwrite(Param[0]->Val->Pointer, Param[1]->Val->Integer, Param[2]->Val->Integer, (FILE *) Param[3]->Val->Pointer);
 }
 
 void StdioFgetc(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs) 

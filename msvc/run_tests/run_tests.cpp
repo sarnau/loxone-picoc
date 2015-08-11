@@ -44,7 +44,7 @@ int TestDirectory(char *dir, char *picoc)
 	WIN32_FIND_DATA findData;
 	HANDLE h;
 	int errorCount = 0;
-	int dirLen = strlen(dir);
+	int dirLen = (int) strlen(dir);
 
 	// Make sure the dir has a trailing slash, then add "*.*" to it.
 	strcpy(pattern, dir);
@@ -77,7 +77,7 @@ int TestDirectory(char *dir, char *picoc)
 			else
 			{
 				// If it's a .c file
-				int fileNameLen = strlen(findData.cFileName);
+				int fileNameLen = (int) strlen(findData.cFileName);
 				if (_stricmp(findData.cFileName + fileNameLen - 2, ".c") == 0)
 				{
 					// Run it through PicoC and check the results

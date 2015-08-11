@@ -440,7 +440,7 @@ void ExpressionAssign(struct ParseState *Parser, struct Value *DestValue, struct
             {
                 if (DestValue->Typ->ArraySize == 0) /* char x[] = "abcd", x is unsized */
                 {
-                    int Size = strlen((char *) SourceValue->Val->Pointer) + 1;
+                    int Size = (int) strlen((char *) SourceValue->Val->Pointer) + 1;
                     #ifdef DEBUG_ARRAY_INITIALIZER
                     PRINT_SOURCE_POS;
                     fprintf(stderr, "str size: %d\n", Size);
@@ -869,7 +869,7 @@ void ExpressionInfixOperator(struct ParseState *Parser, struct ExpressionStack *
         {
             case TokenEqual:                ExpressionPushInt(Parser, StackTop, BottomLoc == TopLoc); break;
             case TokenNotEqual:             ExpressionPushInt(Parser, StackTop, BottomLoc != TopLoc); break;
-            case TokenMinus:                ExpressionPushInt(Parser, StackTop, BottomLoc - TopLoc); break;
+            case TokenMinus:                ExpressionPushInt(Parser, StackTop, (int) (BottomLoc - TopLoc)); break;
             default:                        ProgramFail(Parser, "invalid operation"); break;
         }
     }

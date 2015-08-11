@@ -165,7 +165,7 @@ char *TableStrRegister2(Picoc *pc, const char *Str, int Len)
 
 char *TableStrRegister(Picoc *pc, const char *Str)
 {
-    return TableStrRegister2(pc, Str, strlen((char *)Str));
+    return TableStrRegister2(pc, Str, (int) strlen((char *)Str));
 }
 
 /* free all the strings */
