@@ -1,7 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 11
+# Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "picoc", "picoc.vcxproj", "{C0156FB3-55AB-4F82-8A97-A776DFC57951}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "run_tests", "..\run_tests\run_tests.vcxproj", "{9381969F-8CB6-45E4-B28C-CF20E254D418}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C0156FB3-55AB-4F82-8A97-A776DFC57951} = {C0156FB3-55AB-4F82-8A97-A776DFC57951}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +18,10 @@ Global
 		{C0156FB3-55AB-4F82-8A97-A776DFC57951}.Debug|Win32.Build.0 = Debug|Win32
 		{C0156FB3-55AB-4F82-8A97-A776DFC57951}.Release|Win32.ActiveCfg = Release|Win32
 		{C0156FB3-55AB-4F82-8A97-A776DFC57951}.Release|Win32.Build.0 = Release|Win32
+		{9381969F-8CB6-45E4-B28C-CF20E254D418}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9381969F-8CB6-45E4-B28C-CF20E254D418}.Debug|Win32.Build.0 = Debug|Win32
+		{9381969F-8CB6-45E4-B28C-CF20E254D418}.Release|Win32.ActiveCfg = Release|Win32
+		{9381969F-8CB6-45E4-B28C-CF20E254D418}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
