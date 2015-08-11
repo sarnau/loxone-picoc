@@ -1,0 +1,478 @@
+
+ 
+
+
+
+ 
+ 
+ 
+
+
+
+ 
+ 
+ <!DOCTYPE html>
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+ <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
+ 
+ <meta name="ROBOTS" content="NOARCHIVE">
+ 
+ <link rel="icon" type="image/vnd.microsoft.icon" href="https://ssl.gstatic.com/codesite/ph/images/phosting.ico">
+ 
+ 
+ <link rel="canonical" href="https://code.google.com/p/picoc/wiki/RunningPicoc" />
+ 
+ <script type="text/javascript">
+ 
+ 
+ 
+ 
+ var codesite_token = "ABZ6GAeBox-BnyAKyLUTpHHs6cVpfVNbeA:1439298807778";
+ 
+ 
+ var CS_env = {"projectHomeUrl": "/p/picoc", "profileUrl": "/u/105083986792207142090/", "projectName": "picoc", "token": "ABZ6GAeBox-BnyAKyLUTpHHs6cVpfVNbeA:1439298807778", "loggedInUserEmail": "google@LoadAccumulator.com", "domainName": null, "assetHostPath": "https://ssl.gstatic.com/codesite/ph", "relativeBaseUrl": "", "assetVersionPath": "https://ssl.gstatic.com/codesite/ph/9967404889048465354"};
+ var _gaq = _gaq || [];
+ _gaq.push(
+ ['siteTracker._setAccount', 'UA-18071-1'],
+ ['siteTracker._trackPageview']);
+ 
+ (function() {
+ var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+ (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+ })();
+ 
+ </script>
+ 
+ 
+ <title>RunningPicoc - 
+ picoc -
+ 
+ Running picoc - 
+ A very small C interpreter - Google Project Hosting
+ </title>
+ <link type="text/css" rel="stylesheet" href="https://ssl.gstatic.com/codesite/ph/9967404889048465354/css/core.css">
+ 
+ <link type="text/css" rel="stylesheet" href="https://ssl.gstatic.com/codesite/ph/9967404889048465354/css/ph_detail.css" >
+ 
+ 
+ 
+ <link type="application/atom+xml" rel="alternate" href="/feeds/p/picoc/svnchanges/basic?path=/wiki/RunningPicoc.wiki">
+ 
+ 
+<!--[if IE]>
+ <link type="text/css" rel="stylesheet" href="https://ssl.gstatic.com/codesite/ph/9967404889048465354/css/d_ie.css" >
+<![endif]-->
+ <style type="text/css">
+ .menuIcon.off { background: no-repeat url(https://ssl.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 -42px }
+ .menuIcon.on { background: no-repeat url(https://ssl.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 -28px }
+ .menuIcon.down { background: no-repeat url(https://ssl.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 0; }
+ 
+ 
+ #maincol {
+ padding-top: 0;
+ padding-bottom: 0;
+ }
+
+ 
+ </style>
+</head>
+<body class="t6">
+<script type="text/javascript">
+ window.___gcfg = {lang: 'en'};
+ (function() 
+ {var po = document.createElement("script");
+ po.type = "text/javascript"; po.async = true;po.src = "https://apis.google.com/js/plusone.js";
+ var s = document.getElementsByTagName("script")[0];
+ s.parentNode.insertBefore(po, s);
+ })();
+</script>
+<div class="headbg">
+
+ <div id="gaia">
+ 
+
+ <span>
+ 
+ 
+ 
+ <a href="#" id="multilogin-dropdown" onclick="return false;"
+ ><u><b>google@LoadAccumulator.com</b></u> <small>&#9660;</small></a>
+ 
+ 
+ | <a href="/u/105083986792207142090/" id="projects-dropdown" onclick="return false;"
+ ><u>My favorites</u> <small>&#9660;</small></a>
+ | <a href="/u/105083986792207142090/" onclick="_CS_click('/gb/ph/profile');"
+ title="Profile, Updates, and Settings"
+ ><u>Profile</u></a>
+ | <a href="https://www.google.com/accounts/Logout?continue=https%3A%2F%2Fcode.google.com%2Fp%2Fpicoc%2Fwiki%2FRunningPicoc" 
+ onclick="_CS_click('/gb/ph/signout');"
+ ><u>Sign out</u></a>
+ 
+ </span>
+
+ </div>
+
+ <div class="gbh" style="left: 0pt;"></div>
+ <div class="gbh" style="right: 0pt;"></div>
+ 
+ 
+ <div style="height: 1px"></div>
+<!--[if lte IE 7]>
+<div style="text-align:center;">
+Your version of Internet Explorer is not supported. Try a browser that
+contributes to open source, such as <a href="http://www.firefox.com">Firefox</a>,
+<a href="http://www.google.com/chrome">Google Chrome</a>, or
+<a href="http://code.google.com/chrome/chromeframe/">Google Chrome Frame</a>.
+</div>
+<![endif]-->
+
+ <div style="font-weight:bold; color:#a03; padding:5px; margin-top:10px; text-align:center; background:#ffeac0;">
+ Google Code will be turning read-only on August 25th. See <a href='https://code.google.com/p/support/wiki/ReadOnlyTransition'>this post</a> for more information.
+ 
+ </div>
+
+
+
+ <table style="padding:0px; margin: 0px 0px 10px 0px; width:100%" cellpadding="0" cellspacing="0"
+ itemscope itemtype="http://schema.org/CreativeWork">
+ <tr style="height: 58px;">
+ 
+ 
+ 
+ <td id="plogo">
+ <link itemprop="url" href="/p/picoc">
+ <a href="/p/picoc/">
+ 
+ <img src="https://ssl.gstatic.com/codesite/ph/images/defaultlogo.png" alt="Logo" itemprop="image">
+ 
+ </a>
+ </td>
+ 
+ <td style="padding-left: 0.5em">
+ 
+ <div id="pname">
+ <a href="/p/picoc/"><span itemprop="name">picoc</span></a>
+ </div>
+ 
+ <div id="psum">
+ <a id="project_summary_link"
+ href="/p/picoc/"><span itemprop="description">A very small C interpreter</span></a>
+ 
+ </div>
+ 
+ 
+ </td>
+ <td style="white-space:nowrap;text-align:right; vertical-align:bottom;">
+ 
+ <form action="/hosting/search">
+ <input size="30" name="q" value="" type="text">
+ 
+ <input type="submit" name="projectsearch" value="Search projects" >
+ </form>
+ 
+ </tr>
+ </table>
+
+</div>
+
+ 
+<div id="mt" class="gtb"> 
+ <a href="/p/picoc/" class="tab ">Project&nbsp;Home</a>
+ 
+ 
+ 
+ 
+ <a href="/p/picoc/downloads/list" class="tab ">Downloads</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/picoc/w/list" class="tab active">Wiki</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/picoc/issues/list"
+ class="tab ">Issues</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/picoc/source/checkout"
+ class="tab ">Source</a>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ <a href="https://code.google.com/export-to-github/export?project=picoc">
+ <button>Export to GitHub</button>
+ 
+ </a>
+ 
+ 
+ 
+ 
+ 
+ <div class=gtbc></div>
+</div>
+<table cellspacing="0" cellpadding="0" width="100%" align="center" border="0" class="st">
+ <tr>
+ 
+ 
+ 
+ <td class="subt">
+ <div class="issueDetail">
+<div class="isf">
+ 
+ <span class="inIssueList"> 
+ <span>Search</span>
+ <form action="/p/picoc/w/list" method="GET" style="display:inline">
+ <select id="can" name="can" >
+ <option disabled="disabled">Search within:</option>
+ 
+ <option value="1" >&nbsp;All wiki pages</option>
+ <option value="3" >&nbsp;Featured pages</option>
+ <option value="2" selected="selected">&nbsp;Current pages</option>
+ 
+ 
+ <option value="5" >&nbsp;My starred pages</option>
+ 
+ <option value="4" >&nbsp;Deprecated pages</option>
+ 
+ </select>
+ <span>for</span>
+ <span id="qq"><input type="text" size="38" id="searchq" name="q" value=""
+ autocomplete="off" ></span>
+ 
+ 
+ 
+ <input type="submit" value="Search" >
+ </form>
+ </span>
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+</div>
+</div>
+
+ </td>
+ 
+ 
+ 
+ 
+ 
+ 
+ <td align="right" valign="top" class="bevel-right"></td>
+ </tr>
+</table>
+
+
+<script type="text/javascript">
+ var cancelBubble = false;
+ function _go(url) { document.location = url; }
+</script>
+<div id="maincol"
+ 
+>
+
+ 
+
+
+
+
+
+
+
+ <style type="text/css">
+ .delcom { background: #e8e8e8 }
+ .commentcontent {
+ margin: 2em;
+ padding: 0px 10px;
+ width: 66em;
+ }
+ .artifactcomment {
+ border-top: 3px solid #c3d9ff;
+ }
+ #commentform {
+ border-top: 3px solid #c3d9ff;
+ }
+ </style>
+
+<div id="wikipage">
+<table>
+ <tr>
+ 
+ 
+ <td style="vertical-align:top; padding-left:5px">
+ 
+ <div id="wikiheader">
+ 
+ <img width="15" height="15" id="star_img"
+ src="https://ssl.gstatic.com/codesite/ph/images/star_off.gif"
+ style="cursor:pointer"
+ onclick="_CS_toggleStar(this,
+ {'scope': 'wiki',
+ 'user': '_CURRENT_USER',
+ 'item': 'picoc:RunningPicoc'
+ });"/>
+ 
+ <span style="font-size:120%;font-weight:bold">RunningPicoc</span>
+ &nbsp;
+ <div> 
+ 
+ <i>Running picoc</i>
+ 
+ 
+ 
+ <div id="wikiauthor" style="float:right">
+ Updated <span title="Tue Feb 22 12:03:46 2011">
+ Feb 22, 2011</span>
+ 
+ by 
+
+ <a class="userlink"
+ href="/u/116360049618107912297/">zik.sale...@gmail.com</a
+>
+ 
+ </div>
+ </div>
+ </div>
+ 
+ <div id="wikicontent">
+ <div class="vt" id="wikimaincol">
+ <p>Running picoc from the command line is possible under linux, UNIX and cygwin environments. This page describes the options available. </p><h1><a name="Command_line_parameters"></a>Command line parameters<a href="#Command_line_parameters" class="section_anchor"></a></h1><h2><a name="Running_standard_C_programs"></a>Running standard C programs<a href="#Running_standard_C_programs" class="section_anchor"></a></h2><p>You can run standard C programs straight from the command line: </p><pre class="prettyprint">&gt; picoc myprogram.c</pre><p>If your program is split into multiple files you can list them all on the command line. </p><pre class="prettyprint">&gt; picoc myprog1.c myprog2.c myprog3.c</pre><p>If your program takes arguments you add them after a &#x27;-&#x27; character. </p><pre class="prettyprint">&gt; picoc myprogram.c - arg1 arg2</pre><h2><a name="Running_script_files"></a>Running script files<a href="#Running_script_files" class="section_anchor"></a></h2><p>Scripts are slightly simpler than standard C programs - all the system headers are included automatically for you so you don&#x27;t need to include them yourself. Also, scripts don&#x27;t have a main() function - they just have statements which are run directly. </p><pre class="prettyprint">&gt; picoc -s myprogram.c</pre><p>Here&#x27;s an example script: </p><pre class="prettyprint">printf(&quot;Starting my script\n&quot;);
+
+int total = 0;
+int i;
+for (i = 0; i &lt; 10; i++)
+{
+    printf(&quot;i = %d\n&quot;, i);
+    total += i;
+}
+
+printf(&quot;The total is %d\n&quot;, total);</pre><p>Here&#x27;s the output from this script under cygwin: </p><pre class="prettyprint">$ ./picoc -s myscript.c
+Starting my script
+i = 0
+i = 1
+i = 2
+i = 3
+i = 4
+i = 5
+i = 6
+i = 7
+i = 8
+i = 9
+The total is 45</pre><h2><a name="Interactive_mode"></a>Interactive mode<a href="#Interactive_mode" class="section_anchor"></a></h2><p>If you want to type C statements directly into picoc you can use the interactive mode: </p><pre class="prettyprint">&gt; picoc -i</pre><p>Here&#x27;s an example session: </p><pre class="prettyprint">$ ./picoc -i
+starting picoc v2.1
+picoc&gt; char inbuf[80];
+picoc&gt; gets(inbuf);
+hello!
+picoc&gt; printf(&quot;I got: %s\n&quot;, inbuf);
+I got: hello!</pre><p>You can quit picoc&#x27;s interactive mode using control-D. </p><h3><a name="Deleting_variables_and_functions"></a>Deleting variables and functions<a href="#Deleting_variables_and_functions" class="section_anchor"></a></h3><p>Sometimes in interactive mode you want to change a function or redeclare a variable. You can do this using the &quot;delete&quot; statement: </p><pre class="prettyprint">$ ./picoc -i
+starting picoc v2.1
+picoc&gt; int fred = 1234;
+picoc&gt; printf(&quot;fred = %d\n&quot;, fred);
+fred = 1234
+picoc&gt; delete fred;
+picoc&gt; char *fred = &quot;hello&quot;;
+picoc&gt; printf(&quot;fred = &#x27;%s&#x27;\n&quot;, fred);
+fred = &#x27;hello&#x27;</pre><h1><a name="Environment_variables"></a>Environment variables<a href="#Environment_variables" class="section_anchor"></a></h1><p>In some cases you may want to change the picoc stack space. The default stack size is 128KB which should be large enough for most programs. </p><p>To change the stack size you can set the <strong>STACKSIZE</strong> environment variable to a different value. The value is in bytes. </p>
+ </div>
+ </div>
+ </td><tr>
+</table>
+ </div>
+
+
+ 
+ 
+ 
+ 
+ 
+ <div id="commentform">
+ <form action="../w/detail.do" method="post">
+ <table>
+ <tr><td class="vt">
+ <input type="hidden" name="pagename" value="RunningPicoc" >
+ <input type="hidden" name="token" value="ABZ6GAeBox-BnyAKyLUTpHHs6cVpfVNbeA:1439298807778" >
+ <div class="graytext" style="float: right;">
+ Hint: You can use <a href="http://code.google.com/p/support/wiki/WikiSyntax">Wiki Syntax.</a>
+ </div>
+ <div>Enter a comment:</div>
+ <textarea name="content" rows="6" cols="100"></textarea><br><br>
+ <input type="submit" name="submit" value="Submit" >
+ </td>
+ </table>
+ </form>
+ </div>
+ 
+ 
+ 
+ 
+ 
+ <form name="delcom" action="../w/delComment.do" method="POST">
+ <input type="hidden" name="sequence_num" value="" >
+ <input type="hidden" name="create_time" value="" >
+ <input type="hidden" name="mode" value="" >
+ <input type="hidden" name="pagename" value="RunningPicoc" >
+ <input type="hidden" name="token" value="ABZ6GAeBox-BnyAKyLUTpHHs6cVpfVNbeA:1439298807778" >
+ </form>
+
+
+ <script src="https://ssl.gstatic.com/codesite/ph/9967404889048465354/js/prettify/prettify.js"></script>
+ <script type="text/javascript">
+ prettyPrint();
+ </script>
+
+<script type="text/javascript" src="https://ssl.gstatic.com/codesite/ph/9967404889048465354/js/dit_scripts.js"></script>
+
+
+
+  
+ 
+ 
+ <script type="text/javascript" src="https://ssl.gstatic.com/codesite/ph/9967404889048465354/js/ph_core.js"></script>
+ 
+ <script type="text/javascript" src="https://ssl.gstatic.com/codesite/ph/9967404889048465354/js/ph_dwiki.js"></script>
+ 
+ 
+ 
+ 
+</div> 
+
+<div id="footer" dir="ltr">
+ <div class="text">
+ <a href="/projecthosting/terms.html">Terms</a> -
+ <a href="http://www.google.com/privacy.html">Privacy</a> -
+ <a href="/p/support/">Project Hosting Help</a>
+ </div>
+</div>
+ <div class="hostedBy" style="margin-top: -20px;">
+ <span style="vertical-align: top;">Powered by <a href="http://code.google.com/projecthosting/">Google Project Hosting</a></span>
+ </div>
+
+ 
+ 
+
+
+ 
+ </body>
+</html>
+
+

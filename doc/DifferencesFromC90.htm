@@ -1,0 +1,515 @@
+
+ 
+
+
+
+ 
+ 
+ 
+
+
+
+ 
+ 
+ <!DOCTYPE html>
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+ <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
+ 
+ <meta name="ROBOTS" content="NOARCHIVE">
+ 
+ <link rel="icon" type="image/vnd.microsoft.icon" href="https://ssl.gstatic.com/codesite/ph/images/phosting.ico">
+ 
+ 
+ <link rel="canonical" href="https://code.google.com/p/picoc/wiki/DifferencesFromC90" />
+ 
+ <script type="text/javascript">
+ 
+ 
+ 
+ 
+ var codesite_token = "ABZ6GAe-nJ-Kno3JJlgojDv9hAIsqdiioA:1439298787531";
+ 
+ 
+ var CS_env = {"relativeBaseUrl": "", "assetHostPath": "https://ssl.gstatic.com/codesite/ph", "projectHomeUrl": "/p/picoc", "loggedInUserEmail": "google@LoadAccumulator.com", "profileUrl": "/u/105083986792207142090/", "domainName": null, "projectName": "picoc", "assetVersionPath": "https://ssl.gstatic.com/codesite/ph/9967404889048465354", "token": "ABZ6GAe-nJ-Kno3JJlgojDv9hAIsqdiioA:1439298787531"};
+ var _gaq = _gaq || [];
+ _gaq.push(
+ ['siteTracker._setAccount', 'UA-18071-1'],
+ ['siteTracker._trackPageview']);
+ 
+ (function() {
+ var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+ (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+ })();
+ 
+ </script>
+ 
+ 
+ <title>DifferencesFromC90 - 
+ picoc -
+ 
+ How PicoC differs from C90 - 
+ A very small C interpreter - Google Project Hosting
+ </title>
+ <link type="text/css" rel="stylesheet" href="https://ssl.gstatic.com/codesite/ph/9967404889048465354/css/core.css">
+ 
+ <link type="text/css" rel="stylesheet" href="https://ssl.gstatic.com/codesite/ph/9967404889048465354/css/ph_detail.css" >
+ 
+ 
+ 
+ <link type="application/atom+xml" rel="alternate" href="/feeds/p/picoc/svnchanges/basic?path=/wiki/DifferencesFromC90.wiki">
+ 
+ 
+<!--[if IE]>
+ <link type="text/css" rel="stylesheet" href="https://ssl.gstatic.com/codesite/ph/9967404889048465354/css/d_ie.css" >
+<![endif]-->
+ <style type="text/css">
+ .menuIcon.off { background: no-repeat url(https://ssl.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 -42px }
+ .menuIcon.on { background: no-repeat url(https://ssl.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 -28px }
+ .menuIcon.down { background: no-repeat url(https://ssl.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 0; }
+ 
+ 
+ #maincol {
+ padding-top: 0;
+ padding-bottom: 0;
+ }
+
+ 
+ </style>
+</head>
+<body class="t6">
+<script type="text/javascript">
+ window.___gcfg = {lang: 'en'};
+ (function() 
+ {var po = document.createElement("script");
+ po.type = "text/javascript"; po.async = true;po.src = "https://apis.google.com/js/plusone.js";
+ var s = document.getElementsByTagName("script")[0];
+ s.parentNode.insertBefore(po, s);
+ })();
+</script>
+<div class="headbg">
+
+ <div id="gaia">
+ 
+
+ <span>
+ 
+ 
+ 
+ <a href="#" id="multilogin-dropdown" onclick="return false;"
+ ><u><b>google@LoadAccumulator.com</b></u> <small>&#9660;</small></a>
+ 
+ 
+ | <a href="/u/105083986792207142090/" id="projects-dropdown" onclick="return false;"
+ ><u>My favorites</u> <small>&#9660;</small></a>
+ | <a href="/u/105083986792207142090/" onclick="_CS_click('/gb/ph/profile');"
+ title="Profile, Updates, and Settings"
+ ><u>Profile</u></a>
+ | <a href="https://www.google.com/accounts/Logout?continue=https%3A%2F%2Fcode.google.com%2Fp%2Fpicoc%2Fwiki%2FDifferencesFromC90" 
+ onclick="_CS_click('/gb/ph/signout');"
+ ><u>Sign out</u></a>
+ 
+ </span>
+
+ </div>
+
+ <div class="gbh" style="left: 0pt;"></div>
+ <div class="gbh" style="right: 0pt;"></div>
+ 
+ 
+ <div style="height: 1px"></div>
+<!--[if lte IE 7]>
+<div style="text-align:center;">
+Your version of Internet Explorer is not supported. Try a browser that
+contributes to open source, such as <a href="http://www.firefox.com">Firefox</a>,
+<a href="http://www.google.com/chrome">Google Chrome</a>, or
+<a href="http://code.google.com/chrome/chromeframe/">Google Chrome Frame</a>.
+</div>
+<![endif]-->
+
+ <div style="font-weight:bold; color:#a03; padding:5px; margin-top:10px; text-align:center; background:#ffeac0;">
+ Google Code will be turning read-only on August 25th. See <a href='https://code.google.com/p/support/wiki/ReadOnlyTransition'>this post</a> for more information.
+ 
+ </div>
+
+
+
+ <table style="padding:0px; margin: 0px 0px 10px 0px; width:100%" cellpadding="0" cellspacing="0"
+ itemscope itemtype="http://schema.org/CreativeWork">
+ <tr style="height: 58px;">
+ 
+ 
+ 
+ <td id="plogo">
+ <link itemprop="url" href="/p/picoc">
+ <a href="/p/picoc/">
+ 
+ <img src="https://ssl.gstatic.com/codesite/ph/images/defaultlogo.png" alt="Logo" itemprop="image">
+ 
+ </a>
+ </td>
+ 
+ <td style="padding-left: 0.5em">
+ 
+ <div id="pname">
+ <a href="/p/picoc/"><span itemprop="name">picoc</span></a>
+ </div>
+ 
+ <div id="psum">
+ <a id="project_summary_link"
+ href="/p/picoc/"><span itemprop="description">A very small C interpreter</span></a>
+ 
+ </div>
+ 
+ 
+ </td>
+ <td style="white-space:nowrap;text-align:right; vertical-align:bottom;">
+ 
+ <form action="/hosting/search">
+ <input size="30" name="q" value="" type="text">
+ 
+ <input type="submit" name="projectsearch" value="Search projects" >
+ </form>
+ 
+ </tr>
+ </table>
+
+</div>
+
+ 
+<div id="mt" class="gtb"> 
+ <a href="/p/picoc/" class="tab ">Project&nbsp;Home</a>
+ 
+ 
+ 
+ 
+ <a href="/p/picoc/downloads/list" class="tab ">Downloads</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/picoc/w/list" class="tab active">Wiki</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/picoc/issues/list"
+ class="tab ">Issues</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/picoc/source/checkout"
+ class="tab ">Source</a>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ <a href="https://code.google.com/export-to-github/export?project=picoc">
+ <button>Export to GitHub</button>
+ 
+ </a>
+ 
+ 
+ 
+ 
+ 
+ <div class=gtbc></div>
+</div>
+<table cellspacing="0" cellpadding="0" width="100%" align="center" border="0" class="st">
+ <tr>
+ 
+ 
+ 
+ <td class="subt">
+ <div class="issueDetail">
+<div class="isf">
+ 
+ <span class="inIssueList"> 
+ <span>Search</span>
+ <form action="/p/picoc/w/list" method="GET" style="display:inline">
+ <select id="can" name="can" >
+ <option disabled="disabled">Search within:</option>
+ 
+ <option value="1" >&nbsp;All wiki pages</option>
+ <option value="3" >&nbsp;Featured pages</option>
+ <option value="2" selected="selected">&nbsp;Current pages</option>
+ 
+ 
+ <option value="5" >&nbsp;My starred pages</option>
+ 
+ <option value="4" >&nbsp;Deprecated pages</option>
+ 
+ </select>
+ <span>for</span>
+ <span id="qq"><input type="text" size="38" id="searchq" name="q" value=""
+ autocomplete="off" ></span>
+ 
+ 
+ 
+ <input type="submit" value="Search" >
+ </form>
+ </span>
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+</div>
+</div>
+
+ </td>
+ 
+ 
+ 
+ 
+ 
+ 
+ <td align="right" valign="top" class="bevel-right"></td>
+ </tr>
+</table>
+
+
+<script type="text/javascript">
+ var cancelBubble = false;
+ function _go(url) { document.location = url; }
+</script>
+<div id="maincol"
+ 
+>
+
+ 
+
+
+
+
+
+
+
+ <style type="text/css">
+ .delcom { background: #e8e8e8 }
+ .commentcontent {
+ margin: 2em;
+ padding: 0px 10px;
+ width: 66em;
+ }
+ .artifactcomment {
+ border-top: 3px solid #c3d9ff;
+ }
+ #commentform {
+ border-top: 3px solid #c3d9ff;
+ }
+ </style>
+
+<div id="wikipage">
+<table>
+ <tr>
+ 
+ 
+ <td style="vertical-align:top; padding-left:5px">
+ 
+ <div id="wikiheader">
+ 
+ <img width="15" height="15" id="star_img"
+ src="https://ssl.gstatic.com/codesite/ph/images/star_off.gif"
+ style="cursor:pointer"
+ onclick="_CS_toggleStar(this,
+ {'scope': 'wiki',
+ 'user': '_CURRENT_USER',
+ 'item': 'picoc:DifferencesFromC90'
+ });"/>
+ 
+ <span style="font-size:120%;font-weight:bold">DifferencesFromC90</span>
+ &nbsp;
+ <div> 
+ 
+ <i>How PicoC differs from C90</i>
+ 
+ 
+ 
+ <div id="wikiauthor" style="float:right">
+ Updated <span title="Tue Feb 22 15:19:40 2011">
+ Feb 22, 2011</span>
+ 
+ by 
+
+ <a class="userlink"
+ href="/u/116360049618107912297/">zik.sale...@gmail.com</a
+>
+ 
+ </div>
+ </div>
+ </div>
+ 
+ <div id="wikicontent">
+ <div class="vt" id="wikimaincol">
+ <h1><a name="How_picoc_differs_from_C90"></a>How picoc differs from C90<a href="#How_picoc_differs_from_C90" class="section_anchor"></a></h1><p>picoc is a tiny C language, not a complete implementation of C90. It doesn&#x27;t aim to implement every single feature of C90 but it does aim to be close enough that most programs will run without modification. </p><p>picoc also has scripting abilities which enhance it beyond what C90 offers. </p><h2><a name="C_preprocessor"></a>C preprocessor<a href="#C_preprocessor" class="section_anchor"></a></h2><p>There is no true preprocessor in picoc. The most popular preprocessor features are implemented in a slightly limited way. </p><h2><a name="#define"></a>#define<a href="##define" class="section_anchor"></a></h2><p>#define macros are implemented but have some limitations. They can only be used as part of expressions and operate a bit like functions. Since they&#x27;re used in expressions they must result in a value. </p><h2><a name="#if_/_#ifdef_/_#else_/_#endif"></a>#if / #ifdef / #else / #endif<a href="##if_/_#ifdef_/_#else_/_#endif" class="section_anchor"></a></h2><p>The conditional compilation operators are implemented, but have some limitations. The operator &quot;defined()&quot; is not implemented. These operators can only be used at statement boundaries. </p><h2><a name="#include"></a>#include<a href="##include" class="section_anchor"></a></h2><p>#include is supported however the level of support depends on the specific port of picoc on your platform. Linux/UNIX and cygwin support #include fully. </p><h1><a name="Function_declarations"></a>Function declarations<a href="#Function_declarations" class="section_anchor"></a></h1><p>This style of function declaration is supported: </p><pre class="prettyprint">int my_function(char param1, int param2, char *param3)
+{
+   ...
+}</pre><p>The old &quot;K&amp;R&quot; form of function declaration is not supported. </p><h1><a name="Predefined_macros"></a>Predefined macros<a href="#Predefined_macros" class="section_anchor"></a></h1><p>A few macros are pre-defined: </p><ul><li><strong>PICOC_VERSION</strong> - gives the picoc version as a string eg. <tt>&quot;v2.1 beta r524&quot;</tt> </li><li><strong>LITTLE_ENDIAN</strong> - is 1 on little-endian architectures or 0 on big-endian architectures </li><li><strong>BIG_ENDIAN</strong> - is 1 on big-endian architectures or 0 on little-endian architectures </li></ul><h1><a name="Function_pointers"></a>Function pointers<a href="#Function_pointers" class="section_anchor"></a></h1><p>Pointers to functions are currently not supported. </p><h1><a name="Storage_classes"></a>Storage classes<a href="#Storage_classes" class="section_anchor"></a></h1><p>Many of the storage classes in C90 really only have meaning in a compiler so they&#x27;re not implemented in picoc. This includes: static, extern, volatile, register and auto. They&#x27;re recognised but currently ignored. </p><h1><a name="struct_and_unions"></a>struct and unions<a href="#struct_and_unions" class="section_anchor"></a></h1><p>Structs and unions can only be defined globally. It&#x27;s not possible to define them within the scope of a function. </p><p>Bitfields in structs are not supported. </p><h1><a name="Linking_with_libraries"></a>Linking with libraries<a href="#Linking_with_libraries" class="section_anchor"></a></h1><p>Because picoc is an interpreter (and not a compiler) libraries must be linked with picoc itself. Also a glue module must be written to interface to picoc. This is the same as other interpreters like python. </p><p>If you&#x27;re looking for an example check the interface to the C standard library time functions in cstdlib/time.c. </p><h1><a name="goto"></a>goto<a href="#goto" class="section_anchor"></a></h1><p>The goto statement is implemented, but only supports forward gotos, not backward. The rationale for this is that backward gotos are not necessary for any &quot;legitimate&quot; use of goto.  </p><p>Some discussion on this topic: <ul><li><a href="http://www.cprogramming.com/tutorial/goto.html" rel="nofollow">http://www.cprogramming.com/tutorial/goto.html</a> </li><li><a href="http://kerneltrap.org/node/553/2131" rel="nofollow">http://kerneltrap.org/node/553/2131</a> </li></ul></p><h1><a name="Scripting_enhancements"></a>Scripting enhancements<a href="#Scripting_enhancements" class="section_anchor"></a></h1><h2><a name="Interactive_mode"></a>Interactive mode<a href="#Interactive_mode" class="section_anchor"></a></h2><p>picoc can be used interactively, from a command line. In Linux/UNIX/cygwin run it as: </p><pre class="prettyprint">picoc &lt;module1.c&gt; &lt;module2.c&gt;...</pre><p>You&#x27;ll be presented with a picoc command prompt. You can type programs directly into the picoc command line and call functions directly as well. </p><p>Unlike standard C you can write C commands directly on the command line and they&#x27;ll be executed immediately. eg. </p><pre class="prettyprint">int i;
+for (i = 1; i &lt;= 10; i++)
+    printf(&quot;Hello world: %d\n&quot;, i);</pre><p>Use your operating system&#x27;s end of file character to quit the interactive mode. (Control-D is end of file in Linux/UNIX) </p><h2><a name="Deleting_functions_or_variables"></a>Deleting functions or variables<a href="#Deleting_functions_or_variables" class="section_anchor"></a></h2><p>You may want to delete a function or variable declaration in interactive mode so you can re-declare it. Use &quot;delete whatever;&quot; to do this. </p><h2><a name="Running_programs_from_the_command_line"></a>Running programs from the command line<a href="#Running_programs_from_the_command_line" class="section_anchor"></a></h2><p>If you&#x27;re running a picoc program from the command line on Linux/UNIX/cygwin you can invoke it like: </p><pre class="prettyprint">picoc &lt;module1.c&gt; &lt;module2.c&gt;...</pre><p>The main() function will be run once the program is loaded. To use command line arguments with it do: </p><pre class="prettyprint">picoc &lt;module1.c&gt; &lt;module2.c&gt;... - arg1 arg2...</pre><p>If you&#x27;re running a script which has no main() function run: </p><pre class="prettyprint">picoc -s &lt;module1.c&gt; &lt;module2.c&gt;... - arg1 arg2...</pre>
+ </div>
+ </div>
+ </td><tr>
+</table>
+ </div>
+
+
+ 
+ <div id="wikicommentcol">
+ 
+
+
+ 
+ 
+ 
+
+<div class="collapse">
+
+
+ 
+
+
+<div id="commentlist">
+
+ 
+ <div class="artifactcomment"
+ 
+ >
+ 
+ 
+ 
+ 
+ 
+ 
+ <span class="author">Comment
+ 
+ by 
+ 
+ 
+
+ <a class="userlink"
+ href="/u/117494762170023142251/">carlojpi...@gmail.com</a
+>,
+ 
+ </span>
+ <span class="date" title="Sun May 27 05:33:12 2012">May 27, 2012</span>
+ <div>
+<div class="commentcontent">
+<p>about interactive mode: could you add support to list functions, and could you add support to see the function body ? it could be very useful in order to edit it when you are on the target </p><p>could you add support to list all the global variable in use ? </p>
+</div>
+ 
+ 
+ </div>
+ </div>
+ 
+
+</div>
+</div>
+
+ 
+
+
+ <script type="text/javascript">
+ function delComment(sequence_num, create_time, delete_mode) {
+ var f = document.forms["delcom"];
+ f.sequence_num.value = sequence_num;
+ f.create_time.value = create_time;
+ f.mode.value = delete_mode;
+ f.submit();
+ return false;
+ }
+ </script>
+
+
+ </div>
+ 
+ 
+ 
+ 
+ 
+ <div id="commentform">
+ <form action="../w/detail.do" method="post">
+ <table>
+ <tr><td class="vt">
+ <input type="hidden" name="pagename" value="DifferencesFromC90" >
+ <input type="hidden" name="token" value="ABZ6GAe-nJ-Kno3JJlgojDv9hAIsqdiioA:1439298787531" >
+ <div class="graytext" style="float: right;">
+ Hint: You can use <a href="http://code.google.com/p/support/wiki/WikiSyntax">Wiki Syntax.</a>
+ </div>
+ <div>Enter a comment:</div>
+ <textarea name="content" rows="6" cols="100"></textarea><br><br>
+ <input type="submit" name="submit" value="Submit" >
+ </td>
+ </table>
+ </form>
+ </div>
+ 
+ 
+ 
+ 
+ 
+ <form name="delcom" action="../w/delComment.do" method="POST">
+ <input type="hidden" name="sequence_num" value="" >
+ <input type="hidden" name="create_time" value="" >
+ <input type="hidden" name="mode" value="" >
+ <input type="hidden" name="pagename" value="DifferencesFromC90" >
+ <input type="hidden" name="token" value="ABZ6GAe-nJ-Kno3JJlgojDv9hAIsqdiioA:1439298787531" >
+ </form>
+
+
+ <script src="https://ssl.gstatic.com/codesite/ph/9967404889048465354/js/prettify/prettify.js"></script>
+ <script type="text/javascript">
+ prettyPrint();
+ </script>
+
+<script type="text/javascript" src="https://ssl.gstatic.com/codesite/ph/9967404889048465354/js/dit_scripts.js"></script>
+
+
+
+  
+ 
+ 
+ <script type="text/javascript" src="https://ssl.gstatic.com/codesite/ph/9967404889048465354/js/ph_core.js"></script>
+ 
+ <script type="text/javascript" src="https://ssl.gstatic.com/codesite/ph/9967404889048465354/js/ph_dwiki.js"></script>
+ 
+ 
+ 
+ 
+</div> 
+
+<div id="footer" dir="ltr">
+ <div class="text">
+ <a href="/projecthosting/terms.html">Terms</a> -
+ <a href="http://www.google.com/privacy.html">Privacy</a> -
+ <a href="/p/support/">Project Hosting Help</a>
+ </div>
+</div>
+ <div class="hostedBy" style="margin-top: -20px;">
+ <span style="vertical-align: top;">Powered by <a href="http://code.google.com/projecthosting/">Google Project Hosting</a></span>
+ </div>
+
+ 
+ 
+
+
+ 
+ </body>
+</html>
+
+
