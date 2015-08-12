@@ -20,7 +20,7 @@ void ParseCleanup(Picoc *pc)
 }
 
 /* parse a statement, but only run it if Condition is TRUE */
-enum ParseResult ParseStatementMaybeRun(struct ParseState *Parser, intptr_t Condition, int CheckTrailingSemicolon)
+enum ParseResult ParseStatementMaybeRun(struct ParseState *Parser, int Condition, int CheckTrailingSemicolon)
 {
     if (Parser->Mode != RunModeSkip && !Condition)
     {
@@ -444,7 +444,7 @@ void ParserCopyPos(struct ParseState *To, struct ParseState *From)
 /* parse a "for" statement */
 void ParseFor(struct ParseState *Parser)
 {
-    intptr_t Condition;
+    int Condition;
     struct ParseState PreConditional;
     struct ParseState PreIncrement;
     struct ParseState PreStatement;
@@ -464,7 +464,7 @@ void ParseFor(struct ParseState *Parser)
     if (LexGetToken(Parser, NULL, FALSE) == TokenSemicolon)
         Condition = TRUE;
     else
-        Condition = ExpressionParseInt(Parser);
+        Condition = ExpressionParseInt(Parser) != 0;
     
     if (LexGetToken(Parser, NULL, TRUE) != TokenSemicolon)
         ProgramFail(Parser, "';' expected");
@@ -570,7 +570,7 @@ enum ParseResult ParseStatement(struct ParseState *Parser, int CheckTrailingSemi
     struct Value *CValue;
     struct Value *LexerValue;
     struct Value *VarValue;
-    intptr_t Condition;
+    int Condition;
     struct ParseState PreState;
     enum LexToken Token;
     
@@ -802,7 +802,7 @@ enum ParseResult ParseStatement(struct ParseState *Parser, int CheckTrailingSemi
             { 
                 /* new block so we can store parser state */
                 enum RunMode OldMode = Parser->Mode;
-                intptr_t OldSearchLabel = Parser->SearchLabel;
+                int64_t OldSearchLabel = Parser->SearchLabel;
                 Parser->Mode = RunModeCaseSearch;
                 Parser->SearchLabel = Condition;
                 

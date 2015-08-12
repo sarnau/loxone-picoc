@@ -162,17 +162,17 @@ int IsTypeToken(struct ParseState * Parser, enum LexToken t, struct Value * LexV
     return 0;
 }
 
-intptr_t ExpressionCoerceInteger(struct Value *Val)
+int64_t ExpressionCoerceInteger(struct Value *Val)
 {
     switch (Val->Typ->Base)
     {
         case TypeInt:             return (long)Val->Val->Integer;
         case TypeChar:            return (long)Val->Val->Character;
         case TypeShort:           return (long)Val->Val->ShortInteger;
-        case TypeLong:            return (intptr_t)Val->Val->LongInteger;
+        case TypeLong:            return (int64_t)Val->Val->LongInteger;
         case TypeUnsignedInt:     return (long)Val->Val->UnsignedInteger;
         case TypeUnsignedShort:   return (long)Val->Val->UnsignedShortInteger;
-        case TypeUnsignedLong:    return (uintptr_t)Val->Val->UnsignedLongInteger;
+        case TypeUnsignedLong:    return (uint64_t)Val->Val->UnsignedLongInteger;
         case TypeUnsignedChar:    return (long)Val->Val->UnsignedCharacter;
         case TypePointer:         return (uintptr_t)Val->Val->Pointer;
 #ifndef NO_FP
@@ -182,17 +182,17 @@ intptr_t ExpressionCoerceInteger(struct Value *Val)
     }
 }
 
-uintptr_t ExpressionCoerceUnsignedInteger(struct Value *Val)
+uint64_t ExpressionCoerceUnsignedInteger(struct Value *Val)
 {
     switch (Val->Typ->Base)
     {
         case TypeInt:             return (unsigned long)Val->Val->Integer;
         case TypeChar:            return (unsigned long)Val->Val->Character;
         case TypeShort:           return (unsigned long)Val->Val->ShortInteger;
-        case TypeLong:            return (uintptr_t)Val->Val->LongInteger;
+        case TypeLong:            return (uint64_t)Val->Val->LongInteger;
         case TypeUnsignedInt:     return (unsigned long)Val->Val->UnsignedInteger;
         case TypeUnsignedShort:   return (unsigned long)Val->Val->UnsignedShortInteger;
-        case TypeUnsignedLong:    return (uintptr_t)Val->Val->UnsignedLongInteger;
+        case TypeUnsignedLong:    return (uint64_t)Val->Val->UnsignedLongInteger;
         case TypeUnsignedChar:    return (unsigned long)Val->Val->UnsignedCharacter;
         case TypePointer:         return (uintptr_t)Val->Val->Pointer;
 #ifndef NO_FP
@@ -206,8 +206,8 @@ uintptr_t ExpressionCoerceUnsignedInteger(struct Value *Val)
 double ExpressionCoerceFP(struct Value *Val)
 {
 #ifndef BROKEN_FLOAT_CASTS
-    intptr_t IntVal;
-    uintptr_t UnsignedVal;
+    int64_t IntVal;
+    uint64_t UnsignedVal;
     
     switch (Val->Typ->Base)
     {
@@ -241,9 +241,9 @@ double ExpressionCoerceFP(struct Value *Val)
 #endif
 
 /* assign an integer value */
-intptr_t ExpressionAssignInt(struct ParseState *Parser, struct Value *DestValue, intptr_t FromInt, int After)
+int64_t ExpressionAssignInt(struct ParseState *Parser, struct Value *DestValue, int64_t FromInt, int After)
 {
-    intptr_t Result;
+    int64_t Result;
     
     if (!DestValue->IsLValue) 
         ProgramFail(Parser, "can't assign to this"); 
@@ -258,10 +258,10 @@ intptr_t ExpressionAssignInt(struct ParseState *Parser, struct Value *DestValue,
         case TypeInt:           DestValue->Val->Integer = (int)FromInt; break;
         case TypeShort:         DestValue->Val->ShortInteger = (short)FromInt; break;
         case TypeChar:          DestValue->Val->Character = (char)FromInt; break;
-        case TypeLong:          DestValue->Val->LongInteger = (intptr_t)FromInt; break;
+        case TypeLong:          DestValue->Val->LongInteger = (int64_t)FromInt; break;
         case TypeUnsignedInt:   DestValue->Val->UnsignedInteger = (unsigned int)FromInt; break;
         case TypeUnsignedShort: DestValue->Val->UnsignedShortInteger = (unsigned short)FromInt; break;
-        case TypeUnsignedLong:  DestValue->Val->UnsignedLongInteger = (uintptr_t)FromInt; break;
+        case TypeUnsignedLong:  DestValue->Val->UnsignedLongInteger = (uint64_t)FromInt; break;
         case TypeUnsignedChar:  DestValue->Val->UnsignedCharacter = (unsigned char)FromInt; break;
         default: break;
     }
@@ -334,7 +334,7 @@ void ExpressionStackPushDereference(struct ParseState *Parser, struct Expression
     ExpressionStackPushValueNode(Parser, StackTop, ValueLoc);
 }
 
-void ExpressionPushInt(struct ParseState *Parser, struct ExpressionStack **StackTop, intptr_t IntValue)
+void ExpressionPushInt(struct ParseState *Parser, struct ExpressionStack **StackTop, int64_t IntValue)
 {
     struct Value *ValueLoc = VariableAllocValueFromType(Parser->pc, Parser, &Parser->pc->IntType, FALSE, NULL, FALSE);
     ValueLoc->Val->Integer = (int)IntValue;
@@ -570,8 +570,8 @@ void ExpressionPrefixOperator(struct ParseState *Parser, struct ExpressionStack 
             if (IS_NUMERIC_COERCIBLE(TopValue))
             {
                 /* integer prefix arithmetic */
-                intptr_t ResultInt = 0;
-                intptr_t TopInt = ExpressionCoerceInteger(TopValue);
+                int64_t ResultInt = 0;
+                int64_t TopInt = ExpressionCoerceInteger(TopValue);
                 switch (Op)
                 {
                     case TokenPlus:         ResultInt = TopInt; break;
@@ -638,8 +638,8 @@ void ExpressionPostfixOperator(struct ParseState *Parser, struct ExpressionStack
 #endif
     if (IS_NUMERIC_COERCIBLE(TopValue))
     {
-        intptr_t ResultInt = 0;
-        intptr_t TopInt = ExpressionCoerceInteger(TopValue);
+        int64_t ResultInt = 0;
+        int64_t TopInt = ExpressionCoerceInteger(TopValue);
         switch (Op)
         {
             case TokenIncrement:            ResultInt = ExpressionAssignInt(Parser, TopValue, TopInt+1, TRUE); break;
@@ -681,7 +681,7 @@ void ExpressionPostfixOperator(struct ParseState *Parser, struct ExpressionStack
 /* evaluate an infix operator */
 void ExpressionInfixOperator(struct ParseState *Parser, struct ExpressionStack **StackTop, enum LexToken Op, struct Value *BottomValue, struct Value *TopValue)
 {
-    intptr_t ResultInt = 0;
+    int64_t ResultInt = 0;
     struct Value *StackValue;
     void *Pointer;
     
@@ -756,8 +756,8 @@ void ExpressionInfixOperator(struct ParseState *Parser, struct ExpressionStack *
     else if (IS_NUMERIC_COERCIBLE(TopValue) && IS_NUMERIC_COERCIBLE(BottomValue))
     { 
         /* integer operation */
-        intptr_t TopInt = ExpressionCoerceInteger(TopValue);
-        intptr_t BottomInt = ExpressionCoerceInteger(BottomValue);
+        int64_t TopInt = ExpressionCoerceInteger(TopValue);
+        int64_t BottomInt = ExpressionCoerceInteger(BottomValue);
         switch (Op)
         {
             case TokenAssign:               ResultInt = ExpressionAssignInt(Parser, BottomValue, TopInt, FALSE); break;
@@ -801,7 +801,7 @@ void ExpressionInfixOperator(struct ParseState *Parser, struct ExpressionStack *
     else if (BottomValue->Typ->Base == TypePointer && IS_NUMERIC_COERCIBLE(TopValue))
     {
         /* pointer/integer infix arithmetic */
-        intptr_t TopInt = ExpressionCoerceInteger(TopValue);
+        int64_t TopInt = ExpressionCoerceInteger(TopValue);
 
         if (Op == TokenEqual || Op == TokenNotEqual)
         {
@@ -1212,7 +1212,7 @@ int ExpressionParse(struct ParseState *Parser, struct Value **Result)
                         /* if it's a && or || operator we may not need to evaluate the right hand side of the expression */
                         if ( (Token == TokenLogicalOr || Token == TokenLogicalAnd) && IS_NUMERIC_COERCIBLE(StackTop->Val))
                         {
-                            intptr_t LHSInt = ExpressionCoerceInteger(StackTop->Val);
+                            int64_t LHSInt = ExpressionCoerceInteger(StackTop->Val);
                             if ( ( (Token == TokenLogicalOr && LHSInt) || (Token == TokenLogicalAnd && !LHSInt) ) &&
                                  (IgnorePrecedence > Precedence) )
                                 IgnorePrecedence = Precedence;
@@ -1567,10 +1567,10 @@ void ExpressionParseFunctionCall(struct ParseState *Parser, struct ExpressionSta
 }
 
 /* parse an expression */
-intptr_t ExpressionParseInt(struct ParseState *Parser)
+int64_t ExpressionParseInt(struct ParseState *Parser)
 {
     struct Value *Val;
-    intptr_t Result = 0;
+    int64_t Result = 0;
     
     if (!ExpressionParse(Parser, &Val))
         ProgramFail(Parser, "expression expected");
