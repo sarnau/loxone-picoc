@@ -163,7 +163,7 @@ void StdioFprintfLong(StdOutStream *Stream, const char *Format, uint64_t Value)
 				UseFormat = PRIX64;
 				break;
 
-			// Ignore the %l (long) specifier, because of course we're doing longs in this function
+			/* Ignore the %l (long) specifier, because of course we're doing longs in this function */
 			case 'l':
 				break;
 
