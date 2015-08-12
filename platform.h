@@ -77,12 +77,6 @@ extern jmp_buf ExitBuf;
 
 extern jmp_buf ExitBuf;
 
-#  ifdef _WIN64
-#   define LONG_PTR long long
-#  else
-#   define LONG_PTR long
-#  endif
-
 # else
 #  ifdef FLYINGFOX_HOST
 #   define HEAP_SIZE (16*1024)               /* space for the heap and the stack */
@@ -148,10 +142,6 @@ extern jmp_buf ExitBuf;
 extern int ExitBuf[];
 
 # endif
-#endif
-
-#ifndef LONG_PTR
-#error You need to #define LONG_PTR for your platform. Define it as an integer type that's the same size as a pointer type.
 #endif
 
 #endif /* PLATFORM_H */
