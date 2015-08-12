@@ -140,7 +140,11 @@ void StringStrxfrm(struct ParseState *Parser, struct Value *ReturnValue, struct 
 void StringStrdup(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs); 
-    ReturnValue->Val->Pointer = _strdup((char *) Param[0]->Val->Pointer);
+#ifndef _WIN32
+    ReturnValue->Val->Pointer = strdup((char *) Param[0]->Val->Pointer);
+#else
+	ReturnValue->Val->Pointer = _strdup((char *)Param[0]->Val->Pointer);
+#endif
 }
 
 #ifndef WIN32

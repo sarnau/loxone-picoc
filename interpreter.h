@@ -456,7 +456,10 @@ struct Picoc_Struct
     
     /* exit longjump buffer */
 #if defined(UNIX_HOST) || defined(WIN32)
-    jmp_buf PicocExitBuf;
+#pragma warning(push)
+#pragma warning(disable: 4324)
+	jmp_buf PicocExitBuf;
+#pragma warning(pop)
 #endif
 #ifdef SURVEYOR_HOST
     int PicocExitBuf[41];
@@ -652,6 +655,13 @@ extern const char UnistdDefs[];
 extern struct LibraryFunction UnistdFunctions[];
 void UnistdSetupFunc(Picoc *pc);
 
-#define UNUSED(x) (x)
+#ifdef UNUSED
+#elif defined(__GNUC__)
+# define UNUSED(x) UNUSED_ ## x __attribute__((unused))
+#elif defined(__LCLINT__)
+# define UNUSED(x) /*@unused@*/ x
+#else
+# define UNUSED(x) x
+#endif
 
 #endif /* INTERPRETER_H */

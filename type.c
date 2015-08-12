@@ -288,7 +288,7 @@ void TypeParseEnum(struct ParseState *Parser, struct ValueType **Typ)
     struct Value *LexValue;
     struct Value InitValue;
     enum LexToken Token;
-    int EnumValue = 0;
+    int64_t EnumValue = 0;
     char *EnumIdentifier;
     Picoc *pc = Parser->pc;
     

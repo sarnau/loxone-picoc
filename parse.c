@@ -493,7 +493,7 @@ void ParseFor(struct ParseState *Parser)
         if (LexGetToken(Parser, NULL, FALSE) == TokenSemicolon)
             Condition = TRUE;
         else
-            Condition = ExpressionParseInt(Parser);
+            Condition = ExpressionParseInt(Parser) != 0;
         
         if (Condition)
         {
@@ -664,7 +664,7 @@ enum ParseResult ParseStatement(struct ParseState *Parser, int CheckTrailingSemi
             if (LexGetToken(Parser, NULL, TRUE) != TokenOpenBracket)
                 ProgramFail(Parser, "'(' expected");
                 
-            Condition = ExpressionParseInt(Parser);
+            Condition = ExpressionParseInt(Parser) != 0;
             
             if (LexGetToken(Parser, NULL, TRUE) != TokenCloseBracket)
                 ProgramFail(Parser, "')' expected");
@@ -693,7 +693,7 @@ enum ParseResult ParseStatement(struct ParseState *Parser, int CheckTrailingSemi
                 do
                 {
                     ParserCopyPos(Parser, &PreConditional);
-                    Condition = ExpressionParseInt(Parser);
+                    Condition = ExpressionParseInt(Parser) != 0;
                     if (LexGetToken(Parser, NULL, TRUE) != TokenCloseBracket)
                         ProgramFail(Parser, "')' expected");
                     
@@ -732,7 +732,7 @@ enum ParseResult ParseStatement(struct ParseState *Parser, int CheckTrailingSemi
                     if (LexGetToken(Parser, NULL, TRUE) != TokenOpenBracket)
                         ProgramFail(Parser, "'(' expected");
                         
-                    Condition = ExpressionParseInt(Parser);
+                    Condition = ExpressionParseInt(Parser) != 0;
                     if (LexGetToken(Parser, NULL, TRUE) != TokenCloseBracket)
                         ProgramFail(Parser, "')' expected");
                     
@@ -791,7 +791,7 @@ enum ParseResult ParseStatement(struct ParseState *Parser, int CheckTrailingSemi
             if (LexGetToken(Parser, NULL, TRUE) != TokenOpenBracket)
                 ProgramFail(Parser, "'(' expected");
                 
-            Condition = ExpressionParseInt(Parser);
+            Condition = (int) ExpressionParseInt(Parser);
             
             if (LexGetToken(Parser, NULL, TRUE) != TokenCloseBracket)
                 ProgramFail(Parser, "')' expected");
@@ -821,11 +821,11 @@ enum ParseResult ParseStatement(struct ParseState *Parser, int CheckTrailingSemi
             if (Parser->Mode == RunModeCaseSearch)
             {
                 Parser->Mode = RunModeRun;
-                Condition = ExpressionParseInt(Parser);
+                Condition = (int) ExpressionParseInt(Parser);
                 Parser->Mode = RunModeCaseSearch;
             }
             else
-                Condition = ExpressionParseInt(Parser);
+                Condition = (int) ExpressionParseInt(Parser);
                 
             if (LexGetToken(Parser, NULL, TRUE) != TokenColon)
                 ProgramFail(Parser, "':' expected");
