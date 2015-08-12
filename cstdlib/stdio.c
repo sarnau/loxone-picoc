@@ -103,7 +103,7 @@ void StdioOutPuts(const char *Str, StdOutStream *Stream)
 }
 
 /* printf-style format of an int or other word-sized object */
-void StdioFprintfWord(StdOutStream *Stream, const char *Format, unsigned long Value)
+void StdioFprintfWord(StdOutStream *Stream, const char *Format, uintptr_t Value)
 {
     if (Stream->FilePtr != NULL)
         Stream->CharCount += fprintf(Stream->FilePtr, Format, Value);

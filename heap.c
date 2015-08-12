@@ -43,7 +43,7 @@ void HeapInit(Picoc *pc, int StackOrHeapSize)
 # endif
 #endif
 
-    while (((unsigned long)&pc->HeapMemory[AlignOffset] & (sizeof(ALIGN_TYPE)-1)) != 0)
+    while (((uintptr_t)&pc->HeapMemory[AlignOffset] & (sizeof(ALIGN_TYPE)-1)) != 0)
         AlignOffset++;
         
     pc->StackFrame = &(pc->HeapMemory)[AlignOffset];

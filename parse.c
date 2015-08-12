@@ -20,7 +20,7 @@ void ParseCleanup(Picoc *pc)
 }
 
 /* parse a statement, but only run it if Condition is TRUE */
-enum ParseResult ParseStatementMaybeRun(struct ParseState *Parser, int Condition, int CheckTrailingSemicolon)
+enum ParseResult ParseStatementMaybeRun(struct ParseState *Parser, intptr_t Condition, int CheckTrailingSemicolon)
 {
     if (Parser->Mode != RunModeSkip && !Condition)
     {
@@ -444,7 +444,7 @@ void ParserCopyPos(struct ParseState *To, struct ParseState *From)
 /* parse a "for" statement */
 void ParseFor(struct ParseState *Parser)
 {
-    int Condition;
+    intptr_t Condition;
     struct ParseState PreConditional;
     struct ParseState PreIncrement;
     struct ParseState PreStatement;
@@ -570,7 +570,7 @@ enum ParseResult ParseStatement(struct ParseState *Parser, int CheckTrailingSemi
     struct Value *CValue;
     struct Value *LexerValue;
     struct Value *VarValue;
-    int Condition;
+    intptr_t Condition;
     struct ParseState PreState;
     enum LexToken Token;
     
@@ -802,7 +802,7 @@ enum ParseResult ParseStatement(struct ParseState *Parser, int CheckTrailingSemi
             { 
                 /* new block so we can store parser state */
                 enum RunMode OldMode = Parser->Mode;
-                int OldSearchLabel = Parser->SearchLabel;
+                intptr_t OldSearchLabel = Parser->SearchLabel;
                 Parser->Mode = RunModeCaseSearch;
                 Parser->SearchLabel = Condition;
                 
@@ -865,7 +865,7 @@ enum ParseResult ParseStatement(struct ParseState *Parser, int CheckTrailingSemi
                         ProgramFail(Parser, "value required in return");
                     
                     if (!Parser->pc->TopStackFrame) /* return from top-level program? */
-                        PlatformExit(Parser->pc, ExpressionCoerceInteger(CValue));
+                        PlatformExit(Parser->pc, (int)ExpressionCoerceInteger(CValue));
                     else
                         ExpressionAssign(Parser, Parser->pc->TopStackFrame->ReturnValue, CValue, TRUE, NULL, 0, FALSE);
 

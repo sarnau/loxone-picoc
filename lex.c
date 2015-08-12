@@ -129,7 +129,7 @@ enum LexToken LexCheckReservedWord(Picoc *pc, const char *Word)
 /* get a numeric literal - used while scanning */
 enum LexToken LexGetNumber(Picoc *pc, struct LexState *Lexer, struct Value *Value)
 {
-    long Result = 0;
+    intptr_t Result = 0;
     long Base = 10;
     enum LexToken ResultToken;
 #ifndef NO_FP
@@ -519,7 +519,7 @@ int LexTokenSize(enum LexToken Token)
     switch (Token)
     {
         case TokenIdentifier: case TokenStringConstant: return sizeof(char *);
-        case TokenIntegerConstant: return sizeof(long);
+        case TokenIntegerConstant: return sizeof(intptr_t);
         case TokenCharacterConstant: return sizeof(unsigned char);
         case TokenFPConstant: return sizeof(double);
         default: return 0;

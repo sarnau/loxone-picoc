@@ -109,7 +109,7 @@ void TypeInit(Picoc *pc)
     struct IntAlign { char x; int y; } ia;
     struct ShortAlign { char x; short y; } sa;
     struct CharAlign { char x; char y; } ca;
-    struct LongAlign { char x; long y; } la;
+    struct LongAlign { char x; intptr_t y; } la;
 #ifndef NO_FP
     struct DoubleAlign { char x; double y; } da;
 #endif
@@ -122,10 +122,10 @@ void TypeInit(Picoc *pc)
     TypeAddBaseType(pc, &pc->IntType, TypeInt, sizeof(int), IntAlignBytes);
     TypeAddBaseType(pc, &pc->ShortType, TypeShort, sizeof(short), (int) ((char *)&sa.y - &sa.x));
     TypeAddBaseType(pc, &pc->CharType, TypeChar, sizeof(char), (int) ((char *)&ca.y - &ca.x));
-    TypeAddBaseType(pc, &pc->LongType, TypeLong, sizeof(long), (int) ((char *)&la.y - &la.x));
+    TypeAddBaseType(pc, &pc->LongType, TypeLong, sizeof(intptr_t), (int) ((char *)&la.y - &la.x));
     TypeAddBaseType(pc, &pc->UnsignedIntType, TypeUnsignedInt, sizeof(unsigned int), IntAlignBytes);
     TypeAddBaseType(pc, &pc->UnsignedShortType, TypeUnsignedShort, sizeof(unsigned short), (int) ((char *)&sa.y - &sa.x));
-    TypeAddBaseType(pc, &pc->UnsignedLongType, TypeUnsignedLong, sizeof(unsigned long), (int) ((char *)&la.y - &la.x));
+    TypeAddBaseType(pc, &pc->UnsignedLongType, TypeUnsignedLong, sizeof(uintptr_t), (int) ((char *)&la.y - &la.x));
     TypeAddBaseType(pc, &pc->UnsignedCharType, TypeUnsignedChar, sizeof(unsigned char), (int) ((char *)&ca.y - &ca.x));
     TypeAddBaseType(pc, &pc->VoidType, TypeVoid, 0, 1);
     TypeAddBaseType(pc, &pc->FunctionType, TypeFunction, sizeof(int), IntAlignBytes);
@@ -288,7 +288,7 @@ void TypeParseEnum(struct ParseState *Parser, struct ValueType **Typ)
     struct Value *LexValue;
     struct Value InitValue;
     enum LexToken Token;
-    int EnumValue = 0;
+    intptr_t EnumValue = 0;
     char *EnumIdentifier;
     Picoc *pc = Parser->pc;
     
@@ -451,7 +451,7 @@ struct ValueType *TypeParseBack(struct ParseState *Parser, struct ValueType *Fro
             enum RunMode OldMode = Parser->Mode;
             int ArraySize;
             Parser->Mode = RunModeRun;
-            ArraySize = ExpressionParseInt(Parser);
+            ArraySize = (int) ExpressionParseInt(Parser);
             Parser->Mode = OldMode;
             
             if (LexGetToken(Parser, NULL, TRUE) != TokenRightSquareBracket)

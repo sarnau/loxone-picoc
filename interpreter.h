@@ -121,7 +121,7 @@ struct ParseState
     short int Line;             /* line number we're executing */
     short int CharacterPos;     /* character/column in the line we're executing */
     enum RunMode Mode;          /* whether to skip or run code */
-    int SearchLabel;            /* what case label we're searching for */
+    intptr_t SearchLabel;            /* what case label we're searching for */
     const char *SearchGotoLabel;/* what goto label we're searching for */
     const char *SourceText;     /* the entire source text */
     short int HashIfLevel;      /* how many "if"s we're nested down */
@@ -198,10 +198,10 @@ union AnyValue
     char Character;
     short ShortInteger;
     int Integer;
-    long LongInteger;
+    intptr_t LongInteger;
     unsigned short UnsignedShortInteger;
     unsigned int UnsignedInteger;
-    unsigned long UnsignedLongInteger;
+    uintptr_t UnsignedLongInteger;
     unsigned char UnsignedCharacter;
     char *Identifier;
     char ArrayMem[2];               /* placeholder for where the data starts, doesn't point to it */
@@ -505,10 +505,10 @@ void ParserCopy(struct ParseState *To, struct ParseState *From);
 
 /* expression.c */
 int ExpressionParse(struct ParseState *Parser, struct Value **Result);
-long ExpressionParseInt(struct ParseState *Parser);
+intptr_t ExpressionParseInt(struct ParseState *Parser);
 void ExpressionAssign(struct ParseState *Parser, struct Value *DestValue, struct Value *SourceValue, int Force, const char *FuncName, int ParamNo, int AllowPointerCoercion);
-long ExpressionCoerceInteger(struct Value *Val);
-unsigned long ExpressionCoerceUnsignedInteger(struct Value *Val);
+intptr_t ExpressionCoerceInteger(struct Value *Val);
+uintptr_t ExpressionCoerceUnsignedInteger(struct Value *Val);
 #ifndef NO_FP
 double ExpressionCoerceFP(struct Value *Val);
 #endif
