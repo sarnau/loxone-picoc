@@ -132,11 +132,20 @@ int HeapPopStackFrame(Picoc *pc)
 }
 
 /* allocate some dynamically allocated memory. memory is cleared. can return NULL if out of memory */
-void *HeapAllocMem(Picoc *pc, int Size)
+void *HeapCallocMem(Picoc *pc, int Size)
+{
+	void *Mem = HeapMallocMem(pc, Size);
+	if (Mem)
+		memset(Mem, 0, Size);
+	return Mem;
+}
+
+/* allocate some dynamically allocated memory. can return NULL if out of memory */
+void *HeapMallocMem(Picoc *pc, int Size)
 {
 #ifdef USE_MALLOC_HEAP
 	UNUSED(pc);
-    return calloc(Size, 1);
+    return malloc(Size);
 #else
     struct AllocNode *NewMem = NULL;
     struct AllocNode **FreeNode;
@@ -230,12 +239,20 @@ void *HeapReallocMem(Picoc *pc, void *OldBuffer, int Size)
 	UNUSED(pc);
 	return realloc(OldBuffer, Size);
 #else
-	void *NewBuffer = HeapAllocMem(pc, Size);
+	struct AllocNode *MemNode = (struct AllocNode *)((char *)OldBuffer - MEM_ALIGN(sizeof(MemNode->Size)));
+	int OldBufferSize = MemNode->Size - MEM_ALIGN(sizeof(NewMem->Size));
+	void *NewBuffer = HeapMallocMem(pc, Size);
+	// If the allocation was successful
 	if (NewBuffer)
 	{
-		memcpy(NewBuffer, OldBuffer, Size);
+		// Copy the old data to the new buffer and free the old buffer
+		memcpy(NewBuffer, OldBuffer, OldBufferSize);
 		HeapFreeMem(pc, OldBuffer);
 	}
+	// Else (alloc failed) if the requested size is smaller than the existing block,
+	// we can just return the existing block
+	else if (Size <= MemNode->Size - sizeof(MemNode))
+		NewBuffer = OldBuffer;
 	return NewBuffer;
 #endif
 }

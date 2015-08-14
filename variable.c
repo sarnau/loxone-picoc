@@ -70,7 +70,7 @@ void *VariableAlloc(Picoc *pc, struct ParseState *Parser, int Size, int OnHeap)
     void *NewValue;
     
     if (OnHeap)
-        NewValue = HeapAllocMem(pc, Size);
+        NewValue = HeapCallocMem(pc, Size);
     else
         NewValue = HeapAllocStack(pc, Size);
     

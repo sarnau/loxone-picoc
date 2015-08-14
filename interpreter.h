@@ -540,7 +540,8 @@ int HeapPopStack(Picoc *pc, void *Addr, int Size);
 void HeapUnpopStack(Picoc *pc, int Size);
 void HeapPushStackFrame(Picoc *pc);
 int HeapPopStackFrame(Picoc *pc);
-void *HeapAllocMem(Picoc *pc, int Size);
+void *HeapMallocMem(Picoc *pc, int Size);
+void *HeapCallocMem(Picoc *pc, int Size);
 void *HeapReallocMem(Picoc *pc, void *OldBuffer, int Size);
 void HeapFreeMem(Picoc *pc, void *Mem);
 

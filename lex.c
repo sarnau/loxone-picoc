@@ -530,11 +530,12 @@ int LexTokenSize(enum LexToken Token)
 void *LexTokenise(Picoc *pc, struct LexState *Lexer, int *TokenLen)
 {
     enum LexToken Token;
-	int MemUsed;
+	int MemUsed = 0;
     struct Value *GotValue;
     int ValueSize;
-    int ReserveSpace = (int) (Lexer->End - Lexer->Pos) * 4 + 16; 
-    char *TokenSpace = HeapAllocMem(pc, ReserveSpace);
+	const char *LexerStart = Lexer->Pos;
+	int ReserveSpace = (int)(Lexer->End - Lexer->Pos) * 2;
+    char *TokenSpace = HeapMallocMem(pc, ReserveSpace);
 	char *SmallerTokenSpace;
     char *TokenPos = (char *)TokenSpace;
     int LastCharacterPos = 0;
@@ -546,10 +547,27 @@ void *LexTokenise(Picoc *pc, struct LexState *Lexer, int *TokenLen)
     { 
         /* store the token at the end of the stack area */
         Token = LexScanGetToken(pc, Lexer, &GotValue);
+		ValueSize = LexTokenSize(Token);
 
 #ifdef DEBUG_LEXER
         printf("Token: %02x\n", Token);
 #endif
+		// If the buffer doesn't have enough free space for this token and its information
+		if (TokenPos - TokenSpace + sizeof(Token) + sizeof(unsigned char) + ValueSize >= ReserveSpace)
+		{
+			// Reallocate it. Estimate the size we need by how compactly the code has been tokenizing so far
+			int NewSize = (int)((TokenPos - TokenSpace + sizeof(Token) + sizeof(unsigned char) + ValueSize) * (Lexer->End - LexerStart) / (Lexer->Pos - LexerStart));
+			char *NewTokenSpace = HeapReallocMem(pc, TokenSpace, NewSize);
+			if (NewTokenSpace)
+			{
+				TokenPos = NewTokenSpace + (TokenPos - TokenSpace);
+				TokenSpace = NewTokenSpace;
+				ReserveSpace = NewSize;
+			}
+			else
+				LexFail(pc, Lexer, "out of memory");
+		}
+
         *TokenPos = (char) Token;
         TokenPos++;
 
@@ -568,8 +586,8 @@ void *LexTokenise(Picoc *pc, struct LexState *Lexer, int *TokenLen)
                     
     } while (Token != TokenEOF);
         
-	MemUsed = (int)(TokenPos - TokenSpace);
-    assert(ReserveSpace >= MemUsed);
+	MemUsed = TokenPos - TokenSpace;
+	assert(ReserveSpace >= MemUsed);
 
 	SmallerTokenSpace = (char *)HeapReallocMem(pc, TokenSpace, MemUsed);
 	if (SmallerTokenSpace)

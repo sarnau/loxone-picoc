@@ -145,7 +145,7 @@ char *TableSetIdentifier(Picoc *pc, struct Table *Tbl, const char *Ident, int Id
         return &FoundEntry->p.Key[0];
     else
     {   /* add it to the table - we economise by not allocating the whole structure here */
-        struct TableEntry *NewEntry = (struct TableEntry *) HeapAllocMem(pc, sizeof(struct TableEntry) - sizeof(union TableEntryPayload) + IdentLen + 1);
+        struct TableEntry *NewEntry = (struct TableEntry *) HeapCallocMem(pc, sizeof(struct TableEntry) - sizeof(union TableEntryPayload) + IdentLen + 1);
         if (NewEntry == NULL)
             ProgramFailNoParser(pc, "out of memory");
             
