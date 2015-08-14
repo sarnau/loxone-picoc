@@ -1414,7 +1414,7 @@ void ExpressionParseMacroCall(struct ParseState *Parser, struct ExpressionStack 
         { 
             /* end of argument list? */
             Token = LexGetToken(Parser, NULL, TRUE);
-            if (!TokenCloseBracket)
+            if (Token != TokenCloseBracket)
                 ProgramFail(Parser, "bad argument");
         }
         
@@ -1518,7 +1518,7 @@ void ExpressionParseFunctionCall(struct ParseState *Parser, struct ExpressionSta
         { 
             /* end of argument list? */
             Token = LexGetToken(Parser, NULL, TRUE);
-            if (!TokenCloseBracket)
+            if (Token != TokenCloseBracket)
                 ProgramFail(Parser, "bad argument");
         }
         
