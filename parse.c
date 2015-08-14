@@ -865,7 +865,7 @@ enum ParseResult ParseStatement(struct ParseState *Parser, int CheckTrailingSemi
                         ProgramFail(Parser, "value required in return");
                     
                     if (!Parser->pc->TopStackFrame) /* return from top-level program? */
-                        PlatformExit(Parser->pc, (int)ExpressionCoerceInteger(CValue));
+                        PlatformExit(Parser->pc, (int)ExpressionCoerceLong(CValue));
                     else
                         ExpressionAssign(Parser, Parser->pc->TopStackFrame->ReturnValue, CValue, TRUE, NULL, 0, FALSE);
 

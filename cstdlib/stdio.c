@@ -349,9 +349,9 @@ int StdioBasePrintf(struct ParseState *Parser, FILE *Stream, char *StrOut, int S
                         if (IS_NUMERIC_COERCIBLE(ThisArg))
 						{
 							if (ShowLong && ShowType == &pc->IntType)
-								StdioFprintfLong(&SOStream, OneFormatBuf, ExpressionCoerceUnsignedInteger(ThisArg));
+								StdioFprintfLong(&SOStream, OneFormatBuf, ExpressionCoerceUnsignedLong(ThisArg));
 							else
-								StdioFprintfWord(&SOStream, OneFormatBuf, (unsigned int) ExpressionCoerceUnsignedInteger(ThisArg));
+								StdioFprintfWord(&SOStream, OneFormatBuf, (unsigned int) ExpressionCoerceUnsignedLong(ThisArg));
 						}
                         else
                             StdioOutPuts("XXX", &SOStream);

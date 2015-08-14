@@ -223,6 +223,23 @@ void *HeapAllocMem(Picoc *pc, int Size)
 #endif
 }
 
+/* reallocate some dynamically allocated memory. can return NULL if out of memory */
+void *HeapReallocMem(Picoc *pc, void *OldBuffer, int Size)
+{
+#ifdef USE_MALLOC_HEAP
+	UNUSED(pc);
+	return realloc(OldBuffer, Size);
+#else
+	void *NewBuffer = HeapAllocMem(pc, Size);
+	if (NewBuffer)
+	{
+		memcpy(NewBuffer, OldBuffer, Size);
+		HeapFreeMem(pc, OldBuffer);
+	}
+	return NewBuffer;
+#endif
+}
+
 /* free some dynamically allocated memory */
 void HeapFreeMem(Picoc *pc, void *Mem)
 {

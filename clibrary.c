@@ -305,11 +305,11 @@ void GenericPrintf(struct ParseState *Parser, struct Value *ReturnValue, struct 
                                     PrintStr(Str, Stream); 
                                 break;
                             }
-                            case 'd': PrintInt(ExpressionCoerceInteger(NextArg), FieldWidth, ZeroPad, LeftJustify, Stream); break;
-                            case 'u': PrintUnsigned(ExpressionCoerceUnsignedInteger(NextArg), 10, FieldWidth, ZeroPad, LeftJustify, Stream); break;
-                            case 'x': PrintUnsigned(ExpressionCoerceUnsignedInteger(NextArg), 16, FieldWidth, ZeroPad, LeftJustify, Stream); break;
-                            case 'b': PrintUnsigned(ExpressionCoerceUnsignedInteger(NextArg), 2, FieldWidth, ZeroPad, LeftJustify, Stream); break;
-                            case 'c': PrintCh(ExpressionCoerceUnsignedInteger(NextArg), Stream); break;
+                            case 'd': PrintInt(ExpressionCoerceLong(NextArg), FieldWidth, ZeroPad, LeftJustify, Stream); break;
+                            case 'u': PrintUnsigned(ExpressionCoerceUnsignedLong(NextArg), 10, FieldWidth, ZeroPad, LeftJustify, Stream); break;
+                            case 'x': PrintUnsigned(ExpressionCoerceUnsignedLong(NextArg), 16, FieldWidth, ZeroPad, LeftJustify, Stream); break;
+                            case 'b': PrintUnsigned(ExpressionCoerceUnsignedLong(NextArg), 2, FieldWidth, ZeroPad, LeftJustify, Stream); break;
+                            case 'c': PrintCh(ExpressionCoerceUnsignedLong(NextArg), Stream); break;
 #ifndef NO_FP
                             case 'f': PrintFP(ExpressionCoerceFP(NextArg), Stream); break;
 #endif

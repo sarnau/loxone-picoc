@@ -530,12 +530,12 @@ int LexTokenSize(enum LexToken Token)
 void *LexTokenise(Picoc *pc, struct LexState *Lexer, int *TokenLen)
 {
     enum LexToken Token;
-    void *HeapMem;
+	int MemUsed;
     struct Value *GotValue;
-    int MemUsed = 0;
     int ValueSize;
     int ReserveSpace = (int) (Lexer->End - Lexer->Pos) * 4 + 16; 
-    void *TokenSpace = HeapAllocStack(pc, ReserveSpace);
+    char *TokenSpace = HeapAllocMem(pc, ReserveSpace);
+	char *SmallerTokenSpace;
     char *TokenPos = (char *)TokenSpace;
     int LastCharacterPos = 0;
 
@@ -552,11 +552,9 @@ void *LexTokenise(Picoc *pc, struct LexState *Lexer, int *TokenLen)
 #endif
         *TokenPos = (char) Token;
         TokenPos++;
-        MemUsed++;
 
         *(unsigned char *)TokenPos = (unsigned char)LastCharacterPos;
         TokenPos++;
-        MemUsed++;
 
         ValueSize = LexTokenSize(Token);
         if (ValueSize > 0)
@@ -564,33 +562,31 @@ void *LexTokenise(Picoc *pc, struct LexState *Lexer, int *TokenLen)
             /* store a value as well */
             memcpy((void *)TokenPos, (void *)GotValue->Val, ValueSize);
             TokenPos += ValueSize;
-            MemUsed += ValueSize;
         }
     
         LastCharacterPos = Lexer->CharacterPos;
                     
     } while (Token != TokenEOF);
-    
-    HeapMem = HeapAllocMem(pc, MemUsed);
-    if (HeapMem == NULL)
-        LexFail(pc, Lexer, "out of memory");
         
+	MemUsed = (int)(TokenPos - TokenSpace);
     assert(ReserveSpace >= MemUsed);
-    memcpy(HeapMem, TokenSpace, MemUsed);
-    HeapPopStack(pc, TokenSpace, ReserveSpace);
+
+	SmallerTokenSpace = (char *)HeapReallocMem(pc, TokenSpace, MemUsed);
+	if (SmallerTokenSpace)
+		TokenSpace = SmallerTokenSpace;
 #ifdef DEBUG_LEXER
     {
         int Count;
         printf("Tokens: ");
         for (Count = 0; Count < MemUsed; Count++)
-            printf("%02x ", *((unsigned char *)HeapMem+Count));
+            printf("%02x ", *((unsigned char *)TokenSpace+Count));
         printf("\n");
     }
 #endif
     if (TokenLen)
         *TokenLen = MemUsed;
     
-    return HeapMem;
+    return TokenSpace;
 }
 
 /* lexically analyse some source text */

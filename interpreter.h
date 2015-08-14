@@ -512,8 +512,8 @@ void ParserCopy(struct ParseState *To, struct ParseState *From);
 int ExpressionParse(struct ParseState *Parser, struct Value **Result);
 int64_t ExpressionParseInt(struct ParseState *Parser);
 void ExpressionAssign(struct ParseState *Parser, struct Value *DestValue, struct Value *SourceValue, int Force, const char *FuncName, int ParamNo, int AllowPointerCoercion);
-int64_t ExpressionCoerceInteger(struct Value *Val);
-uint64_t ExpressionCoerceUnsignedInteger(struct Value *Val);
+int64_t ExpressionCoerceLong(struct Value *Val);
+uint64_t ExpressionCoerceUnsignedLong(struct Value *Val);
 #ifndef NO_FP
 double ExpressionCoerceFP(struct Value *Val);
 #endif
@@ -541,6 +541,7 @@ void HeapUnpopStack(Picoc *pc, int Size);
 void HeapPushStackFrame(Picoc *pc);
 int HeapPopStackFrame(Picoc *pc);
 void *HeapAllocMem(Picoc *pc, int Size);
+void *HeapReallocMem(Picoc *pc, void *OldBuffer, int Size);
 void HeapFreeMem(Picoc *pc, void *Mem);
 
 /* variable.c */
