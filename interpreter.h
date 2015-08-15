@@ -568,7 +568,7 @@ void VariableStackFrameAdd(struct ParseState *Parser, const char *FuncName, int 
 void VariableStackFramePop(struct ParseState *Parser);
 struct Value *VariableStringLiteralGet(Picoc *pc, char *Ident);
 void VariableStringLiteralDefine(Picoc *pc, char *Ident, struct Value *Val);
-void *VariableDereferencePointer(struct Value *PointerValue, struct Value **DerefVal, int *DerefOffset, struct ValueType **DerefType, int *DerefIsLValue);
+void *VariableDereferencePointer(struct ParseState *Parser, struct Value *PointerValue, struct Value **DerefVal, int *DerefOffset, struct ValueType **DerefType, int *DerefIsLValue);
 int VariableScopeBegin(struct ParseState * Parser, int* PrevScopeID);
 void VariableScopeEnd(struct ParseState * Parser, int ScopeID, int PrevScopeID);
 

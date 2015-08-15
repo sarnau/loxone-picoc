@@ -326,7 +326,7 @@ void ExpressionStackPushDereference(struct ParseState *Parser, struct Expression
     int Offset;
     struct ValueType *DerefType;
     int DerefIsLValue;
-    void *DerefDataLoc = VariableDereferencePointer(DereferenceValue, &DerefVal, &Offset, &DerefType, &DerefIsLValue);
+    void *DerefDataLoc = VariableDereferencePointer(Parser, DereferenceValue, &DerefVal, &Offset, &DerefType, &DerefIsLValue);
     if (DerefDataLoc == NULL)
         ProgramFail(Parser, "NULL pointer dereference");
 
@@ -367,7 +367,7 @@ void ExpressionAssignToPointer(struct ParseState *Parser, struct Value *ToValue,
                (PointedToType == FromValue->Typ->FromType->FromType || ToValue->Typ == Parser->pc->VoidPtrType) )
     {
         /* the form is: blah *x = pointer to array of blah */
-        ToValue->Val->Pointer = VariableDereferencePointer(FromValue, NULL, NULL, NULL, NULL);
+        ToValue->Val->Pointer = VariableDereferencePointer(Parser, FromValue, NULL, NULL, NULL, NULL);
     }
     else if (IS_NUMERIC_COERCIBLE(FromValue) && ExpressionCoerceLong(FromValue) == 0)
     {
@@ -1066,7 +1066,7 @@ void ExpressionGetStructElement(struct ParseState *Parser, struct ExpressionStac
 
         /* if we're doing '->' dereference the struct pointer first */
         if (Token == TokenArrow)
-            DerefDataLoc = (char *) VariableDereferencePointer(ParamVal, &StructVal, NULL, &StructType, NULL);
+            DerefDataLoc = (char *) VariableDereferencePointer(Parser, ParamVal, &StructVal, NULL, &StructType, NULL);
         
         if (StructType->Base != TypeStruct && StructType->Base != TypeUnion)
             ProgramFail(Parser, "can't use '%s' on something that's not a struct or union %s : it's a %t", (Token == TokenDot) ? "." : "->", (Token == TokenArrow) ? "pointer" : "", ParamVal->Typ);

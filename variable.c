@@ -455,8 +455,11 @@ void VariableStringLiteralDefine(Picoc *pc, char *Ident, struct Value *Val)
 }
 
 /* check a pointer for validity and dereference it for use */
-void *VariableDereferencePointer(struct Value *PointerValue, struct Value **DerefVal, int *DerefOffset, struct ValueType **DerefType, int *DerefIsLValue)
+void *VariableDereferencePointer(struct ParseState *Parser, struct Value *PointerValue, struct Value **DerefVal, int *DerefOffset, struct ValueType **DerefType, int *DerefIsLValue)
 {
+	if (PointerValue->Typ->Base != TypePointer)
+		ProgramFail(Parser, "attempt to deference a non-pointer");
+
     if (DerefVal != NULL)
         *DerefVal = NULL;
         
