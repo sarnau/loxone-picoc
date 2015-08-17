@@ -651,10 +651,10 @@ enum LexToken LexGetRawToken(struct ParseState *Parser, struct Value **Value, in
     do
     { 
         /* get the next token */
-        if (Parser->Pos == NULL && pc->InteractiveHead != NULL)
-            Parser->Pos = pc->InteractiveHead->Tokens;
+        if (Parser->Pos == NULL && pc->InteractiveState.Head != NULL)
+            Parser->Pos = pc->InteractiveState.Head->Tokens;
         
-        if (Parser->FileName != pc->StrEmpty || pc->InteractiveHead != NULL)
+        if (Parser->FileName != pc->StrEmpty || pc->InteractiveState.Head != NULL)
         { 
             /* skip leading newlines */
             while ((Token = (enum LexToken)*(unsigned char *)Parser->Pos) == TokenEndOfLine)
@@ -664,7 +664,7 @@ enum LexToken LexGetRawToken(struct ParseState *Parser, struct Value **Value, in
             }
         }
     
-        if (Parser->FileName == pc->StrEmpty && (pc->InteractiveHead == NULL || Token == TokenEOF))
+        if (Parser->FileName == pc->StrEmpty && (pc->InteractiveState.Head == NULL || Token == TokenEOF))
         { 
             /* we're at the end of an interactive input token list */
             char LineBuffer[LINEBUFFER_MAX];
@@ -672,7 +672,7 @@ enum LexToken LexGetRawToken(struct ParseState *Parser, struct Value **Value, in
             int LineBytes;
             struct TokenLine *LineNode;
             
-            if (pc->InteractiveHead == NULL || (unsigned char *)Parser->Pos == &pc->InteractiveTail->Tokens[pc->InteractiveTail->NumBytes-TOKEN_DATA_OFFSET])
+            if (pc->InteractiveState.Head == NULL || (unsigned char *)Parser->Pos == &pc->InteractiveState.Tail->Tokens[pc->InteractiveState.Tail->NumBytes-TOKEN_DATA_OFFSET])
             { 
                 /* get interactive input */
                 if (pc->LexUseStatementPrompt)
@@ -691,34 +691,34 @@ enum LexToken LexGetRawToken(struct ParseState *Parser, struct Value **Value, in
                 LineNode = (struct TokenLine *) VariableAlloc(pc, Parser, sizeof(struct TokenLine), TRUE);
                 LineNode->Tokens = (unsigned char *) LineTokens;
                 LineNode->NumBytes = LineBytes;
-                if (pc->InteractiveHead == NULL)
+                if (pc->InteractiveState.Head == NULL)
                 { 
                     /* start a new list */
-                    pc->InteractiveHead = LineNode;
+                    pc->InteractiveState.Head = LineNode;
                     Parser->Line = 1;
                     Parser->CharacterPos = 0;
                 }
                 else
-                    pc->InteractiveTail->Next = LineNode;
+                    pc->InteractiveState.Tail->Next = LineNode;
 
-                pc->InteractiveTail = LineNode;
-                pc->InteractiveCurrentLine = LineNode;
+                pc->InteractiveState.Tail = LineNode;
+                pc->InteractiveState.CurrentLine = LineNode;
                 Parser->Pos = (unsigned char *) LineTokens;
             }
             else
             { 
                 /* go to the next token line */
-                if (Parser->Pos != &pc->InteractiveCurrentLine->Tokens[pc->InteractiveCurrentLine->NumBytes-TOKEN_DATA_OFFSET])
+                if (Parser->Pos != &pc->InteractiveState.CurrentLine->Tokens[pc->InteractiveState.CurrentLine->NumBytes-TOKEN_DATA_OFFSET])
                 { 
                     /* scan for the line */
-                    for (pc->InteractiveCurrentLine = pc->InteractiveHead; Parser->Pos != &pc->InteractiveCurrentLine->Tokens[pc->InteractiveCurrentLine->NumBytes-TOKEN_DATA_OFFSET]; pc->InteractiveCurrentLine = pc->InteractiveCurrentLine->Next)
-                    { assert(pc->InteractiveCurrentLine->Next != NULL); }
+                    for (pc->InteractiveState.CurrentLine = pc->InteractiveState.Head; Parser->Pos != &pc->InteractiveState.CurrentLine->Tokens[pc->InteractiveState.CurrentLine->NumBytes-TOKEN_DATA_OFFSET]; pc->InteractiveState.CurrentLine = pc->InteractiveState.CurrentLine->Next)
+                    { assert(pc->InteractiveState.CurrentLine->Next != NULL); }
                 }
 
-                assert(pc->InteractiveCurrentLine != NULL);
-                pc->InteractiveCurrentLine = pc->InteractiveCurrentLine->Next;
-                assert(pc->InteractiveCurrentLine != NULL);
-                Parser->Pos = pc->InteractiveCurrentLine->Tokens;
+                assert(pc->InteractiveState.CurrentLine != NULL);
+                pc->InteractiveState.CurrentLine = pc->InteractiveState.CurrentLine->Next;
+                assert(pc->InteractiveState.CurrentLine != NULL);
+                Parser->Pos = pc->InteractiveState.CurrentLine->Tokens;
             }
 
             Token = (enum LexToken)*(unsigned char *)Parser->Pos;
@@ -959,7 +959,7 @@ void *LexCopyTokens(struct ParseState *StartParser, struct ParseState *EndParser
     struct TokenLine *ILine;
     Picoc *pc = StartParser->pc;
     
-    if (pc->InteractiveHead == NULL)
+    if (pc->InteractiveState.Head == NULL)
     { 
         /* non-interactive mode - copy the tokens */
         MemSize = (int) (EndParser->Pos - StartParser->Pos);
@@ -969,10 +969,10 @@ void *LexCopyTokens(struct ParseState *StartParser, struct ParseState *EndParser
     else
     { 
         /* we're in interactive mode - add up line by line */
-        for (pc->InteractiveCurrentLine = pc->InteractiveHead; pc->InteractiveCurrentLine != NULL && (Pos < &pc->InteractiveCurrentLine->Tokens[0] || Pos >= &pc->InteractiveCurrentLine->Tokens[pc->InteractiveCurrentLine->NumBytes]); pc->InteractiveCurrentLine = pc->InteractiveCurrentLine->Next)
+        for (pc->InteractiveState.CurrentLine = pc->InteractiveState.Head; pc->InteractiveState.CurrentLine != NULL && (Pos < &pc->InteractiveState.CurrentLine->Tokens[0] || Pos >= &pc->InteractiveState.CurrentLine->Tokens[pc->InteractiveState.CurrentLine->NumBytes]); pc->InteractiveState.CurrentLine = pc->InteractiveState.CurrentLine->Next)
         {} /* find the line we just counted */
         
-        if (EndParser->Pos >= StartParser->Pos && EndParser->Pos < &pc->InteractiveCurrentLine->Tokens[pc->InteractiveCurrentLine->NumBytes])
+        if (EndParser->Pos >= StartParser->Pos && EndParser->Pos < &pc->InteractiveState.CurrentLine->Tokens[pc->InteractiveState.CurrentLine->NumBytes])
         { 
             /* all on a single line */
             MemSize = (int) (EndParser->Pos - StartParser->Pos);
@@ -982,19 +982,19 @@ void *LexCopyTokens(struct ParseState *StartParser, struct ParseState *EndParser
         else
         { 
             /* it's spread across multiple lines */
-            MemSize = (int) (&pc->InteractiveCurrentLine->Tokens[pc->InteractiveCurrentLine->NumBytes-TOKEN_DATA_OFFSET] - Pos);
+            MemSize = (int) (&pc->InteractiveState.CurrentLine->Tokens[pc->InteractiveState.CurrentLine->NumBytes-TOKEN_DATA_OFFSET] - Pos);
 
-            for (ILine = pc->InteractiveCurrentLine->Next; ILine != NULL && (EndParser->Pos < &ILine->Tokens[0] || EndParser->Pos >= &ILine->Tokens[ILine->NumBytes]); ILine = ILine->Next)
+            for (ILine = pc->InteractiveState.CurrentLine->Next; ILine != NULL && (EndParser->Pos < &ILine->Tokens[0] || EndParser->Pos >= &ILine->Tokens[ILine->NumBytes]); ILine = ILine->Next)
                 MemSize += ILine->NumBytes - TOKEN_DATA_OFFSET;
             
             assert(ILine != NULL);
             MemSize += (int) (EndParser->Pos - &ILine->Tokens[0]);
             NewTokens = (unsigned char *) VariableAlloc(pc, StartParser, MemSize + TOKEN_DATA_OFFSET, TRUE);
             
-            CopySize = (int) (&pc->InteractiveCurrentLine->Tokens[pc->InteractiveCurrentLine->NumBytes-TOKEN_DATA_OFFSET] - Pos);
+            CopySize = (int) (&pc->InteractiveState.CurrentLine->Tokens[pc->InteractiveState.CurrentLine->NumBytes-TOKEN_DATA_OFFSET] - Pos);
             memcpy(NewTokens, Pos, CopySize);
             NewTokenPos = NewTokens + CopySize;
-            for (ILine = pc->InteractiveCurrentLine->Next; ILine != NULL && (EndParser->Pos < &ILine->Tokens[0] || EndParser->Pos >= &ILine->Tokens[ILine->NumBytes]); ILine = ILine->Next)
+            for (ILine = pc->InteractiveState.CurrentLine->Next; ILine != NULL && (EndParser->Pos < &ILine->Tokens[0] || EndParser->Pos >= &ILine->Tokens[ILine->NumBytes]); ILine = ILine->Next)
             {
                 memcpy(NewTokenPos, &ILine->Tokens[0], ILine->NumBytes - TOKEN_DATA_OFFSET);
                 NewTokenPos += ILine->NumBytes-TOKEN_DATA_OFFSET;
@@ -1012,38 +1012,38 @@ void *LexCopyTokens(struct ParseState *StartParser, struct ParseState *EndParser
 /* indicate that we've completed up to this point in the interactive input and free expired tokens */
 void LexInteractiveClear(Picoc *pc, struct ParseState *Parser)
 {
-    while (pc->InteractiveHead != NULL)
+    while (pc->InteractiveState.Head != NULL)
     {
-        struct TokenLine *NextLine = pc->InteractiveHead->Next;
+        struct TokenLine *NextLine = pc->InteractiveState.Head->Next;
         
-        HeapFreeMem(pc, pc->InteractiveHead->Tokens);
-        HeapFreeMem(pc, pc->InteractiveHead);
-        pc->InteractiveHead = NextLine;
+        HeapFreeMem(pc, pc->InteractiveState.Head->Tokens);
+        HeapFreeMem(pc, pc->InteractiveState.Head);
+        pc->InteractiveState.Head = NextLine;
     }
 
     if (Parser != NULL)
         Parser->Pos = NULL;
         
-    pc->InteractiveTail = NULL;
+    pc->InteractiveState.Tail = NULL;
 }
 
 /* indicate that we've completed up to this point in the interactive input and free expired tokens */
 void LexInteractiveCompleted(Picoc *pc, struct ParseState *Parser)
 {
-    while (pc->InteractiveHead != NULL && !(Parser->Pos >= &pc->InteractiveHead->Tokens[0] && Parser->Pos < &pc->InteractiveHead->Tokens[pc->InteractiveHead->NumBytes]))
+    while (pc->InteractiveState.Head != NULL && !(Parser->Pos >= &pc->InteractiveState.Head->Tokens[0] && Parser->Pos < &pc->InteractiveState.Head->Tokens[pc->InteractiveState.Head->NumBytes]))
     { 
         /* this token line is no longer needed - free it */
-        struct TokenLine *NextLine = pc->InteractiveHead->Next;
+        struct TokenLine *NextLine = pc->InteractiveState.Head->Next;
         
-        HeapFreeMem(pc, pc->InteractiveHead->Tokens);
-        HeapFreeMem(pc, pc->InteractiveHead);
-        pc->InteractiveHead = NextLine;
+        HeapFreeMem(pc, pc->InteractiveState.Head->Tokens);
+        HeapFreeMem(pc, pc->InteractiveState.Head);
+        pc->InteractiveState.Head = NextLine;
         
-        if (pc->InteractiveHead == NULL)
+        if (pc->InteractiveState.Head == NULL)
         { 
             /* we've emptied the list */
             Parser->Pos = NULL;
-            pc->InteractiveTail = NULL;
+            pc->InteractiveState.Tail = NULL;
         }
     }
 }

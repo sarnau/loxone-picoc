@@ -68,6 +68,7 @@ void PicocIncludeAllSystemHeaders(Picoc *pc)
 void IncludeFile(Picoc *pc, char *FileName)
 {
     struct IncludeLibrary *LInclude;
+	struct InteractiveState_Struct OldState;
     
     /* scan for the include file name to see if it's in our list of predefined includes */
     for (LInclude = pc->IncludeLibList; LInclude != NULL; LInclude = LInclude->NextLib)
@@ -97,7 +98,10 @@ void IncludeFile(Picoc *pc, char *FileName)
     }
     
     /* not a predefined file, read a real file */
+	OldState = pc->InteractiveState;
+	memset(&pc->InteractiveState, 0, sizeof(pc->InteractiveState));
     PicocPlatformScanFile(pc, FileName);
+	pc->InteractiveState = OldState;
 }
 
 #endif /* NO_HASH_INCLUDE */

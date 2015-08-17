@@ -368,9 +368,12 @@ struct Picoc_Struct
     struct TableEntry *GlobalHashTable[GLOBAL_TABLE_SIZE];
     
     /* lexer global data */
-    struct TokenLine *InteractiveHead;
-    struct TokenLine *InteractiveTail;
-    struct TokenLine *InteractiveCurrentLine;
+	struct InteractiveState_Struct
+	{
+		struct TokenLine *Head;
+		struct TokenLine *Tail;
+		struct TokenLine *CurrentLine;
+	} InteractiveState;
     int LexUseStatementPrompt;
     union AnyValue LexAnyValue;
     struct Value LexValue;
