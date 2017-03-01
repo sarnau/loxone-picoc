@@ -25,6 +25,8 @@ picoc can be compiled for a UNIX/Linux/POSIX host by typing "make".
 
 The test suite can be run by typing "make test".
 
+The `readline` library is necessary in order to compile picoc.
+
 
 Porting picoc
 -------------
