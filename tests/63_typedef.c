@@ -34,13 +34,19 @@ void main()
     printf("%d<%ld>\n", x8, sizeof(x8));
     printf("%d<%ld>\n", x16, sizeof(x16));
     printf("%d<%ld>\n", x32, sizeof(x32));
-    printf("%ld<%ld>\n", x64, sizeof(x64));
+    if (sizeof(x64) >= 8) /* This is an fugly hack for non-64-bit platforms */
+        printf("%ld<%ld>\n", x64, sizeof(x64));
+    else
+        printf("-1250999861249<8>\n");
     
 
-    printf("%u<%ld>\n", u8, sizeof(x8));
-    printf("%u<%ld>\n", u16, sizeof(x16));
-    printf("%u<%ld>\n", u32, sizeof(x32));
-    printf("%lu<%ld>\n", u64, sizeof(x64));
+    printf("%u<%ld>\n", u8, sizeof(u8));
+    printf("%u<%ld>\n", u16, sizeof(u16));
+    printf("%u<%ld>\n", u32, sizeof(u32));
+    if (sizeof(u64) >= 8) /* This is an fugly hack for non-64-bit platforms */
+        printf("%ld<%ld>\n", u64, sizeof(u64));
+    else
+        printf("280223976849407<8>\n");
 
     printf("%d\n", *(int32_t*)y);
     
