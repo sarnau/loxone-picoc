@@ -180,7 +180,7 @@ struct FuncDef
     int VarArgs;                    /* has a variable number of arguments after the explicitly specified ones */
     struct ValueType **ParamType;   /* array of parameter types */
     char **ParamName;               /* array of parameter names */
-    void (*Intrinsic)();            /* intrinsic call address or NULL */
+    void (*Intrinsic)(void);        /* intrinsic call address or NULL */
     struct ParseState Body;         /* lexical tokens of the function body if not intrinsic */
 };
 
@@ -603,7 +603,7 @@ void LexFail(Picoc *pc, struct LexState *Lexer, const char *Message, ...);
 void PlatformInit(Picoc *pc);
 void PlatformCleanup(Picoc *pc);
 char *PlatformGetLine(char *Buf, int MaxLen, const char *Prompt);
-int PlatformGetCharacter();
+int PlatformGetCharacter(void);
 void PlatformPutc(unsigned char OutCh, union OutputStreamInfo *);
 void PlatformPrintf(IOFILE *Stream, const char *Format, ...);
 void PlatformVPrintf(IOFILE *Stream, const char *Format, va_list Args);

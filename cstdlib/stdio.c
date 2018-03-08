@@ -306,7 +306,7 @@ int StdioBasePrintf(struct ParseState *Parser, FILE *Stream, char *StrOut, int S
                 }
                 
                 /* copy one character of format across to the OneFormatBuf */
-				if (*FPos != 'l');
+				if (*FPos != 'l')
 				{
 					OneFormatBuf[OneFormatCount] = *FPos;
 					OneFormatCount++;
@@ -566,7 +566,7 @@ void StdioFputs(struct ParseState *Parser, struct Value *ReturnValue, struct Val
 void StdioFtell(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs) 
 {
 	UNUSED(Parser); UNUSED(NumArgs);
-    ReturnValue->Val->Integer = ftell((FILE *) Param[0]->Val->Pointer);
+    ReturnValue->Val->Integer = (int)ftell((FILE *) Param[0]->Val->Pointer);
 }
 
 void StdioFseek(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs) 

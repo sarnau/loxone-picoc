@@ -98,7 +98,7 @@ char *PlatformReadFile(Picoc *pc, const char *FileName)
     if (InFile == NULL)
         ProgramFailNoParser(pc, "can't read file %s\n", FileName);
     
-    BytesRead = fread(ReadText, 1, FileInfo.st_size, InFile);
+    BytesRead = (int)fread(ReadText, 1, FileInfo.st_size, InFile);
     if (BytesRead == 0)
         ProgramFailNoParser(pc, "can't read file %s\n", FileName);
 
@@ -128,7 +128,7 @@ void PicocPlatformScanFile(Picoc *pc, const char *FileName)
         SourceStr[1] = '/'; 
     }
 
-    PicocParse(pc, FileName, SourceStr, strlen(SourceStr), TRUE, FALSE, TRUE, TRUE);
+    PicocParse(pc, FileName, SourceStr, (int)strlen(SourceStr), TRUE, FALSE, TRUE, TRUE);
 }
 
 /* exit the program */

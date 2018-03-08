@@ -46,7 +46,7 @@ void LibraryAdd(Picoc *pc, struct Table *GlobalTable, const char *LibraryName, s
         LexInitParser(&Parser, pc, FuncList[Count].Prototype, Tokens, IntrinsicName, TRUE, FALSE);
         TypeParse(&Parser, &ReturnType, &Identifier, NULL);
         NewValue = ParseFunctionDefinition(&Parser, ReturnType, Identifier);
-        NewValue->Val->FuncDef.Intrinsic = (void (*)()) FuncList[Count].Func;
+        NewValue->Val->FuncDef.Intrinsic = (void (*)(void)) FuncList[Count].Func;
         HeapFreeMem(pc, Tokens);
     }
 }

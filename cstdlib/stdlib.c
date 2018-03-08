@@ -22,7 +22,7 @@ void StdlibAtoi(struct ParseState *Parser, struct Value *ReturnValue, struct Val
 void StdlibAtol(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs); 
-    ReturnValue->Val->Integer = atol((char *) Param[0]->Val->Pointer);
+    ReturnValue->Val->Integer = (int)atol((char *) Param[0]->Val->Pointer);
 }
 
 #ifndef NO_FP
@@ -36,13 +36,13 @@ void StdlibStrtod(struct ParseState *Parser, struct Value *ReturnValue, struct V
 void StdlibStrtol(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs); 
-    ReturnValue->Val->Integer = strtol((char *) Param[0]->Val->Pointer, (char **) Param[1]->Val->Pointer, Param[2]->Val->Integer);
+    ReturnValue->Val->Integer = (int)strtol((char *) Param[0]->Val->Pointer, (char **) Param[1]->Val->Pointer, Param[2]->Val->Integer);
 }
 
 void StdlibStrtoul(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs); 
-    ReturnValue->Val->Integer = strtoul((char *) Param[0]->Val->Pointer, (char **) Param[1]->Val->Pointer, Param[2]->Val->Integer);
+    ReturnValue->Val->Integer = (int)strtoul((char *) Param[0]->Val->Pointer, (char **) Param[1]->Val->Pointer, Param[2]->Val->Integer);
 }
 
 void StdlibMalloc(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
@@ -122,7 +122,7 @@ void StdlibAbs(struct ParseState *Parser, struct Value *ReturnValue, struct Valu
 void StdlibLabs(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
-    ReturnValue->Val->Integer = labs(Param[0]->Val->Integer);
+    ReturnValue->Val->Integer = (int)labs(Param[0]->Val->Integer);
 }
 
 #if 0

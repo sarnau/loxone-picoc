@@ -586,7 +586,7 @@ void *LexTokenise(Picoc *pc, struct LexState *Lexer, int *TokenLen)
                     
     } while (Token != TokenEOF);
         
-	MemUsed = TokenPos - TokenSpace;
+	MemUsed = (int)(TokenPos - TokenSpace);
 	assert(ReserveSpace >= MemUsed);
 
 	SmallerTokenSpace = (char *)HeapReallocMem(pc, TokenSpace, MemUsed);

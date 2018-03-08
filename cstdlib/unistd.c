@@ -42,7 +42,7 @@ void UnistdClose(struct ParseState *Parser, struct Value *ReturnValue, struct Va
 
 void UnistdConfstr(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
-    ReturnValue->Val->Integer = confstr(Param[0]->Val->Integer, Param[1]->Val->Pointer, Param[2]->Val->Integer);
+    ReturnValue->Val->Integer = (int)confstr(Param[0]->Val->Integer, Param[1]->Val->Pointer, Param[2]->Val->Integer);
 }
 
 void UnistdCtermid(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
@@ -85,7 +85,7 @@ void UnistdFchdir(struct ParseState *Parser, struct Value *ReturnValue, struct V
 void UnistdFdatasync(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 #ifndef F_FULLSYNC
-    ReturnValue->Val->Integer = fdatasync(Param[0]->Val->Integer);
+    ReturnValue->Val->Integer = (int)fdatasync(Param[0]->Val->Integer);
 #else
     /* Mac OS X equivalent */
     ReturnValue->Val->Integer = fcntl(Param[0]->Val->Integer, F_FULLFSYNC);
@@ -99,7 +99,7 @@ void UnistdFork(struct ParseState *Parser, struct Value *ReturnValue, struct Val
 
 void UnistdFpathconf(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
-    ReturnValue->Val->Integer = fpathconf(Param[0]->Val->Integer, Param[1]->Val->Integer);
+    ReturnValue->Val->Integer = (int)fpathconf(Param[0]->Val->Integer, Param[1]->Val->Integer);
 }
 
 void UnistdFsync(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
@@ -139,7 +139,7 @@ void UnistdGetgid(struct ParseState *Parser, struct Value *ReturnValue, struct V
 
 void UnistdGethostid(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
-    ReturnValue->Val->Integer = gethostid();
+    ReturnValue->Val->Integer = (int)gethostid();
 }
 
 void UnistdGetlogin(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
@@ -223,7 +223,7 @@ void UnistdLockf(struct ParseState *Parser, struct Value *ReturnValue, struct Va
 
 void UnistdLseek(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
-    ReturnValue->Val->Integer = lseek(Param[0]->Val->Integer, Param[1]->Val->Integer, Param[2]->Val->Integer);
+    ReturnValue->Val->Integer = (int)lseek(Param[0]->Val->Integer, Param[1]->Val->Integer, Param[2]->Val->Integer);
 }
 
 void UnistdNice(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
@@ -233,7 +233,7 @@ void UnistdNice(struct ParseState *Parser, struct Value *ReturnValue, struct Val
 
 void UnistdPathconf(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
-    ReturnValue->Val->Integer = pathconf(Param[0]->Val->Pointer, Param[1]->Val->Integer);
+    ReturnValue->Val->Integer = (int)pathconf(Param[0]->Val->Pointer, Param[1]->Val->Integer);
 }
 
 void UnistdPause(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
@@ -255,12 +255,12 @@ void UnistdPwrite(struct ParseState *Parser, struct Value *ReturnValue, struct V
 
 void UnistdRead(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
-    ReturnValue->Val->Integer = read(Param[0]->Val->Integer, Param[1]->Val->Pointer, Param[2]->Val->Integer);
+    ReturnValue->Val->Integer = (int)read(Param[0]->Val->Integer, Param[1]->Val->Pointer, Param[2]->Val->Integer);
 }
 
 void UnistdReadlink(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
-    ReturnValue->Val->Integer = readlink(Param[0]->Val->Pointer, Param[1]->Val->Pointer, Param[2]->Val->Integer);
+    ReturnValue->Val->Integer = (int)readlink(Param[0]->Val->Pointer, Param[1]->Val->Pointer, Param[2]->Val->Integer);
 }
 
 void UnistdRmdir(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
@@ -270,7 +270,7 @@ void UnistdRmdir(struct ParseState *Parser, struct Value *ReturnValue, struct Va
 
 void UnistdSbrk(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
-    ReturnValue->Val->Pointer = sbrk(Param[0]->Val->Integer);
+    ReturnValue->Val->Pointer = (void *)sbrk(Param[0]->Val->Integer);
 }
 
 void UnistdSetgid(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
@@ -332,7 +332,7 @@ void UnistdSync(struct ParseState *Parser, struct Value *ReturnValue, struct Val
 
 void UnistdSysconf(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
-    ReturnValue->Val->Integer = sysconf(Param[0]->Val->Integer);
+    ReturnValue->Val->Integer = (int)sysconf(Param[0]->Val->Integer);
 }
 
 void UnistdTcgetpgrp(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
@@ -382,7 +382,7 @@ void UnistdVfork(struct ParseState *Parser, struct Value *ReturnValue, struct Va
 
 void UnistdWrite(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
-    ReturnValue->Val->Integer = write(Param[0]->Val->Integer, Param[1]->Val->Pointer, Param[2]->Val->Integer);
+    ReturnValue->Val->Integer = (int)write(Param[0]->Val->Integer, Param[1]->Val->Pointer, Param[2]->Val->Integer);
 }
 
 

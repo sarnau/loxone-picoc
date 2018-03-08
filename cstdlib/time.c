@@ -23,7 +23,7 @@ void StdAsctime(struct ParseState *Parser, struct Value *ReturnValue, struct Val
 void StdClock(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(Param); UNUSED(NumArgs); 
-    ReturnValue->Val->Integer = clock();
+    ReturnValue->Val->Integer = (int)clock();
 }
 
 void StdCtime(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
@@ -88,7 +88,7 @@ void StdGmtime_r(struct ParseState *Parser, struct Value *ReturnValue, struct Va
 void StdTimegm(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs); 
-    ReturnValue->Val->Integer = timegm(Param[0]->Val->Pointer);
+    ReturnValue->Val->Integer = (int)timegm(Param[0]->Val->Pointer);
 }
 #endif
 
