@@ -1,2 +1,3 @@
 *.o
 picoc
+picoc.xcodeproj/project.xcworkspace/xcshareddata
