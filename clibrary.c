@@ -627,9 +627,11 @@ struct LibraryFunction CLibrary[] =
 {
     { LibPrintf,        "void printf(char *, ...);" },
     { LibSPrintf,       "char *sprintf(char *, char *, ...);" },
+#ifndef LOXONE
     { LibGets,          "char *gets(char *);" },
     { LibGetc,          "int getchar();" },
     { LibExit,          "void exit(int);" },
+#endif
 #ifdef PICOC_LIBRARY
     { LibSin,           "float sin(float);" },
     { LibCos,           "float cos(float);" },

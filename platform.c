@@ -3,7 +3,9 @@
  
 #include "picoc.h"
 #include "interpreter.h"
-
+#if LOXONE
+#include "library_loxone.h"
+#endif
 
 /* initialise everything */
 void PicocInitialise(Picoc *pc, int StackSize)
@@ -24,7 +26,11 @@ void PicocInitialise(Picoc *pc, int StackSize)
     LibraryAdd(pc, &GlobalTable, "c library", &CLibrary[0]);
     CLibraryInit(pc);
 #endif
+#if LOXONE
+    LoxoneLibraryInit(pc);
+#else
     PlatformLibraryInit(pc);
+#endif
     DebugInit(pc);
 }
 

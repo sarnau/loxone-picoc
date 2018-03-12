@@ -181,10 +181,14 @@ struct LibraryFunction StringFunctions[] =
     { StringStrpbrk,       "char *strpbrk(char *,char *);" },
     { StringStrstr,        "char *strstr(char *,char *);" },
     { StringStrtok,        "char *strtok(char *,char *);" },
+#ifndef LOXONE
     { StringStrxfrm,       "int strxfrm(char *,char *,int);" },
+#endif
 	{ StringStrdup,        "char *strdup(char *);" },
+#ifndef LOXONE
 #ifndef WIN32
     { StringStrtok_r,      "char *strtok_r(char *,char *,char **);" },
+#endif
 #endif
     { NULL,             NULL }
 };

@@ -401,6 +401,7 @@ typedef int intptr_t;\
 /* all unistd.h functions */
 struct LibraryFunction UnistdFunctions[] =
 {
+#ifndef LOXONE
     { UnistdAccess,        "int access(char *, int);" },
     { UnistdAlarm,         "unsigned int alarm(unsigned int);" },
 /*    { UnistdBrk,           "int brk(void *);" }, */
@@ -485,6 +486,7 @@ struct LibraryFunction UnistdFunctions[] =
     { UnistdUsleep,        "int usleep(useconds_t);" },
     { UnistdVfork,         "pid_t vfork(void);" },
     { UnistdWrite,         "ssize_t write(int, void *, size_t);" },
+#endif
     { NULL,                 NULL }
 };
 

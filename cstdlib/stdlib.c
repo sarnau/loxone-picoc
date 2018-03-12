@@ -157,19 +157,26 @@ struct LibraryFunction StdlibFunctions[] =
 {
 #ifndef NO_FP
     { StdlibAtof,           "float atof(char *);" },
+#ifndef LOXONE
     { StdlibStrtod,         "float strtod(char *,char **);" },
 #endif
+#endif
     { StdlibAtoi,           "int atoi(char *);" },
+#ifndef LOXONE
     { StdlibAtol,           "int atol(char *);" },
     { StdlibStrtol,         "int strtol(char *,char **,int);" },
     { StdlibStrtoul,        "int strtoul(char *,char **,int);" },
+#endif
     { StdlibMalloc,         "void *malloc(int);" },
     { StdlibCalloc,         "void *calloc(int,int);" },
     { StdlibRealloc,        "void *realloc(void *,int);" },
     { StdlibFree,           "void free(void *);" },
+#ifndef LOXONE
     { StdlibRand,           "int rand();" },
     { StdlibSrand,          "void srand(int);" },
     { StdlibAbort,          "void abort();" },
+#endif
+#ifndef LOXONE
     { StdlibExit,           "void exit(int);" },
     { StdlibGetenv,         "char *getenv(char *);" },
     { StdlibSystem,         "int system(char *);" },
@@ -180,6 +187,7 @@ struct LibraryFunction StdlibFunctions[] =
 #if 0
     { StdlibDiv,            "div_t div(int);" },
     { StdlibLdiv,           "ldiv_t ldiv(int);" },
+#endif
 #endif
     { NULL,                 NULL }
 };

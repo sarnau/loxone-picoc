@@ -757,7 +757,9 @@ typedef struct __FILEStruct FILE;\
 struct LibraryFunction StdioFunctions[] =
 {
     { StdioFopen,   "FILE *fopen(char *, char *);" },
+#ifndef LOXONE
     { StdioFreopen, "FILE *freopen(char *, char *, FILE *);" },
+#endif
     { StdioFclose,  "int fclose(FILE *);" },
     { StdioFread,   "int fread(void *, int, int, FILE *);" },
     { StdioFwrite,  "int fwrite(void *, int, int, FILE *);" },
@@ -768,17 +770,24 @@ struct LibraryFunction StdioFunctions[] =
     { StdioFputs,   "int fputs(char *, FILE *);" },
     { StdioRemove,  "int remove(char *);" },
     { StdioRename,  "int rename(char *, char *);" },
+#ifndef LOXONE
     { StdioRewind,  "void rewind(FILE *);" },
+#endif
     { StdioTmpfile, "FILE *tmpfile();" },
+#ifndef LOXONE
     { StdioClearerr,"void clearerr(FILE *);" },
     { StdioFeof,    "int feof(FILE *);" },
     { StdioFerror,  "int ferror(FILE *);" },
     { StdioFileno,  "int fileno(FILE *);" },
+#endif
     { StdioFflush,  "int fflush(FILE *);" },
+#ifndef LOXONE
     { StdioFgetpos, "int fgetpos(FILE *, int *);" },
     { StdioFsetpos, "int fsetpos(FILE *, int *);" },
     { StdioFtell,   "int ftell(FILE *);" },
+#endif
     { StdioFseek,   "int fseek(FILE *, int, int);" },
+#ifndef LOXONE
     { StdioPerror,  "void perror(char *);" },
     { StdioPutc,    "int putc(char *, FILE *);" },
     { StdioPutchar, "int putchar(int);" },
@@ -789,9 +798,11 @@ struct LibraryFunction StdioFunctions[] =
     { StdioPuts,    "int puts(char *);" },
     { StdioGets,    "char *gets(char *);" },
     { StdioGetchar, "int getchar();" },
+#endif
     { StdioPrintf,  "int printf(char *, ...);" },
     { StdioFprintf, "int fprintf(FILE *, char *, ...);" },
     { StdioSprintf, "int sprintf(char *, char *, ...);" },
+#ifndef LOXONE
     { StdioSnprintf,"int snprintf(char *, int, char *, ...);" },
     { StdioScanf,   "int scanf(char *, ...);" },
     { StdioFscanf,  "int fscanf(FILE *, char *, ...);" },
@@ -803,6 +814,7 @@ struct LibraryFunction StdioFunctions[] =
     { StdioVscanf,   "int vscanf(char *, va_list);" },
     { StdioVfscanf,  "int vfscanf(FILE *, char *, va_list);" },
     { StdioVsscanf,  "int vsscanf(char *, char *, va_list);" },
+#endif
     { NULL,         NULL }
 };
 
