@@ -24,7 +24,7 @@ static void Lox_debugPrintHeader(struct ParseState *Parser)
 static void Lox_getprogramname(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
     LOX_DEBUGPRINT("getprogramname()\n");
-    ReturnValue->Val->Pointer = Parser->FileName;
+    ReturnValue->Val->Pointer = "Programm"; // User entered name in the "Description"
 }
 
 // int lineno();
@@ -82,32 +82,152 @@ static void Lox_strstrskip(struct ParseState *Parser, struct Value *ReturnValue,
     ReturnValue->Val->Pointer = str;
 }
 
+// char *getxmlvalue(char *str,int index,char* name);
+static void Lox_getxmlvalue(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+{
+    const char *str = Param[0]->Val->Pointer;
+    int index = Param[1]->Val->Integer;
+    const char *name = Param[2]->Val->Pointer; 
+//    LOX_DEBUGPRINT("getxmlvalue(\"%s\", %d, \"%s\")\n", str, index, name);
+    LOX_DEBUGPRINT("getxmlvalue(<XML>, %d, \"%s\")\n", index, name);
+    char startTag[100],endTag[100];
+    sprintf(startTag, "<%s>", name);
+    sprintf(endTag, "</%s>", name);
+    const char *foundStart = str,*foundEnd = str;
+    do {
+        foundStart = strstr(foundStart, startTag);
+        if(foundStart) foundStart += strlen(startTag);
+        foundEnd = strstr(foundEnd, endTag);
+        if(foundEnd) foundEnd += strlen(endTag);
+    } while(--index >= 0);
+    ReturnValue->Val->Pointer = NULL;
+    if(foundEnd > foundStart) {
+        foundEnd -= strlen(endTag);
+        char *buf = malloc(foundEnd - foundStart + 1);
+        strncpy(buf, foundStart, foundEnd - foundStart);
+        buf[foundEnd - foundStart] = 0;
+        ReturnValue->Val->Pointer = buf;
+    }
+}
+
 // int getcpuinfo();
 // Returns actual value of CPU usage in %.
 static void Lox_getcpuinfo(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
-    ReturnValue->Val->Integer = 10;
+    LOX_DEBUGPRINT("getcpuinfo()\n");
+    ReturnValue->Val->Integer = 44;
 }
 
 // int getheapusage();
 // Returns actual value of system heap in kB.
 static void Lox_getheapusage(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
-    ReturnValue->Val->Integer = 100;
+    LOX_DEBUGPRINT("getheapusage()\n");
+    ReturnValue->Val->Integer = 10658;
 }
 
 // int getmaxheap();
 // Returns maximum value of system heap in kB.
 static void Lox_getmaxheap(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
-    ReturnValue->Val->Integer = 500;
+    LOX_DEBUGPRINT("getmaxheap()\n");
+    ReturnValue->Val->Integer = 51744;
 }
 
 // int getspsstatus();
 // Returns actual number of cycles processed by SPS.
 static void Lox_getspsstatus(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
-    ReturnValue->Val->Integer = 10;
+    LOX_DEBUGPRINT("getspsstatus()\n");
+    ReturnValue->Val->Integer = 100; // Frequency in the Loxone project settings (20-250)
+}
+
+// char *localwebservice(char *str);
+// Execute webservice and return a pointer to the answer XML string.
+static void Lox_localwebservice(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+{
+    const char *str = Param[0]->Val->Pointer;
+    LOX_DEBUGPRINT("localwebservice(\"%s\")\n", str);
+    const char *responseStr = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LL control=\"dev/sps/status\" value=\"Running 100/sec\" Code=\"200\"/>";
+    char *responseBuffer = malloc(strlen(responseStr) + 1);
+    strcpy(responseBuffer, responseStr);
+    ReturnValue->Val->Pointer = responseBuffer;
+}
+
+#pragma mark -
+#pragma mark HTTP FUNCTIONS
+
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/tcp.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+
+static int socket_connect(const char *host, in_port_t port, int tcp /* tcp (1) or udp (0) */)
+{
+    int sockfd = socket(AF_INET, SOCK_STREAM, tcp ? IPPROTO_TCP : IPPROTO_UDP);
+    if (sockfd == -1)
+        return -1;
+    if(tcp) {
+        int on = 1;
+        setsockopt(sockfd, IPPROTO_TCP, TCP_NODELAY, (const char *)&on, sizeof(int));
+    }
+    struct sockaddr_in host_addr;
+    host_addr.sin_family = AF_INET;
+    host_addr.sin_port = htons(port);
+    host_addr.sin_addr.s_addr = inet_addr(host);
+    if (host_addr.sin_addr.s_addr == INADDR_NONE) {
+        // Server addressed by name, not by the IP?
+        struct hostent *hostinfo = gethostbyname(host);
+        if (hostinfo == NULL) {
+            close(sockfd);
+            return -1;
+        }
+        memcpy((char*) &host_addr.sin_addr.s_addr, hostinfo->h_addr, hostinfo->h_length);
+    }
+    if (connect(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr)) == -1) {
+        close(sockfd);
+        return -1;
+    }
+    return sockfd;
+}
+
+// char *httpget(char *address,char *page);
+static void Lox_httpget(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+{
+    const char *server = Param[0]->Val->Pointer;
+    const char *page = Param[1]->Val->Pointer;
+    LOX_DEBUGPRINT("localwebservice(\"%s\", \"%s\")\n", server, page);
+    int sockfd = socket_connect(server, 80, 1);
+    if (sockfd == -1) {
+        ReturnValue->Val->Pointer = NULL;
+        return;
+    }
+    #define BUFFER_SIZE 1024
+    size_t bufferSize = BUFFER_SIZE;
+    char *buffer = malloc(bufferSize);
+    sprintf(buffer, "GET %s HTTP/1.1\r\n"
+                    "Host: %s\r\n"
+                    "Connection: close\r\n"
+                    "\r\n", page, server);  
+    write(sockfd, buffer, strlen(buffer));
+    ssize_t bufferCount = 0;
+    while(1) {
+        ssize_t bytesRead = read(sockfd, buffer + bufferCount, BUFFER_SIZE - 1);
+        if(!bytesRead)
+            break;
+        bufferCount += bytesRead;
+        buffer = realloc(buffer, bufferSize + BUFFER_SIZE);
+        bzero(buffer + bufferCount, BUFFER_SIZE);
+        bufferSize += BUFFER_SIZE;
+    }
+    shutdown(sockfd, SHUT_RDWR); 
+    close(sockfd);
+
+    char *responseBuffer = malloc(bufferCount + 1);
+    strcpy(responseBuffer, buffer);
+    ReturnValue->Val->Pointer = responseBuffer;
 }
 
 #pragma mark -
@@ -353,13 +473,93 @@ static void Lox_convertlocal2utc(struct ParseState *Parser, struct Value *Return
 }
 
 #pragma mark -
-#pragma mark STREAM FUNCTIONS
+#pragma mark BUFFER FUNCTIONS
 
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
+// int getshort(void * p,int bBigEndian);
+static void Lox_getshort(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+{
+    const unsigned char *pointer = Param[0]->Val->Pointer;
+    const int bBigEndian = Param[1]->Val->Integer;
+    LOX_DEBUGPRINT("getshort(%p, %d)\n", pointer, bBigEndian);
+    if(bBigEndian)
+        ReturnValue->Val->Integer = (short)((pointer[0]<<8) | pointer[1]);
+    else
+        ReturnValue->Val->Integer = (short)((pointer[1]<<8) | pointer[0]);
+}
+
+// int getushort(void * p,int bBigEndian);
+static void Lox_getushort(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+{
+    const unsigned char *pointer = Param[0]->Val->Pointer;
+    const int bBigEndian = Param[1]->Val->Integer;
+    LOX_DEBUGPRINT("getushort(%p, %d)\n", pointer, bBigEndian);
+    if(bBigEndian)
+        ReturnValue->Val->UnsignedInteger = ((pointer[0]<<8) | pointer[1]);
+    else
+        ReturnValue->Val->UnsignedInteger = ((pointer[1]<<8) | pointer[0]);
+}
+
+// int getint(void * p,int bBigEndian);
+static void Lox_getint(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+{
+    const unsigned char *pointer = Param[0]->Val->Pointer;
+    const int bBigEndian = Param[1]->Val->Integer;
+    LOX_DEBUGPRINT("getint(%p, %d)\n", pointer, bBigEndian);
+    if(bBigEndian)
+        ReturnValue->Val->Integer = ((pointer[0]<<24) | (pointer[1]<<16) | (pointer[2]<<8) | pointer[3]);
+    else
+        ReturnValue->Val->Integer = ((pointer[3]<<24) | (pointer[2]<<16) | (pointer[1]<<8) | pointer[0]);
+}
+
+// int getshort(void * p,int bBigEndian);
+static void Lox_getuint(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+{
+    const unsigned char *pointer = Param[0]->Val->Pointer;
+    const int bBigEndian = Param[1]->Val->Integer;
+    LOX_DEBUGPRINT("getshort(%p, %d)\n", pointer, bBigEndian);
+    if(bBigEndian)
+        ReturnValue->Val->UnsignedInteger = ((pointer[0]<<24) | (pointer[1]<<16) | (pointer[2]<<8) | pointer[3]);
+    else
+        ReturnValue->Val->UnsignedInteger = ((pointer[3]<<24) | (pointer[2]<<16) | (pointer[1]<<8) | pointer[0]);
+}
+
+// int getfloat(void * p,int bBigEndian);
+static void Lox_getfloat(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+{
+    const unsigned char *pointer = Param[0]->Val->Pointer;
+    const int bBigEndian = Param[1]->Val->Integer;
+    LOX_DEBUGPRINT("getfloat(%p, %d)\n", pointer, bBigEndian);
+    union {
+        float a;
+        int b;
+    } conv;
+    if(bBigEndian)
+        conv.b = (pointer[0]<<24) | (pointer[1]<<16) | (pointer[2]<<8) | pointer[3];
+    else
+        conv.b = (pointer[3]<<24) | (pointer[2]<<16) | (pointer[1]<<8) | pointer[0];
+    ReturnValue->Val->FP = conv.a;
+}
+
+// int getdouble(void * p,int bBigEndian);
+static void Lox_getdouble(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+{
+    const unsigned char *pointer = Param[0]->Val->Pointer;
+    const int bBigEndian = Param[1]->Val->Integer;
+    LOX_DEBUGPRINT("getdouble(%p, %d)\n", pointer, bBigEndian);
+    union {
+        double a;
+        long b;
+    } conv;
+    if(bBigEndian)
+        conv.b = ((unsigned long)pointer[0]<<56) | ((unsigned long)pointer[1]<<48) | ((unsigned long)pointer[2]<<40) | ((unsigned long)pointer[3]<<32) | ((unsigned long)pointer[4]<<24) | (pointer[5]<<16) | (pointer[6]<<8) | pointer[7];
+    else
+        conv.b = ((unsigned long)pointer[7]<<56) | ((unsigned long)pointer[6]<<48) | ((unsigned long)pointer[5]<<40) | ((unsigned long)pointer[4]<<32) | ((unsigned long)pointer[3]<<24) | (pointer[2]<<16) | (pointer[1]<<8) | pointer[0];
+    ReturnValue->Val->FP = conv.a;
+}
+
+
+#pragma mark -
+#pragma mark STREAM FUNCTIONS
 
 typedef struct STREAM_STRUCT {
     int sockfd;
@@ -397,26 +597,9 @@ static void Lox_stream_create(struct ParseState *Parser, struct Value *ReturnVal
     }
 
     ReturnValue->Val->Pointer = NULL;
-    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    int sockfd = socket_connect(hostName, port, port != 0);
     if (sockfd == -1)
         return;
-    struct sockaddr_in host_addr;
-    host_addr.sin_family = AF_INET;
-    host_addr.sin_port = htons(port);
-    host_addr.sin_addr.s_addr = inet_addr(hostName);
-    if (host_addr.sin_addr.s_addr == INADDR_NONE) {
-        // Server wurde nicht mit IP sondern mit dem Namen angegeben
-        struct hostent *hostinfo = gethostbyname(hostName);
-        if (hostinfo == NULL) {
-            close(sockfd);
-            return;
-        }
-        memcpy((char*) &host_addr.sin_addr.s_addr, hostinfo->h_addr, hostinfo->h_length);
-    }
-    if (connect(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr)) == -1) {
-        close(sockfd);
-        return;
-    }
     STREAM_STRUCT *ss = calloc(1, sizeof(STREAM_STRUCT));
     ss->sockfd = sockfd;
     ReturnValue->Val->Pointer = ss;
@@ -485,7 +668,7 @@ static void LoxoneSetupFunc(Picoc *pc)
     printf("LoxoneSetupFunc()\n");
 }
 
-/* handy structure definitions */
+// handy structure definitions
 const char LoxoneDefs[] = "\
 typedef struct __STREAMStruct STREAM;\
 ";
@@ -502,10 +685,16 @@ static struct LibraryFunction LoxoneFunctions[] =
     { Lox_batof,            "float batof(char *str);" },
     { Lox_strstrskip,       "char* strstrskip(char *str,char *strfind);" },
 
+    { Lox_getxmlvalue,      "char *getxmlvalue(char *str,int index,char* name);" },
+
     { Lox_getcpuinfo,       "int getcpuinfo();" },
     { Lox_getheapusage,     "int getheapusage();" },
     { Lox_getmaxheap,       "int getmaxheap();" },
     { Lox_getspsstatus,     "int getspsstatus();" },
+    { Lox_localwebservice,  "char *localwebservice(char *str);" },
+
+    // HTTP FUNCTIONS
+    { Lox_httpget,          "char *httpget(char *address,char *page);" },
 
     // SPS FUNCTIONS
     { Lox_setlogtext,       "void setlogtext(char *str);" },
@@ -531,6 +720,14 @@ static struct LibraryFunction LoxoneFunctions[] =
     { Lox_convertutc2local, "unsigned int convertutc2local(unsigned int timeutc);" },
     { Lox_convertlocal2utc, "unsigned int convertlocal2utc(unsigned int timelocal);" },
 
+    // BUFFER FUNCTIONS
+    { Lox_getshort,         "int getshort(void * p,int bBigEndian);" },
+    { Lox_getushort,        "unsigned int getushort(void * p,int bBigEndian);" },
+    { Lox_getint,           "int getint(void * p,int bBigEndian);" },
+    { Lox_getuint,          "unsigned int getuint(void * p,int bBigEndian);" },
+    { Lox_getfloat,         "float getfloat(void * p,int bBigEndian);" },
+    { Lox_getdouble,        "float getdouble(void * p,int bBigEndian);" },
+
     // STREAM FUNCTIONS
     { Lox_stream_create,    "STREAM *stream_create(char* filename,int read,int append);" },
     { Lox_stream_printf,    "void stream_printf(STREAM* stream,char *format, ...);" },
@@ -549,6 +746,6 @@ void LoxoneLibraryInit(Picoc *pc)
 
     struct ValueType *StructFileType;
 
-    /* make a "struct __FILEStruct" which is the same size as a native FILE structure */
+    // make a "struct __FILEStruct" which is the same size as a native FILE structure
     StructFileType = TypeCreateOpaqueStruct(pc, NULL, TableStrRegister(pc, "__STREAMStruct"), sizeof(STREAM_STRUCT));
 }
