@@ -83,7 +83,6 @@
 		F850C1A4205151100035087E /* heap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = heap.c; sourceTree = "<group>"; };
 		F850C1A5205151100035087E /* parse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = parse.c; sourceTree = "<group>"; };
 		F850C1A6205151100035087E /* variable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = variable.c; sourceTree = "<group>"; };
-		F850C1C7205159440035087E /* LOXONE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LOXONE.md; sourceTree = "<group>"; };
 		F859B6782051223E0026E5F5 /* picoc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = picoc; sourceTree = BUILT_PRODUCTS_DIR; };
 		F859B6C9205124D20026E5F5 /* libreadline.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libreadline.tbd; path = usr/lib/libreadline.tbd; sourceTree = SDKROOT; };
 		F8A58E1820516837006D2D10 /* library_loxone.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = library_loxone.h; sourceTree = "<group>"; };
@@ -147,7 +146,6 @@
 		F859B66F2051223E0026E5F5 = {
 			isa = PBXGroup;
 			children = (
-				F850C1C7205159440035087E /* LOXONE.md */,
 				F850C18A205151100035087E /* README.md */,
 				F8A58E1820516837006D2D10 /* library_loxone.h */,
 				F8A58E1920516837006D2D10 /* library_loxone.c */,

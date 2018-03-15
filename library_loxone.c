@@ -3,7 +3,6 @@
 //  picoc
 //
 //  Created by Markus Fritze on 08.03.18.
-//  Copyright © 2018 Markus Fritze. All rights reserved.
 //
 
 #include "library_loxone.h"
