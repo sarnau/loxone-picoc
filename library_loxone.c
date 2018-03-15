@@ -82,6 +82,34 @@ static void Lox_strstrskip(struct ParseState *Parser, struct Value *ReturnValue,
     ReturnValue->Val->Pointer = str;
 }
 
+// int getcpuinfo();
+// Returns actual value of CPU usage in %.
+static void Lox_getcpuinfo(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+{
+    ReturnValue->Val->Integer = 10;
+}
+
+// int getheapusage();
+// Returns actual value of system heap in kB.
+static void Lox_getheapusage(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+{
+    ReturnValue->Val->Integer = 100;
+}
+
+// int getmaxheap();
+// Returns maximum value of system heap in kB.
+static void Lox_getmaxheap(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+{
+    ReturnValue->Val->Integer = 500;
+}
+
+// int getspsstatus();
+// Returns actual number of cycles processed by SPS.
+static void Lox_getspsstatus(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+{
+    ReturnValue->Val->Integer = 10;
+}
+
 #pragma mark -
 #pragma mark SPS FUNCTIONS
 
@@ -171,12 +199,12 @@ static void Lox_sleeps(struct ParseState *Parser, struct Value *ReturnValue, str
 static const unsigned int secondsTill1_1_2009 = 1230768000;
 
 // unsigned int getcurrenttime();
-// Get UTC time in seconds since 1.1. 2009.
+// Get UTC time in seconds since 1.1.2009.
 static void Lox_getcurrenttime(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
     LOX_DEBUGPRINT("getcurrenttime()\n");
     time_t t = time(NULL);
-    struct tm *local = gmtime(&t);
+    ReturnValue->Val->UnsignedLongInteger = t - secondsTill1_1_2009;
 }
 
 // int getyear(unsigned int time,int local);
@@ -187,14 +215,14 @@ static void Lox_getcurrenttime(struct ParseState *Parser, struct Value *ReturnVa
 // Specifies time format: local time when 1, UTC when 0
 static void Lox_getyear(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
-    LOX_DEBUGPRINT("getcurrenttime(%u, %d)\n", Param[0]->Val->UnsignedInteger, Param[1]->Val->Integer);
+    LOX_DEBUGPRINT("getyear(%u, %d)\n", Param[0]->Val->UnsignedInteger, Param[1]->Val->Integer);
     time_t t = Param[0]->Val->UnsignedInteger + secondsTill1_1_2009;
     struct tm *local;
     if(Param[1]->Val->Integer)
         local = localtime(&t);
     else
         local = gmtime(&t);
-    ReturnValue->Val->UnsignedInteger = local->tm_year;
+    ReturnValue->Val->UnsignedInteger = local->tm_year + 1900;
 }
 
 // int getmonth(unsigned int time,int local);
@@ -279,12 +307,12 @@ static void Lox_getday(struct ParseState *Parser, struct Value *ReturnValue, str
 
 #include <sys/timeb.h>
 
-static int getUTCOffset(int useUTC)
+static int getUTCOffset(int useLocal)
 {
-    if(useUTC) {
+    if(useLocal) {
         struct timeb tp;
         ftime(&tp);
-        return tp.timezone;
+        return tp.timezone * 60;
     } else {
         return 0;
     }
@@ -296,14 +324,16 @@ static void Lox_gettimeval(struct ParseState *Parser, struct Value *ReturnValue,
 {
     LOX_DEBUGPRINT("gettimeval(%d, %d, %d, %d, %d, %d, %d)\n", Param[0]->Val->Integer, Param[1]->Val->Integer, Param[2]->Val->Integer, Param[3]->Val->Integer, Param[4]->Val->Integer, Param[5]->Val->Integer, Param[6]->Val->Integer);
     struct tm t;
-    t.tm_year = Param[0]->Val->Integer-1900;
+    t.tm_year = Param[0]->Val->Integer - 1900;
     t.tm_mon = Param[1]->Val->Integer - 1;
     t.tm_mday = Param[2]->Val->Integer;
-    t.tm_hour = Param[3]->Val->Integer + getUTCOffset(Param[6]->Val->Integer);
+    t.tm_hour = Param[3]->Val->Integer;
     t.tm_min = Param[4]->Val->Integer;
     t.tm_sec = Param[5]->Val->Integer;
+    t.tm_wday = 0;
+    t.tm_yday = 0;
     t.tm_isdst = 0;
-    ReturnValue->Val->UnsignedInteger = (unsigned int)mktime(&t) - secondsTill1_1_2009;
+    ReturnValue->Val->UnsignedLongInteger = mktime(&t) - getUTCOffset(!Param[6]->Val->Integer) - secondsTill1_1_2009;
 }
 
 // unsigned int convertutc2local(unsigned int timeutc);
@@ -311,7 +341,7 @@ static void Lox_gettimeval(struct ParseState *Parser, struct Value *ReturnValue,
 static void Lox_convertutc2local(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
     LOX_DEBUGPRINT("convertutc2local(%u)\n", Param[0]->Val->UnsignedInteger);
-    ReturnValue->Val->UnsignedInteger = Param[0]->Val->UnsignedInteger + getUTCOffset(1);
+    ReturnValue->Val->UnsignedInteger = Param[0]->Val->UnsignedInteger - getUTCOffset(1);
 }
  
 // unsigned int convertlocal2utc(unsigned int timelocal);
@@ -319,7 +349,7 @@ static void Lox_convertutc2local(struct ParseState *Parser, struct Value *Return
 static void Lox_convertlocal2utc(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
     LOX_DEBUGPRINT("convertlocal2utc(%u)\n", Param[0]->Val->UnsignedInteger);
-    ReturnValue->Val->UnsignedInteger = Param[0]->Val->UnsignedInteger - getUTCOffset(1);
+    ReturnValue->Val->UnsignedInteger = Param[0]->Val->UnsignedInteger + getUTCOffset(1);
 }
 
 #pragma mark -
@@ -471,6 +501,11 @@ static struct LibraryFunction LoxoneFunctions[] =
     { Lox_batoi,            "int batoi(char *str);" },
     { Lox_batof,            "float batof(char *str);" },
     { Lox_strstrskip,       "char* strstrskip(char *str,char *strfind);" },
+
+    { Lox_getcpuinfo,       "int getcpuinfo();" },
+    { Lox_getheapusage,     "int getheapusage();" },
+    { Lox_getmaxheap,       "int getmaxheap();" },
+    { Lox_getspsstatus,     "int getspsstatus();" },
 
     // SPS FUNCTIONS
     { Lox_setlogtext,       "void setlogtext(char *str);" },

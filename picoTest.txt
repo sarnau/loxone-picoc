@@ -1,0 +1,60 @@
+// Testing Loxone Picoc functions
+
+char buffer[100];
+
+setlogtext(getprogramname());
+sprintf(buffer, "%d", lineno());
+setlogtext(buffer);
+
+sprintf(buffer, "%d", batoi(" 123.45"));
+setlogtext(buffer);
+sprintf(buffer, "%f", batof(" 123.45"));
+setlogtext(buffer);
+sprintf(buffer, "%s", strstr("das ist ein test","ein "));
+setlogtext(buffer);
+sprintf(buffer, "%s", strstrskip("das ist ein test","ein "));
+setlogtext(buffer);
+sprintf(buffer, "%s", index("0123456789",0x32));
+setlogtext(buffer);
+sprintf(buffer, "%d", getcpuinfo());
+setlogtext(buffer);
+sprintf(buffer, "%d", getheapusage());
+setlogtext(buffer);
+sprintf(buffer, "%d", getmaxheap());
+setlogtext(buffer);
+sprintf(buffer, "%d", getspsstatus());
+setlogtext(buffer);
+
+int now = getcurrenttime();
+sprintf(buffer, "%d", now);
+setlogtext(buffer);
+if(convertlocal2utc(convertutc2local(now)) != now) {
+    errorprintf("!!! convertlocal2utc/convertutc2local broken");
+}
+
+for(int local = 0; local<2; ++local) {
+    int calcNow = gettimeval(getyear(now, local), getmonth(now, local), getday(now, local), gethour(now, local), getminute(now, local), getsecond(now, local), local);
+    sprintf(buffer, "%d", calcNow);
+    setlogtext(buffer);
+}
+
+sleep(250);
+sleeps(1);
+
+for(int local = 0; local<2; ++local) {
+    sprintf(buffer, "%d", getyear(now, local));
+    setlogtext(buffer);
+    sprintf(buffer, "%d", getmonth(now, local));
+    setlogtext(buffer);
+    sprintf(buffer, "%d", getday(now, local));
+    setlogtext(buffer);
+    sprintf(buffer, "%d", gethour(now, local));
+    setlogtext(buffer);
+    sprintf(buffer, "%d", getminute(now, local));
+    setlogtext(buffer);
+    sprintf(buffer, "%d", getsecond(now, local));
+    setlogtext(buffer);
+}
+
+errorprintf("Only a test - no error");
+exit();

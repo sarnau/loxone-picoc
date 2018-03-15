@@ -28,7 +28,6 @@
 		F850C1C2205151110035087E /* heap.c in Sources */ = {isa = PBXBuildFile; fileRef = F850C1A4205151100035087E /* heap.c */; };
 		F850C1C3205151110035087E /* parse.c in Sources */ = {isa = PBXBuildFile; fileRef = F850C1A5205151100035087E /* parse.c */; };
 		F850C1C4205151110035087E /* variable.c in Sources */ = {isa = PBXBuildFile; fileRef = F850C1A6205151100035087E /* variable.c */; };
-		F850C1C52051511C0035087E /* library_unix.c in Sources */ = {isa = PBXBuildFile; fileRef = F850C192205151100035087E /* library_unix.c */; };
 		F850C1C62051511C0035087E /* platform_unix.c in Sources */ = {isa = PBXBuildFile; fileRef = F850C196205151100035087E /* platform_unix.c */; };
 		F859B6CA205124D20026E5F5 /* libreadline.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F859B6C9205124D20026E5F5 /* libreadline.tbd */; };
 		F8A58E1A20516837006D2D10 /* library_loxone.c in Sources */ = {isa = PBXBuildFile; fileRef = F8A58E1920516837006D2D10 /* library_loxone.c */; };
@@ -261,7 +260,6 @@
 				F850C1AA205151110035087E /* expression.c in Sources */,
 				F850C1B9205151110035087E /* stdbool.c in Sources */,
 				F850C1BF205151110035087E /* time.c in Sources */,
-				F850C1C52051511C0035087E /* library_unix.c in Sources */,
 				F850C1C62051511C0035087E /* platform_unix.c in Sources */,
 				F850C1A7205151110035087E /* clibrary.c in Sources */,
 				F850C1B8205151110035087E /* math.c in Sources */,
