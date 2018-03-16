@@ -365,6 +365,8 @@ struct Picoc_Struct
 #ifdef LOXONE_SIM
     void *owner;
     int eventMask;
+    void **mallocPtrList;
+    int mallocPtrListSize;
 #endif
     /* parser global data */
     struct Table GlobalTable;

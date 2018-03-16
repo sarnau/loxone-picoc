@@ -585,7 +585,7 @@ enum ParseResult ParseStatement(struct ParseState *Parser, int CheckTrailingSemi
     ParserCopy(&PreState, Parser);
     Token = LexGetToken(Parser, &LexerValue, TRUE);
 #ifdef LOXONE_SIM
-    LexSim_updateLine(Parser);
+    LoxSim_updateLine(Parser);
 #endif
     switch (Token)
     {

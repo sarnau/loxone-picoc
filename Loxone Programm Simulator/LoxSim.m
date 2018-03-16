@@ -68,10 +68,52 @@ void PlatformExit(Picoc *pc, int RetVal)
 
 #pragma mark -
 
-void LexSim_updateLine(struct ParseState *state)
+void LoxSim_addPointer(struct ParseState *Parser, void *pointer)
 {
-    LoxPrgDocument *doc = (__bridge LoxPrgDocument *)(state->pc->owner);
-    int currentLine = state->Line; 
+    for(int i=0; i<Parser->pc->mallocPtrListSize; ++i) {
+        if(Parser->pc->mallocPtrList[i] == pointer) {
+            NSLog(@"Line %d: %p already in the malloc list", Parser->Line, pointer);
+            return;
+        }
+    }
+    for(int i=0; i<Parser->pc->mallocPtrListSize; ++i) {
+        if(Parser->pc->mallocPtrList[i] == NULL) {
+            Parser->pc->mallocPtrList[i] = pointer;
+            return;
+        }
+    }
+    NSLog(@"Line %d: Out of memory for pointer %p - probably a memory leak", Parser->Line, pointer);
+}
+
+void LoxSim_removePointer(struct ParseState *Parser, void *pointer)
+{
+    if(!pointer) return; // NULL is fine
+    for(int i=0; i<Parser->pc->mallocPtrListSize; ++i) {
+        if(Parser->pc->mallocPtrList[i] == pointer) {
+            Parser->pc->mallocPtrList[i] = NULL;
+            return;
+        }
+    }
+    NSLog(@"Line %d: free(%p) Pointer not found - double release or illegal pointer", Parser->Line, pointer);
+}
+
+void LoxSim_checkLeaks(struct ParseState *Parser)
+{
+    int countBlocks = 0;
+    for(int i=0; i<Parser->pc->mallocPtrListSize; ++i) {
+        if(Parser->pc->mallocPtrList[i] != NULL) {
+            ++countBlocks;
+        }
+    }
+    if(countBlocks) {
+        NSLog(@"Line %d: Blocks != 0 (%d)", Parser->Line, countBlocks);
+    }
+}
+
+void LoxSim_updateLine(struct ParseState *Parser)
+{
+    LoxPrgDocument *doc = (__bridge LoxPrgDocument *)(Parser->pc->owner);
+    int currentLine = Parser->Line; 
     dispatch_async(dispatch_get_main_queue(), ^{
         __block NSRange selectRange = NSMakeRange(0, 0);
         __block NSInteger lineCount = 1;

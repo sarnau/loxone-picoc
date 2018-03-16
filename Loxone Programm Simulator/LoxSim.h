@@ -9,7 +9,10 @@
 #include "interpreter.h"
 #import <Foundation/Foundation.h>
 
-void LexSim_updateLine(struct ParseState *state);
+void LoxSim_updateLine(struct ParseState *state);
+void LoxSim_addPointer(struct ParseState *state, void *pointer);
+void LoxSim_removePointer(struct ParseState *state, void *pointer);
+void LoxSim_checkLeaks(struct ParseState *state);
 
 void LoxSim_Launch(Picoc *pcPtr, NSString *appName, NSString *sourceCode);
 

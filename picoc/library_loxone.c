@@ -112,6 +112,7 @@ static void Lox_getxmlvalue(struct ParseState *Parser, struct Value *ReturnValue
         strncpy(buf, foundStart, foundEnd - foundStart);
         buf[foundEnd - foundStart] = 0;
         ReturnValue->Val->Pointer = buf;
+        LoxSim_addPointer(Parser, ReturnValue->Val->Pointer);
     }
 }
 
@@ -157,6 +158,7 @@ static void Lox_localwebservice(struct ParseState *Parser, struct Value *ReturnV
     char *responseBuffer = malloc(strlen(responseStr) + 1);
     strcpy(responseBuffer, responseStr);
     ReturnValue->Val->Pointer = responseBuffer;
+    LoxSim_addPointer(Parser, ReturnValue->Val->Pointer);
 }
 
 #pragma mark -
@@ -169,9 +171,9 @@ static void Lox_localwebservice(struct ParseState *Parser, struct Value *ReturnV
 #include <arpa/inet.h>
 #include <netdb.h>
 
-static int socket_connect(const char *host, in_port_t port, int tcp /* tcp (1) or udp (0) */)
+static int socket_connect(const char *host, in_port_t port, int tcp /* tcp (1) or udp (0) */, struct sockaddr_in *retHostAddr)
 {
-    int sockfd = socket(AF_INET, SOCK_STREAM, tcp ? IPPROTO_TCP : IPPROTO_UDP);
+    int sockfd = socket(AF_INET, tcp ? SOCK_STREAM : SOCK_DGRAM, tcp ? IPPROTO_TCP : 0);
     if (sockfd == -1)
         return -1;
     if(tcp) {
@@ -179,6 +181,7 @@ static int socket_connect(const char *host, in_port_t port, int tcp /* tcp (1) o
         setsockopt(sockfd, IPPROTO_TCP, TCP_NODELAY, (const char *)&on, sizeof(int));
     }
     struct sockaddr_in host_addr;
+    bzero(&host_addr, sizeof(host_addr));
     host_addr.sin_family = AF_INET;
     host_addr.sin_port = htons(port);
     host_addr.sin_addr.s_addr = inet_addr(host);
@@ -191,9 +194,14 @@ static int socket_connect(const char *host, in_port_t port, int tcp /* tcp (1) o
         }
         memcpy((char*) &host_addr.sin_addr.s_addr, hostinfo->h_addr, hostinfo->h_length);
     }
-    if (connect(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr)) == -1) {
-        close(sockfd);
-        return -1;
+    if(tcp) { // UDP doesn't have a connection
+        if (connect(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr)) == -1) {
+            close(sockfd);
+            return -1;
+        }
+    }
+    if(retHostAddr) {
+        *retHostAddr = host_addr;
     }
     return sockfd;
 }
@@ -204,7 +212,7 @@ static void Lox_httpget(struct ParseState *Parser, struct Value *ReturnValue, st
     const char *server = Param[0]->Val->Pointer;
     const char *page = Param[1]->Val->Pointer;
     LOX_DEBUGPRINT("localwebservice(\"%s\", \"%s\")\n", server, page);
-    int sockfd = socket_connect(server, 80, 1);
+    int sockfd = socket_connect(server, 80, 1, NULL);
     if (sockfd == -1) {
         ReturnValue->Val->Pointer = NULL;
         return;
@@ -233,6 +241,7 @@ static void Lox_httpget(struct ParseState *Parser, struct Value *ReturnValue, st
     char *responseBuffer = malloc(bufferCount + 1);
     strcpy(responseBuffer, buffer);
     ReturnValue->Val->Pointer = responseBuffer;
+    LoxSim_addPointer(Parser, ReturnValue->Val->Pointer);
 }
 
 #pragma mark -
@@ -339,6 +348,7 @@ static void Lox_sleep(struct ParseState *Parser, struct Value *ReturnValue, stru
 {
     LOX_DEBUGPRINT("sleep(%d)\n", Param[0]->Val->Integer);
     usleep(Param[0]->Val->Integer * 1000);
+    LoxSim_checkLeaks(Parser);
 }
 
 // void sleeps(int s);
@@ -347,6 +357,7 @@ static void Lox_sleeps(struct ParseState *Parser, struct Value *ReturnValue, str
 {
     LOX_DEBUGPRINT("sleeps(%d)\n", Param[0]->Val->Integer);
     sleep(Param[0]->Val->Integer);
+    LoxSim_checkLeaks(Parser);
 }
 
 // Number of seconds from 1.1.1970 till 1.1.2009 (start time of the Loxone server) 
@@ -597,6 +608,8 @@ static void Lox_getdouble(struct ParseState *Parser, struct Value *ReturnValue, 
 
 typedef struct STREAM_STRUCT {
     int sockfd;
+    int isTCP;
+    struct sockaddr_in host_addr;
 } STREAM_STRUCT;
 
 // STREAM *stream_create(char* filename,int read,int append);
@@ -609,6 +622,7 @@ static void Lox_stream_create(struct ParseState *Parser, struct Value *ReturnVal
 
     char hostName[1024];
     int port = 0;
+    int isTCP = 0;
     if(!strncmp(filename, "/dev/tcp/", 9) || !strncmp(filename, "/dev/udp/", 9)) {
         strcpy(hostName, filename+9);
         char    *endChar = hostName + strlen(hostName) - 1;
@@ -618,7 +632,11 @@ static void Lox_stream_create(struct ParseState *Parser, struct Value *ReturnVal
             port = atoi(endChar+1);
             endChar[0] = 0;
         }
-        printf("%s %s:%d\n", filename[5] == 't' ? "TCP" : "UDP", hostName, port);
+//        if(!strcmp(hostName, "localhost") || !strcmp(hostName, "127.0.0.1")) {
+//            strcpy(hostName, "192.168.178.32");
+//        }
+        isTCP = filename[5] == 't';
+        //printf("%s %s:%d\n", filename[5] == 't' ? "TCP" : "UDP", hostName, port);
     } else if(!strcmp(filename, "/dev/syslog")) {
         printf("NOT SUPPORTED: syslog\n");
         return;
@@ -630,12 +648,16 @@ static void Lox_stream_create(struct ParseState *Parser, struct Value *ReturnVal
         return;
     }
 
-    ReturnValue->Val->Pointer = NULL;
-    int sockfd = socket_connect(hostName, port, port != 0);
-    if (sockfd == -1)
-        return;
     STREAM_STRUCT *ss = calloc(1, sizeof(STREAM_STRUCT));
+    LoxSim_addPointer(Parser, ss);
+    ReturnValue->Val->Pointer = NULL;
+    int sockfd = socket_connect(hostName, port, isTCP, &ss->host_addr);
     ss->sockfd = sockfd;
+    ss->isTCP = isTCP;
+    if (sockfd == -1) {
+        free(ss);
+        return;
+    }
     ReturnValue->Val->Pointer = ss;
 }
 
@@ -650,10 +672,14 @@ static void Lox_stream_write(struct ParseState *Parser, struct Value *ReturnValu
 {
     STREAM_STRUCT *ss = Param[0]->Val->Pointer;
     LOX_DEBUGPRINT("stream_write(%p, %p, %d)\n", ss, Param[1]->Val->Pointer, Param[2]->Val->Integer);
-    printf("%s\n", Param[1]->Val->Pointer);
-    ssize_t byteCount = send(ss->sockfd, Param[1]->Val->Pointer, Param[2]->Val->Integer, 0);
+    ssize_t byteCount = -1;
+    if(ss->isTCP) {
+        byteCount = send(ss->sockfd, Param[1]->Val->Pointer, Param[2]->Val->Integer, 0);
+    } else {
+        byteCount = sendto(ss->sockfd, Param[1]->Val->Pointer, Param[2]->Val->Integer, 0, (struct sockaddr *)&ss->host_addr, sizeof(ss->host_addr));
+    }
     if (byteCount == -1) {
-        perror("send()");
+        printf("stream_write() error %d", errno);
     }
     ReturnValue->Val->Integer = (int)byteCount;
 }
@@ -671,9 +697,8 @@ static void Lox_stream_read(struct ParseState *Parser, struct Value *ReturnValue
     LOX_DEBUGPRINT("stream_read(%p, %p, %d)\n", ss, Param[1]->Val->Pointer, Param[2]->Val->Integer);
     ssize_t byteCount = recv(ss->sockfd, Param[1]->Val->Pointer, Param[2]->Val->Integer, 0);
     if (byteCount == -1) {
-        perror ("recv()");
+        printf("stream_read() error %d", errno);
     }
-    printf("%s\n", Param[1]->Val->Pointer);
     ReturnValue->Val->Integer = (int)byteCount;
 }
 
@@ -688,10 +713,10 @@ static void Lox_stream_close(struct ParseState *Parser, struct Value *ReturnValu
 {
     LOX_DEBUGPRINT("stream_close(%p)\n", Param[0]->Val->Pointer);
     STREAM_STRUCT *ss = Param[0]->Val->Pointer;
-    if(ss) {
-        close(ss->sockfd);
-        free(ss);
-    }
+    if(!ss) return;
+    close(ss->sockfd);
+    free(ss);
+    LoxSim_removePointer(Parser, ss);
 }
 
 

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		F8490390205AA4E40065FA89 /* picoc.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490380205AA4E20065FA89 /* picoc.c */; };
 		F8490391205AA4E40065FA89 /* heap.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490382205AA4E30065FA89 /* heap.c */; };
-		F8490392205AA4E40065FA89 /* include.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490383205AA4E30065FA89 /* include.c */; };
 		F8490393205AA4E40065FA89 /* expression.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490384205AA4E30065FA89 /* expression.c */; };
 		F8490394205AA4E40065FA89 /* platform.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490386205AA4E30065FA89 /* platform.c */; };
 		F8490395205AA4E40065FA89 /* table.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490387205AA4E30065FA89 /* table.c */; };
@@ -23,9 +22,6 @@
 		F84903B5205AA5010065FA89 /* platform_unix.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903B3205AA4F50065FA89 /* platform_unix.c */; };
 		F84903B6205AA5070065FA89 /* math.c in Sources */ = {isa = PBXBuildFile; fileRef = F849039E205AA4F50065FA89 /* math.c */; };
 		F84903B7205AA5180065FA89 /* stdio.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A2205AA4F50065FA89 /* stdio.c */; };
-		F84903B8205AA52C0065FA89 /* ctype.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A0205AA4F50065FA89 /* ctype.c */; };
-		F84903B9205AA53B0065FA89 /* errno.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A1205AA4F50065FA89 /* errno.c */; };
-		F84903BA205AA54D0065FA89 /* time.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A5205AA4F50065FA89 /* time.c */; };
 		F84903BB205AA55F0065FA89 /* stdbool.c in Sources */ = {isa = PBXBuildFile; fileRef = F849039F205AA4F50065FA89 /* stdbool.c */; };
 		F84903BC205AA56C0065FA89 /* stdlib.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A4205AA4F50065FA89 /* stdlib.c */; };
 		F84903BD205AA5770065FA89 /* string.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A3205AA4F50065FA89 /* string.c */; };
@@ -41,7 +37,6 @@
 		F8BF6003205BFBE400B94DE7 /* debug.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490389205AA4E30065FA89 /* debug.c */; };
 		F8BF6004205BFBE400B94DE7 /* expression.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490384205AA4E30065FA89 /* expression.c */; };
 		F8BF6005205BFBE400B94DE7 /* heap.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490382205AA4E30065FA89 /* heap.c */; };
-		F8BF6006205BFBE400B94DE7 /* include.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490383205AA4E30065FA89 /* include.c */; };
 		F8BF6007205BFBE400B94DE7 /* lex.c in Sources */ = {isa = PBXBuildFile; fileRef = F849038F205AA4E30065FA89 /* lex.c */; };
 		F8BF6008205BFBE400B94DE7 /* parse.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490388205AA4E30065FA89 /* parse.c */; };
 		F8BF6009205BFBE400B94DE7 /* platform.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490386205AA4E30065FA89 /* platform.c */; };
@@ -50,13 +45,12 @@
 		F8BF600C205BFBE400B94DE7 /* variable.c in Sources */ = {isa = PBXBuildFile; fileRef = F849038A205AA4E30065FA89 /* variable.c */; };
 		F8BF600D205BFBEE00B94DE7 /* math.c in Sources */ = {isa = PBXBuildFile; fileRef = F849039E205AA4F50065FA89 /* math.c */; };
 		F8BF600E205BFBEE00B94DE7 /* stdbool.c in Sources */ = {isa = PBXBuildFile; fileRef = F849039F205AA4F50065FA89 /* stdbool.c */; };
-		F8BF600F205BFBEE00B94DE7 /* ctype.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A0205AA4F50065FA89 /* ctype.c */; };
-		F8BF6010205BFBEE00B94DE7 /* errno.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A1205AA4F50065FA89 /* errno.c */; };
 		F8BF6011205BFBEE00B94DE7 /* stdio.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A2205AA4F50065FA89 /* stdio.c */; };
 		F8BF6012205BFBEE00B94DE7 /* string.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A3205AA4F50065FA89 /* string.c */; };
 		F8BF6013205BFBEE00B94DE7 /* stdlib.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A4205AA4F50065FA89 /* stdlib.c */; };
-		F8BF6014205BFBEE00B94DE7 /* time.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A5205AA4F50065FA89 /* time.c */; };
 		F8BF6019205C0A8D00B94DE7 /* LoxSim.m in Sources */ = {isa = PBXBuildFile; fileRef = F8BF6018205C0A8D00B94DE7 /* LoxSim.m */; };
+		F8BF601A205C571000B94DE7 /* include.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490383205AA4E30065FA89 /* include.c */; };
+		F8BF601B205C571100B94DE7 /* include.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490383205AA4E30065FA89 /* include.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -152,11 +146,11 @@
 			children = (
 				F849039E205AA4F50065FA89 /* math.c */,
 				F849039F205AA4F50065FA89 /* stdbool.c */,
-				F84903A0205AA4F50065FA89 /* ctype.c */,
-				F84903A1205AA4F50065FA89 /* errno.c */,
 				F84903A2205AA4F50065FA89 /* stdio.c */,
 				F84903A3205AA4F50065FA89 /* string.c */,
 				F84903A4205AA4F50065FA89 /* stdlib.c */,
+				F84903A0205AA4F50065FA89 /* ctype.c */,
+				F84903A1205AA4F50065FA89 /* errno.c */,
 				F84903A5205AA4F50065FA89 /* time.c */,
 				F84903A6205AA4F50065FA89 /* unistd.c */,
 			);
@@ -358,16 +352,13 @@
 				F849039A205AA4E40065FA89 /* library_loxone.c in Sources */,
 				F8490391205AA4E40065FA89 /* heap.c in Sources */,
 				F8490397205AA4E40065FA89 /* debug.c in Sources */,
-				F8490392205AA4E40065FA89 /* include.c in Sources */,
 				F8490393205AA4E40065FA89 /* expression.c in Sources */,
-				F84903B9205AA53B0065FA89 /* errno.c in Sources */,
 				F8490398205AA4E40065FA89 /* variable.c in Sources */,
 				F8490396205AA4E40065FA89 /* parse.c in Sources */,
 				F8490394205AA4E40065FA89 /* platform.c in Sources */,
 				F84903BD205AA5770065FA89 /* string.c in Sources */,
-				F84903BA205AA54D0065FA89 /* time.c in Sources */,
+				F8BF601B205C571100B94DE7 /* include.c in Sources */,
 				F8490390205AA4E40065FA89 /* picoc.c in Sources */,
-				F84903B8205AA52C0065FA89 /* ctype.c in Sources */,
 				F84903BB205AA55F0065FA89 /* stdbool.c in Sources */,
 				F84903B6205AA5070065FA89 /* math.c in Sources */,
 				F84903BC205AA56C0065FA89 /* stdlib.c in Sources */,
@@ -397,16 +388,13 @@
 				F8BF6009205BFBE400B94DE7 /* platform.c in Sources */,
 				F8BF600E205BFBEE00B94DE7 /* stdbool.c in Sources */,
 				F8BF600B205BFBE400B94DE7 /* type.c in Sources */,
-				F8BF6010205BFBEE00B94DE7 /* errno.c in Sources */,
 				F8BF6012205BFBEE00B94DE7 /* string.c in Sources */,
 				F8BF5FAF205BED9E00B94DE7 /* AppDelegate.m in Sources */,
 				F8BF6019205C0A8D00B94DE7 /* LoxSim.m in Sources */,
 				F8BF600A205BFBE400B94DE7 /* table.c in Sources */,
-				F8BF600F205BFBEE00B94DE7 /* ctype.c in Sources */,
+				F8BF601A205C571000B94DE7 /* include.c in Sources */,
 				F8BF6013205BFBEE00B94DE7 /* stdlib.c in Sources */,
 				F8BF6002205BFBE400B94DE7 /* clibrary.c in Sources */,
-				F8BF6014205BFBEE00B94DE7 /* time.c in Sources */,
-				F8BF6006205BFBE400B94DE7 /* include.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

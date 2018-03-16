@@ -12,6 +12,9 @@ void PicocInitialise(Picoc *pc, int StackSize)
 {
 #ifndef LOXONE_SIM
     memset(pc, '\0', sizeof(*pc));
+#else
+    pc->mallocPtrListSize = 4096;
+    pc->mallocPtrList = calloc(pc->mallocPtrListSize, sizeof(void*));
 #endif
     PlatformInit(pc);
     BasicIOInit(pc);

@@ -4,6 +4,7 @@
 #ifndef BUILTIN_MINI_STDLIB
 #ifndef NO_FP
 
+#ifndef LOXONE
 static double M_EValue =        2.7182818284590452354;   /* e */
 static double M_LOG2EValue =    1.4426950408889634074;   /* log_2 e */
 static double M_LOG10EValue =   0.43429448190325182765;  /* log_10 e */
@@ -17,129 +18,129 @@ static double M_2_PIValue =     0.63661977236758134308;  /* 2/pi */
 static double M_2_SQRTPIValue = 1.12837916709551257390;  /* 2/sqrt(pi) */
 static double M_SQRT2Value =    1.41421356237309504880;  /* sqrt(2) */
 static double M_SQRT1_2Value =  0.70710678118654752440;  /* 1/sqrt(2) */
+#endif
 
-
-void MathSin(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathSin(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = sin(Param[0]->Val->FP);
 }
 
-void MathCos(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathCos(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = cos(Param[0]->Val->FP);
 }
 
-void MathTan(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathTan(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = tan(Param[0]->Val->FP);
 }
 
-void MathAsin(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathAsin(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = asin(Param[0]->Val->FP);
 }
 
-void MathAcos(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathAcos(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = acos(Param[0]->Val->FP);
 }
 
-void MathAtan(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathAtan(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = atan(Param[0]->Val->FP);
 }
 
-void MathAtan2(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathAtan2(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = atan2(Param[0]->Val->FP, Param[1]->Val->FP);
 }
 
-void MathSinh(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathSinh(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = sinh(Param[0]->Val->FP);
 }
 
-void MathCosh(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathCosh(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = cosh(Param[0]->Val->FP);
 }
 
-void MathTanh(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathTanh(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = tanh(Param[0]->Val->FP);
 }
 
-void MathExp(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathExp(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = exp(Param[0]->Val->FP);
 }
 
-void MathFabs(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathFabs(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = fabs(Param[0]->Val->FP);
 }
 
-void MathFmod(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathFmod(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = fmod(Param[0]->Val->FP, Param[1]->Val->FP);
 }
 
-void MathFrexp(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathFrexp(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = frexp(Param[0]->Val->FP, (int *) Param[1]->Val->Pointer);
 }
 
-void MathLdexp(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathLdexp(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = ldexp(Param[0]->Val->FP, Param[1]->Val->Integer);
 }
 
-void MathLog(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathLog(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = log(Param[0]->Val->FP);
 }
 
-void MathLog10(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathLog10(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = log10(Param[0]->Val->FP);
 }
 
-void MathModf(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathModf(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = modf(Param[0]->Val->FP, (double *) Param[0]->Val->Pointer);
 }
 
-void MathPow(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathPow(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = pow(Param[0]->Val->FP, Param[1]->Val->FP);
 }
 
-void MathSqrt(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathSqrt(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = sqrt(Param[0]->Val->FP);
 }
 
-void MathRound(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathRound(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     /* this awkward definition of "round()" due to it being inconsistently
@@ -147,13 +148,13 @@ void MathRound(struct ParseState *Parser, struct Value *ReturnValue, struct Valu
     ReturnValue->Val->FP = ceil(Param[0]->Val->FP - 0.5);
 }
 
-void MathCeil(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathCeil(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = ceil(Param[0]->Val->FP);
 }
 
-void MathFloor(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
+static void MathFloor(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
 	UNUSED(Parser); UNUSED(NumArgs);
     ReturnValue->Val->FP = floor(Param[0]->Val->FP);
@@ -189,6 +190,7 @@ struct LibraryFunction MathFunctions[] =
 };
 
 /* creates various system-dependent definitions */
+#ifndef LOXONE
 void MathSetupFunc(Picoc *pc)
 {
     VariableDefinePlatformVar(pc, NULL, "M_E", &pc->FPType, (union AnyValue *)&M_EValue, FALSE);
@@ -205,6 +207,7 @@ void MathSetupFunc(Picoc *pc)
     VariableDefinePlatformVar(pc, NULL, "M_SQRT2", &pc->FPType, (union AnyValue *)&M_SQRT2Value, FALSE);
     VariableDefinePlatformVar(pc, NULL, "M_SQRT1_2", &pc->FPType, (union AnyValue *)&M_SQRT1_2Value, FALSE);
 }
+#endif
 
 #endif /* !NO_FP */
 #endif /* !BUILTIN_MINI_STDLIB */
