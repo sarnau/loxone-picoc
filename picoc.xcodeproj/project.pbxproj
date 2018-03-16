@@ -29,8 +29,34 @@
 		F84903BB205AA55F0065FA89 /* stdbool.c in Sources */ = {isa = PBXBuildFile; fileRef = F849039F205AA4F50065FA89 /* stdbool.c */; };
 		F84903BC205AA56C0065FA89 /* stdlib.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A4205AA4F50065FA89 /* stdlib.c */; };
 		F84903BD205AA5770065FA89 /* string.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A3205AA4F50065FA89 /* string.c */; };
-		F84903BE205AA5830065FA89 /* unistd.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A6205AA4F50065FA89 /* unistd.c */; };
 		F859B6CA205124D20026E5F5 /* libreadline.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F859B6C9205124D20026E5F5 /* libreadline.tbd */; };
+		F8BF5FAF205BED9E00B94DE7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F8BF5FAE205BED9E00B94DE7 /* AppDelegate.m */; };
+		F8BF5FB2205BED9E00B94DE7 /* LoxPrgDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = F8BF5FB1205BED9E00B94DE7 /* LoxPrgDocument.m */; };
+		F8BF5FB5205BED9E00B94DE7 /* LoxPrgDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8BF5FB3205BED9E00B94DE7 /* LoxPrgDocument.xib */; };
+		F8BF5FB7205BED9F00B94DE7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8BF5FB6205BED9F00B94DE7 /* Assets.xcassets */; };
+		F8BF5FBA205BED9F00B94DE7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8BF5FB8205BED9F00B94DE7 /* MainMenu.xib */; };
+		F8BF5FBD205BED9F00B94DE7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F8BF5FBC205BED9F00B94DE7 /* main.m */; };
+		F8BF6001205BFBE400B94DE7 /* library_loxone.c in Sources */ = {isa = PBXBuildFile; fileRef = F849038C205AA4E30065FA89 /* library_loxone.c */; };
+		F8BF6002205BFBE400B94DE7 /* clibrary.c in Sources */ = {isa = PBXBuildFile; fileRef = F849038B205AA4E30065FA89 /* clibrary.c */; };
+		F8BF6003205BFBE400B94DE7 /* debug.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490389205AA4E30065FA89 /* debug.c */; };
+		F8BF6004205BFBE400B94DE7 /* expression.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490384205AA4E30065FA89 /* expression.c */; };
+		F8BF6005205BFBE400B94DE7 /* heap.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490382205AA4E30065FA89 /* heap.c */; };
+		F8BF6006205BFBE400B94DE7 /* include.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490383205AA4E30065FA89 /* include.c */; };
+		F8BF6007205BFBE400B94DE7 /* lex.c in Sources */ = {isa = PBXBuildFile; fileRef = F849038F205AA4E30065FA89 /* lex.c */; };
+		F8BF6008205BFBE400B94DE7 /* parse.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490388205AA4E30065FA89 /* parse.c */; };
+		F8BF6009205BFBE400B94DE7 /* platform.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490386205AA4E30065FA89 /* platform.c */; };
+		F8BF600A205BFBE400B94DE7 /* table.c in Sources */ = {isa = PBXBuildFile; fileRef = F8490387205AA4E30065FA89 /* table.c */; };
+		F8BF600B205BFBE400B94DE7 /* type.c in Sources */ = {isa = PBXBuildFile; fileRef = F849038E205AA4E30065FA89 /* type.c */; };
+		F8BF600C205BFBE400B94DE7 /* variable.c in Sources */ = {isa = PBXBuildFile; fileRef = F849038A205AA4E30065FA89 /* variable.c */; };
+		F8BF600D205BFBEE00B94DE7 /* math.c in Sources */ = {isa = PBXBuildFile; fileRef = F849039E205AA4F50065FA89 /* math.c */; };
+		F8BF600E205BFBEE00B94DE7 /* stdbool.c in Sources */ = {isa = PBXBuildFile; fileRef = F849039F205AA4F50065FA89 /* stdbool.c */; };
+		F8BF600F205BFBEE00B94DE7 /* ctype.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A0205AA4F50065FA89 /* ctype.c */; };
+		F8BF6010205BFBEE00B94DE7 /* errno.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A1205AA4F50065FA89 /* errno.c */; };
+		F8BF6011205BFBEE00B94DE7 /* stdio.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A2205AA4F50065FA89 /* stdio.c */; };
+		F8BF6012205BFBEE00B94DE7 /* string.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A3205AA4F50065FA89 /* string.c */; };
+		F8BF6013205BFBEE00B94DE7 /* stdlib.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A4205AA4F50065FA89 /* stdlib.c */; };
+		F8BF6014205BFBEE00B94DE7 /* time.c in Sources */ = {isa = PBXBuildFile; fileRef = F84903A5205AA4F50065FA89 /* time.c */; };
+		F8BF6019205C0A8D00B94DE7 /* LoxSim.m in Sources */ = {isa = PBXBuildFile; fileRef = F8BF6018205C0A8D00B94DE7 /* LoxSim.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -87,6 +113,19 @@
 		F84903B4205AA4F50065FA89 /* library_msvc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = library_msvc.c; sourceTree = "<group>"; };
 		F859B6782051223E0026E5F5 /* picoc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = picoc; sourceTree = BUILT_PRODUCTS_DIR; };
 		F859B6C9205124D20026E5F5 /* libreadline.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libreadline.tbd; path = usr/lib/libreadline.tbd; sourceTree = SDKROOT; };
+		F8BF5FAB205BED9E00B94DE7 /* Loxone Programm Simulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Loxone Programm Simulator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8BF5FAD205BED9E00B94DE7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		F8BF5FAE205BED9E00B94DE7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		F8BF5FB0205BED9E00B94DE7 /* LoxPrgDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoxPrgDocument.h; sourceTree = "<group>"; };
+		F8BF5FB1205BED9E00B94DE7 /* LoxPrgDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoxPrgDocument.m; sourceTree = "<group>"; };
+		F8BF5FB4205BED9E00B94DE7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LoxPrgDocument.xib; sourceTree = "<group>"; };
+		F8BF5FB6205BED9F00B94DE7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F8BF5FB9205BED9F00B94DE7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		F8BF5FBB205BED9F00B94DE7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F8BF5FBC205BED9F00B94DE7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F8BF5FBE205BED9F00B94DE7 /* Loxone_Programm_Simulator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Loxone_Programm_Simulator.entitlements; sourceTree = "<group>"; };
+		F8BF6017205C0A8D00B94DE7 /* LoxSim.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoxSim.h; sourceTree = "<group>"; };
+		F8BF6018205C0A8D00B94DE7 /* LoxSim.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoxSim.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +134,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				F859B6CA205124D20026E5F5 /* libreadline.tbd in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8BF5FA8205BED9E00B94DE7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,10 +196,10 @@
 			isa = PBXGroup;
 			children = (
 				F849037E205AA4D60065FA89 /* README.md */,
-				F849038C205AA4E30065FA89 /* library_loxone.c */,
-				F849037F205AA4E20065FA89 /* library_loxone.h */,
 				F8490380205AA4E20065FA89 /* picoc.c */,
 				F849038D205AA4E30065FA89 /* picoc.h */,
+				F849038C205AA4E30065FA89 /* library_loxone.c */,
+				F849037F205AA4E20065FA89 /* library_loxone.h */,
 				F849038B205AA4E30065FA89 /* clibrary.c */,
 				F8490389205AA4E30065FA89 /* debug.c */,
 				F8490384205AA4E30065FA89 /* expression.c */,
@@ -170,6 +216,7 @@
 				F849039D205AA4F50065FA89 /* cstdlib */,
 				F84903A7205AA4F50065FA89 /* doc */,
 				F84903AB205AA4F50065FA89 /* platform */,
+				F8BF5FAC205BED9E00B94DE7 /* Loxone Programm Simulator */,
 				F859B6792051223E0026E5F5 /* Products */,
 				F859B6C8205124D10026E5F5 /* Frameworks */,
 			);
@@ -179,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				F859B6782051223E0026E5F5 /* picoc */,
+				F8BF5FAB205BED9E00B94DE7 /* Loxone Programm Simulator.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -189,6 +237,25 @@
 				F859B6C9205124D20026E5F5 /* libreadline.tbd */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F8BF5FAC205BED9E00B94DE7 /* Loxone Programm Simulator */ = {
+			isa = PBXGroup;
+			children = (
+				F8BF5FAD205BED9E00B94DE7 /* AppDelegate.h */,
+				F8BF5FAE205BED9E00B94DE7 /* AppDelegate.m */,
+				F8BF6017205C0A8D00B94DE7 /* LoxSim.h */,
+				F8BF6018205C0A8D00B94DE7 /* LoxSim.m */,
+				F8BF5FB0205BED9E00B94DE7 /* LoxPrgDocument.h */,
+				F8BF5FB1205BED9E00B94DE7 /* LoxPrgDocument.m */,
+				F8BF5FB3205BED9E00B94DE7 /* LoxPrgDocument.xib */,
+				F8BF5FB6205BED9F00B94DE7 /* Assets.xcassets */,
+				F8BF5FB8205BED9F00B94DE7 /* MainMenu.xib */,
+				F8BF5FBB205BED9F00B94DE7 /* Info.plist */,
+				F8BF5FBC205BED9F00B94DE7 /* main.m */,
+				F8BF5FBE205BED9F00B94DE7 /* Loxone_Programm_Simulator.entitlements */,
+			);
+			path = "Loxone Programm Simulator";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -211,6 +278,23 @@
 			productReference = F859B6782051223E0026E5F5 /* picoc */;
 			productType = "com.apple.product-type.tool";
 		};
+		F8BF5FAA205BED9E00B94DE7 /* Loxone Programm Simulator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F8BF5FCA205BED9F00B94DE7 /* Build configuration list for PBXNativeTarget "Loxone Programm Simulator" */;
+			buildPhases = (
+				F8BF5FA7205BED9E00B94DE7 /* Sources */,
+				F8BF5FA8205BED9E00B94DE7 /* Frameworks */,
+				F8BF5FA9205BED9E00B94DE7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Loxone Programm Simulator";
+			productName = "Loxone Programm Simulator";
+			productReference = F8BF5FAB205BED9E00B94DE7 /* Loxone Programm Simulator.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -223,6 +307,14 @@
 					F859B6772051223E0026E5F5 = {
 						CreatedOnToolsVersion = 9.3;
 					};
+					F8BF5FAA205BED9E00B94DE7 = {
+						CreatedOnToolsVersion = 9.3;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
+					};
 				};
 			};
 			buildConfigurationList = F859B6732051223E0026E5F5 /* Build configuration list for PBXProject "picoc" */;
@@ -231,6 +323,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = F859B66F2051223E0026E5F5;
 			productRefGroup = F859B6792051223E0026E5F5 /* Products */;
@@ -238,9 +331,23 @@
 			projectRoot = "";
 			targets = (
 				F859B6772051223E0026E5F5 /* picoc */,
+				F8BF5FAA205BED9E00B94DE7 /* Loxone Programm Simulator */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F8BF5FA9205BED9E00B94DE7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8BF5FB7205BED9F00B94DE7 /* Assets.xcassets in Resources */,
+				F8BF5FB5205BED9E00B94DE7 /* LoxPrgDocument.xib in Resources */,
+				F8BF5FBA205BED9F00B94DE7 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F859B6742051223E0026E5F5 /* Sources */ = {
@@ -253,7 +360,6 @@
 				F8490397205AA4E40065FA89 /* debug.c in Sources */,
 				F8490392205AA4E40065FA89 /* include.c in Sources */,
 				F8490393205AA4E40065FA89 /* expression.c in Sources */,
-				F84903BE205AA5830065FA89 /* unistd.c in Sources */,
 				F84903B9205AA53B0065FA89 /* errno.c in Sources */,
 				F8490398205AA4E40065FA89 /* variable.c in Sources */,
 				F8490396205AA4E40065FA89 /* parse.c in Sources */,
@@ -273,13 +379,62 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F8BF5FA7205BED9E00B94DE7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8BF5FB2205BED9E00B94DE7 /* LoxPrgDocument.m in Sources */,
+				F8BF600D205BFBEE00B94DE7 /* math.c in Sources */,
+				F8BF6008205BFBE400B94DE7 /* parse.c in Sources */,
+				F8BF6011205BFBEE00B94DE7 /* stdio.c in Sources */,
+				F8BF6007205BFBE400B94DE7 /* lex.c in Sources */,
+				F8BF600C205BFBE400B94DE7 /* variable.c in Sources */,
+				F8BF5FBD205BED9F00B94DE7 /* main.m in Sources */,
+				F8BF6001205BFBE400B94DE7 /* library_loxone.c in Sources */,
+				F8BF6004205BFBE400B94DE7 /* expression.c in Sources */,
+				F8BF6003205BFBE400B94DE7 /* debug.c in Sources */,
+				F8BF6005205BFBE400B94DE7 /* heap.c in Sources */,
+				F8BF6009205BFBE400B94DE7 /* platform.c in Sources */,
+				F8BF600E205BFBEE00B94DE7 /* stdbool.c in Sources */,
+				F8BF600B205BFBE400B94DE7 /* type.c in Sources */,
+				F8BF6010205BFBEE00B94DE7 /* errno.c in Sources */,
+				F8BF6012205BFBEE00B94DE7 /* string.c in Sources */,
+				F8BF5FAF205BED9E00B94DE7 /* AppDelegate.m in Sources */,
+				F8BF6019205C0A8D00B94DE7 /* LoxSim.m in Sources */,
+				F8BF600A205BFBE400B94DE7 /* table.c in Sources */,
+				F8BF600F205BFBEE00B94DE7 /* ctype.c in Sources */,
+				F8BF6013205BFBEE00B94DE7 /* stdlib.c in Sources */,
+				F8BF6002205BFBE400B94DE7 /* clibrary.c in Sources */,
+				F8BF6014205BFBEE00B94DE7 /* time.c in Sources */,
+				F8BF6006205BFBE400B94DE7 /* include.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		F8BF5FB3205BED9E00B94DE7 /* LoxPrgDocument.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F8BF5FB4205BED9E00B94DE7 /* Base */,
+			);
+			name = LoxPrgDocument.xib;
+			sourceTree = "<group>";
+		};
+		F8BF5FB8205BED9F00B94DE7 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F8BF5FB9205BED9F00B94DE7 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		F859B67D2051223E0026E5F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -313,8 +468,6 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = "compiler-default";
-				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -327,7 +480,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
@@ -343,7 +495,6 @@
 		F859B67E2051223E0026E5F5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -377,7 +528,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -385,7 +535,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = (
 					"-DUNIX_HOST",
@@ -413,6 +562,58 @@
 			};
 			name = Release;
 		};
+		F8BF5FCB205BED9F00B94DE7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_INPUT_FILETYPE = sourcecode.c.objc;
+				INFOPLIST_FILE = "Loxone Programm Simulator/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				OTHER_CFLAGS = (
+					"-DUNIX_HOST",
+					"-DF_FULLSYNC",
+					"-DLOXONE",
+					"-DPICOC_LIBRARY",
+					"-DLOXONE_SIM",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sarnau..Loxone-Programm-Simulator";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F8BF5FCC205BED9F00B94DE7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_INPUT_FILETYPE = sourcecode.c.objc;
+				INFOPLIST_FILE = "Loxone Programm Simulator/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				OTHER_CFLAGS = (
+					"-DUNIX_HOST",
+					"-DF_FULLSYNC",
+					"-DLOXONE",
+					"-DPICOC_LIBRARY",
+					"-DLOXONE_SIM",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sarnau..Loxone-Programm-Simulator";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -430,6 +631,15 @@
 			buildConfigurations = (
 				F859B6802051223E0026E5F5 /* Debug */,
 				F859B6812051223E0026E5F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F8BF5FCA205BED9F00B94DE7 /* Build configuration list for PBXNativeTarget "Loxone Programm Simulator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F8BF5FCB205BED9F00B94DE7 /* Debug */,
+				F8BF5FCC205BED9F00B94DE7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

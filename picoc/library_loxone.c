@@ -8,6 +8,9 @@
 #include "library_loxone.h"
 #include "interpreter.h"
 #include <time.h>
+#ifdef LOXONE_SIM
+    #import "LoxSim.h"
+#endif
 
 static void Lox_debugPrintHeader(struct ParseState *Parser)
 {
@@ -44,6 +47,9 @@ static void Lox_exit(struct ParseState *Parser, struct Value *ReturnValue, struc
 static void Lox_errorprintf(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
     LOX_DEBUGPRINT("errorprintf(\"%s\")\n", Param[0]->Val->Pointer);
+#ifdef LOXONE_SIM
+    LoxSim_setlogtext(Parser, Param[0]->Val->Pointer, YES);
+#endif
 }
 
 #pragma mark -
@@ -237,6 +243,9 @@ static void Lox_httpget(struct ParseState *Parser, struct Value *ReturnValue, st
 static void Lox_setlogtext(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
     LOX_DEBUGPRINT("setlogtext(\"%s\")\n", Param[0]->Val->Pointer);
+#ifdef LOXONE_SIM
+    LoxSim_setlogtext(Parser, Param[0]->Val->Pointer, NO);
+#endif
 }
 
 // float getio(char *str);
@@ -244,7 +253,11 @@ static void Lox_setlogtext(struct ParseState *Parser, struct Value *ReturnValue,
 static void Lox_getio(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
     LOX_DEBUGPRINT("getio(\"%s\")\n", Param[0]->Val->Pointer);
+#ifdef LOXONE_SIM
+    ReturnValue->Val->FP = LoxSim_getio(Parser, Param[0]->Val->Pointer);
+#else
     ReturnValue->Val->FP = 0.0;
+#endif
 }
 
 // int setio(char *str,float value);
@@ -252,7 +265,11 @@ static void Lox_getio(struct ParseState *Parser, struct Value *ReturnValue, stru
 static void Lox_setio(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
     LOX_DEBUGPRINT("setio(\"%s\", %g)\n", Param[0]->Val->Pointer, Param[0]->Val->FP);
-    ReturnValue->Val->Integer = 0;
+#ifdef LOXONE_SIM
+    ReturnValue->Val->FP = LoxSim_setio(Parser, Param[0]->Val->Pointer, Param[0]->Val->FP);
+#else
+    ReturnValue->Val->FP = 0.0;
+#endif
 }
 
 // int getinputevent();
@@ -261,7 +278,11 @@ static void Lox_setio(struct ParseState *Parser, struct Value *ReturnValue, stru
 static void Lox_getinputevent(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
     LOX_DEBUGPRINT("getinputevent()\n");
+#ifdef LOXONE_SIM
+    ReturnValue->Val->Integer = LoxSim_getinputevent(Parser);
+#else
     ReturnValue->Val->Integer = 0xfff;
+#endif
 }
 
 // float getinput(int input);
@@ -269,7 +290,11 @@ static void Lox_getinputevent(struct ParseState *Parser, struct Value *ReturnVal
 static void Lox_getinput(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
     LOX_DEBUGPRINT("getinput(%d)\n", Param[0]->Val->Integer);
+#ifdef LOXONE_SIM
+    ReturnValue->Val->FP = LoxSim_getinput(Parser, Param[0]->Val->Integer);
+#else
     ReturnValue->Val->FP = 1;
+#endif
 }
 
 // char *getinputtext(int input);
@@ -277,7 +302,11 @@ static void Lox_getinput(struct ParseState *Parser, struct Value *ReturnValue, s
 static void Lox_getinputtext(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
     LOX_DEBUGPRINT("getinputtext(%d)\n", Param[0]->Val->Integer);
+#ifdef LOXONE_SIM
+    ReturnValue->Val->Pointer = (void *)LoxSim_getinputtext(Parser, Param[0]->Val->Integer);
+#else
     ReturnValue->Val->Pointer = "???";
+#endif
 }
 
 // void setoutput(int output,float value);
@@ -285,6 +314,9 @@ static void Lox_getinputtext(struct ParseState *Parser, struct Value *ReturnValu
 static void Lox_setoutput(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
     LOX_DEBUGPRINT("setoutput(%d, %g)\n", Param[0]->Val->Integer, Param[1]->Val->FP);
+#ifdef LOXONE_SIM
+    LoxSim_setoutput(Parser, Param[0]->Val->Integer, Param[1]->Val->FP);
+#endif
 }
 
 // void setoutputtext(int output,char *str);
@@ -292,6 +324,9 @@ static void Lox_setoutput(struct ParseState *Parser, struct Value *ReturnValue, 
 static void Lox_setoutputtext(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
     LOX_DEBUGPRINT("setoutputtext(%d, \"%s\")\n", Param[0]->Val->Integer, Param[1]->Val->Pointer);
+#ifdef LOXONE_SIM
+    LoxSim_setoutputtext(Parser, Param[0]->Val->Integer, Param[1]->Val->Pointer);
+#endif
 }
 
 
@@ -664,7 +699,6 @@ static void Lox_stream_close(struct ParseState *Parser, struct Value *ReturnValu
 
 static void LoxoneSetupFunc(Picoc *pc)
 {
-    printf("LoxoneSetupFunc()\n");
 }
 
 // handy structure definitions

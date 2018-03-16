@@ -362,6 +362,10 @@ struct IncludeLibrary
 /* the entire state of the picoc system */
 struct Picoc_Struct
 {
+#ifdef LOXONE_SIM
+    void *owner;
+    int eventMask;
+#endif
     /* parser global data */
     struct Table GlobalTable;
     struct CleanupTokenNode *CleanupTokenList;

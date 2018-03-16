@@ -349,6 +349,7 @@ void LibSPrintf(struct ParseState *Parser, struct Value *ReturnValue, struct Val
 }
 
 /* get a line of input. protected from buffer overrun */
+#ifndef LOXONE
 void LibGets(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
     ReturnValue->Val->Pointer = PlatformGetLine(Param[0]->Val->Pointer, GETS_BUF_MAX, NULL);
@@ -369,6 +370,7 @@ void LibExit(struct ParseState *Parser, struct Value *ReturnValue, struct Value 
 {
     PlatformExit(Param[0]->Val->Integer);
 }
+#endif
 
 #ifdef PICOC_LIBRARY
 void LibSin(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)

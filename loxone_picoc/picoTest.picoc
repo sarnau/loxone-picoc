@@ -1,0 +1,122 @@
+// Testing Loxone Picoc functions
+
+char buffer[100];
+
+while(1) {
+    int event = getinputevent();
+    if(event) {
+        sprintf(buffer, "%#x", event);
+        setlogtext(buffer);
+    }
+    sleep(100);
+}
+
+setlogtext(getprogramname());
+sprintf(buffer, "%d", lineno());
+setlogtext(buffer);
+
+char* p = localwebservice("dev/sps/status");
+setlogtext(p);
+free(p);
+
+sprintf(buffer, "%f", getio("VI1"));
+setlogtext(buffer);
+sprintf(buffer, "%f", getinput(1));
+setlogtext(buffer);
+sprintf(buffer, "%s", getinputtext(1));
+setlogtext(buffer);
+setoutput(1,123.45);
+setoutputtext(1,"Yeah");
+
+sprintf(buffer, "%f", getio("aaa"));
+setlogtext(buffer);
+
+//p = httpget("api.wunderground.com", "/api/6be222cb743a61e6/conditions/lang:DL/q/EDDH.xml");
+//setlogtext(p);
+//free(p);
+
+char bb[10];
+bb[7] = 0x40;
+bb[6] = 0x5e;
+bb[5] = 0xdc;
+bb[4] = 0xcc;
+bb[3] = 0xcc;
+bb[2] = 0xcc;
+bb[1] = 0xcc;
+bb[0] = 0xcc;
+
+sprintf(buffer, "%x", getshort(bb, 0));
+setlogtext(buffer);
+sprintf(buffer, "%x", getshort(bb, 1));
+setlogtext(buffer);
+sprintf(buffer, "%x", getushort(bb, 0));
+setlogtext(buffer);
+sprintf(buffer, "%x", getushort(bb, 1));
+setlogtext(buffer);
+sprintf(buffer, "%x", getint(bb, 0));
+setlogtext(buffer);
+sprintf(buffer, "%x", getint(bb, 1));
+setlogtext(buffer);
+sprintf(buffer, "%x", getuint(bb, 0));
+setlogtext(buffer);
+sprintf(buffer, "%x", getuint(bb, 1));
+setlogtext(buffer);
+sprintf(buffer, "%f", getdouble(bb, 0));
+setlogtext(buffer);
+sprintf(buffer, "%f", getdouble(bb, 1));
+setlogtext(buffer);
+
+
+sprintf(buffer, "%d", batoi(" 123.45"));
+setlogtext(buffer);
+sprintf(buffer, "%f", batof(" 123.45"));
+setlogtext(buffer);
+sprintf(buffer, "%s", strstr("das ist ein test","ein "));
+setlogtext(buffer);
+sprintf(buffer, "%s", strstrskip("das ist ein test","ein "));
+setlogtext(buffer);
+sprintf(buffer, "%s", index("0123456789",0x32));
+setlogtext(buffer);
+sprintf(buffer, "%d", getcpuinfo());
+setlogtext(buffer);
+sprintf(buffer, "%d", getheapusage());
+setlogtext(buffer);
+sprintf(buffer, "%d", getmaxheap());
+setlogtext(buffer);
+sprintf(buffer, "%d", getspsstatus());
+setlogtext(buffer);
+
+int now = getcurrenttime();
+sprintf(buffer, "%d", now);
+setlogtext(buffer);
+if(convertlocal2utc(convertutc2local(now)) != now) {
+    errorprintf("!!! convertlocal2utc/convertutc2local broken");
+}
+
+int local;
+for(local = 0; local<2; ++local) {
+    int calcNow = gettimeval(getyear(now, local), getmonth(now, local), getday(now, local), gethour(now, local), getminute(now, local), getsecond(now, local), local);
+    sprintf(buffer, "%d", calcNow);
+    setlogtext(buffer);
+}
+
+sleep(250);
+sleeps(1);
+
+for(local = 0; local<2; ++local) {
+    sprintf(buffer, "%d", getyear(now, local));
+    setlogtext(buffer);
+    sprintf(buffer, "%d", getmonth(now, local));
+    setlogtext(buffer);
+    sprintf(buffer, "%d", getday(now, local));
+    setlogtext(buffer);
+    sprintf(buffer, "%d", gethour(now, local));
+    setlogtext(buffer);
+    sprintf(buffer, "%d", getminute(now, local));
+    setlogtext(buffer);
+    sprintf(buffer, "%d", getsecond(now, local));
+    setlogtext(buffer);
+}
+
+errorprintf("Only a test - no error");
+exit();

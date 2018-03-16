@@ -10,7 +10,9 @@
 /* initialise everything */
 void PicocInitialise(Picoc *pc, int StackSize)
 {
+#ifndef LOXONE_SIM
     memset(pc, '\0', sizeof(*pc));
+#endif
     PlatformInit(pc);
     BasicIOInit(pc);
     HeapInit(pc, StackSize);

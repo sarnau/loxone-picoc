@@ -2,6 +2,9 @@
 
 #include "picoc.h"
 #include "interpreter.h"
+#ifdef LOXONE_SIM
+    #import "LoxSim.h"
+#endif
 
 /* deallocate any memory */
 void ParseCleanup(Picoc *pc)
@@ -581,7 +584,9 @@ enum ParseResult ParseStatement(struct ParseState *Parser, int CheckTrailingSemi
     /* take note of where we are and then grab a token to see what statement we have */   
     ParserCopy(&PreState, Parser);
     Token = LexGetToken(Parser, &LexerValue, TRUE);
-    
+#ifdef LOXONE_SIM
+    LexSim_updateLine(Parser);
+#endif
     switch (Token)
     {
         case TokenEOF:
