@@ -475,6 +475,7 @@
 					"-DF_FULLSYNC",
 					"-DLOXONE",
 					"-DPICOC_LIBRARY",
+					"-DUSE_MALLOC_HEAP",
 				);
 				SDKROOT = macosx;
 			};
@@ -529,6 +530,7 @@
 					"-DF_FULLSYNC",
 					"-DLOXONE",
 					"-DPICOC_LIBRARY",
+					"-DUSE_MALLOC_HEAP",
 				);
 				SDKROOT = macosx;
 			};
