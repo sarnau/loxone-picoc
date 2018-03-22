@@ -13,13 +13,14 @@
 @end
 
 @implementation LoxPrgDocument {
-    Picoc pc;
+    Picoc _picoC;
+    NSThread *_picoThread;
 }
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self->pc.owner = (__bridge void *)(self);
+        self->_picoC.owner = (__bridge void *)(self);
     }
     return self;
 }
@@ -52,10 +53,16 @@
     [self clearLog:self];
 }
 
-- (IBAction)runStopAction:(id)sender
+- (IBAction)startStopPicoC:(id)sender
 {
-    LoxSim_Launch(&self->pc, self.displayName, self.sourceCodeView.textStorage.string);
-    self.runStopToolbarItem.image = [NSImage imageNamed:@"NSGoBackTemplate"];
+    if(!_picoThread) {
+        _picoThread = LoxSim_Launch(&self->_picoC, self.displayName, self.sourceCodeView.textStorage.string);
+        self.runStopToolbarItem.image = [NSImage imageNamed:@"NSGoBackTemplate"];
+    } else {
+        LoxSim_Stop(&self->_picoC, _picoThread);
+        _picoThread = nil;
+        self.runStopToolbarItem.image = [NSImage imageNamed:@"NSGoForwardTemplate"];
+    }
 }
 
 - (IBAction)clearLog:(id)sender
@@ -75,12 +82,12 @@
 
 - (IBAction)inputTextUpdated:(id)sender 
 {
-    LoxSim_triggerInputEvent(&self->pc, 1<<[sender tag]);
+    LoxSim_triggerInputEvent(&self->_picoC, 1<<[sender tag]);
 }
 
 - (IBAction)inputNumberUpdated:(id)sender
 {
-    LoxSim_triggerInputEvent(&self->pc, 1<<([sender tag] + 3));  // 3 text inputs
+    LoxSim_triggerInputEvent(&self->_picoC, 1<<([sender tag] + 3));  // 3 text inputs
 }
 
 - (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError

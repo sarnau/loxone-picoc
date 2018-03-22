@@ -14,7 +14,8 @@ void LoxSim_addPointer(struct ParseState *state, void *pointer);
 void LoxSim_removePointer(struct ParseState *state, void *pointer);
 void LoxSim_checkLeaks(struct ParseState *state);
 
-void LoxSim_Launch(Picoc *pcPtr, NSString *appName, NSString *sourceCode);
+NSThread *LoxSim_Launch(Picoc *pc, NSString *appName, NSString *sourceCode);
+void LoxSim_Stop(Picoc *pc, NSThread *thread);
 
 void LoxSim_setlogtext(struct ParseState *state, const char *text, BOOL isErrorLog);
 float LoxSim_getio(struct ParseState *state, const char *name);

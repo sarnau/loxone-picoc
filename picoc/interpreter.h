@@ -363,6 +363,7 @@ struct IncludeLibrary
 struct Picoc_Struct
 {
 #ifdef LOXONE_SIM
+    void *thread;
     void *owner;
     int eventMask;
     void **mallocPtrList;

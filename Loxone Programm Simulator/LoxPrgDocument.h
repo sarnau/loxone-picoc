@@ -46,4 +46,3 @@
 @property (unsafe_unretained) IBOutlet NSTextView *sourceCodeView;
 @property (weak) IBOutlet NSToolbarItem *runStopToolbarItem;
 @end
-

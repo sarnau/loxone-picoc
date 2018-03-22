@@ -112,6 +112,10 @@ void LoxSim_checkLeaks(struct ParseState *Parser)
 
 void LoxSim_updateLine(struct ParseState *Parser)
 {
+    NSThread *thread = (__bridge NSThread *)(Parser->pc->thread);
+    if(thread.isCancelled) {
+        PlatformExit(Parser->pc, -1);
+    }
     LoxPrgDocument *doc = (__bridge LoxPrgDocument *)(Parser->pc->owner);
     int currentLine = Parser->Line; 
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -132,10 +136,20 @@ void LoxSim_updateLine(struct ParseState *Parser)
     });
 }
 
-void LoxSim_Launch(Picoc *pc, NSString *appName, NSString *sourceCode)
+void LoxSim_Stop(Picoc *pc, NSThread *thread)
 {
-    LoxPrgDocument *doc = (__bridge LoxPrgDocument *)(pc->owner);
-    [NSThread detachNewThreadWithBlock:^{
+    if(!thread)
+        return;
+    [thread cancel];
+    while(!thread.isFinished) {
+        [NSThread sleepForTimeInterval:0.05];
+    }
+}
+
+NSThread *LoxSim_Launch(Picoc *pc, NSString *appName, NSString *sourceCode)
+{
+//    LoxPrgDocument *doc = (__bridge LoxPrgDocument *)(pc->owner);
+    NSThread *thread = [[NSThread alloc] initWithBlock:^{
         PicocInitialise(pc, PICOC_STACK_SIZE);
         PicocIncludeAllSystemHeaders(pc);
         if (!PicocPlatformSetExitPoint(pc))
@@ -143,10 +157,10 @@ void LoxSim_Launch(Picoc *pc, NSString *appName, NSString *sourceCode)
             PicocParse(pc, appName.UTF8String, sourceCode.UTF8String, (int)strlen(sourceCode.UTF8String), TRUE, FALSE, TRUE, TRUE);
         }
         PicocCleanup(pc);
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            doc.runStopToolbarItem.image = [NSImage imageNamed:@"NSGoForwardTemplate"];
-        });
     }];
+    pc->thread = (__bridge void *)(thread);
+    [thread start];
+    return thread;
 }
 
 
