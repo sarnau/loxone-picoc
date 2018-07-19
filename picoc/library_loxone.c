@@ -347,15 +347,15 @@ static void Lox_setoutputtext(struct ParseState *Parser, struct Value *ReturnVal
 static void Lox_sleep(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
     LOX_DEBUGPRINT("sleep(%d)\n", Param[0]->Val->Integer);
-    useconds_t msSleep = Param[0]->Val->Integer * 1000;
-    while(true) {
-        if(msSleep < 20) {
-            usleep(msSleep);
+    long mssleep = Param[0]->Val->Integer;
+    while(mssleep > 0) {
+        if(NSThread.currentThread.isCancelled)
             break;
-        } else {
-            usleep(20);
-            msSleep -= 20;
-        }
+        if(mssleep > 10)
+            usleep(10 * 1000);
+        else
+            usleep((useconds_t)mssleep * 1000);
+        mssleep -= 10;
     }
     LoxSim_checkLeaks(Parser);
 }
@@ -365,15 +365,15 @@ static void Lox_sleep(struct ParseState *Parser, struct Value *ReturnValue, stru
 static void Lox_sleeps(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)
 {
     LOX_DEBUGPRINT("sleeps(%d)\n", Param[0]->Val->Integer);
-    useconds_t msSleep = Param[0]->Val->Integer * 1000;
-    while(true) {
-        if(msSleep < 20) {
-            usleep(msSleep);
+    long mssleep = Param[0]->Val->Integer * 1000;
+    while(mssleep > 0) {
+        if(NSThread.currentThread.isCancelled)
             break;
-        } else {
-            usleep(20);
-            msSleep -= 20;
-        }
+        if(mssleep > 10)
+            usleep(10 * 1000);
+        else
+            usleep((useconds_t)mssleep * 1000);
+        mssleep -= 10;
     }
     LoxSim_checkLeaks(Parser);
 }
